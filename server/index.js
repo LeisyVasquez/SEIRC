@@ -4,7 +4,7 @@ const morgan = require('morgan');
 const cors = require('cors');
 const routes = require('./routes/routes');
 require('dotenv').config({path: '../.env'});
-require('../server/config/db');
+require('../server/config/database');
 
 
 //Middlewares
