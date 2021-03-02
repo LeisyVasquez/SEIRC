@@ -2,11 +2,14 @@
 const {Router} = require('express');
 const router = Router();
 const{ 
-    getMain
+    getMain,
+    registerBaskets
+    
 } = require('./controller');
 
 // Se realiza la creación de cada una de las rutas
 
 router.get('/',getMain);
+router.post('/registerBaskets/',registerBaskets);
 
 module.exports = router;
