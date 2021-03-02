@@ -1,7 +1,7 @@
-  
+require('dotenv').config({path: '../.env'});
 const mongoose = require('mongoose');
 
-mongoose.connect('mongodb+srv://leisy:wTyH95Xlmgrkdqmy@cluster0.m7dhv.mongodb.net/SEIRC?retryWrites=true&w=majority', {
+mongoose.connect(process.env.DB, {
     
 //Parseo de la cadena de conexión
     useNewUrlParser: true,
