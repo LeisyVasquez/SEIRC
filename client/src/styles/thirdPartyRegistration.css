@@ -1,0 +1,39 @@
+.thirdPartyRegistrationBody{
+    padding: 2vw 20vw;
+}
+
+.thirdPartyRegistrationBody h2{
+    text-align: center;
+}
+
+.thirdPartyRegistrationBody .formulario{
+    border: 1px solid black;
+    padding: 1vw;
+}
+
+.thirdPartyRegistrationBody .formInput{
+    margin: 1vw;
+    height: 2vw;
+    width: 12vw;
+}
+
+.thirdPartyRegistrationBody .fila{
+    text-align: center;
+}
+
+.thirdPartyRegistrationBody .botones{
+    text-align: center;
+    margin-top: 1vw;
+}
+
+.thirdPartyRegistrationBody .botones{
+    text-align: center;
+    margin-top: 1vw;
+}
+
+.thirdPartyRegistrationBody .formButton{
+    margin: 1vw;
+    height: 3vw;
+    width: 10vw;
+    font-size: 25px;
+}
