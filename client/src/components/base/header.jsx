@@ -11,7 +11,7 @@ const Header = () => {
                 activeKey="/"
             >
                 <Nav.Item>
-                    <Nav.Link href="/"><img src="../../../public/images/logo.png" alt="logo" /></Nav.Link>
+                    <Nav.Link href="/"><img src="https://github.com/LeisyVasquez/SEIRC/blob/main/client/public/images/logo.png?raw=true" alt="logo" /></Nav.Link>
                 </Nav.Item>
             </Nav>
         </div>
