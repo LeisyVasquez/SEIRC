@@ -26,8 +26,8 @@ const login = () => {
                         name="contrasena"
                     />
                     <a href="/" className="boton1">
-                    <input  type="button" value="Iniciar Sección" className="boton1 mt-5"/>
-          </a>
+                        <input  type="button" value="Iniciar Sección" className="boton1 mt-5"/>
+                    </a>
                 </form>
             </Container>
         </div>
