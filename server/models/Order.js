@@ -13,15 +13,14 @@ const OrderSchema = new Schema({
         required: [true, 'El tipo de usuario es necesario'],
         enum : ['cliente','proveedor']        
     },
-    consolidated: {
-       type: Array
+    consolidated: {     
     },
     actions:{
         income: {
-            type: Array
+            
         },
         expenses: {
-            type: Array
+            
         }
     }
 });

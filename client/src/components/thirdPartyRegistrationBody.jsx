@@ -1,10 +1,10 @@
 import React from 'react';
 import { Form } from 'react-bootstrap';
-
 import '../styles/thirdPartyRegistration.css';
 
 
 const ThirdPartyRegistrationBody = () => {
+    
     return (
         <div className="thirdPartyRegistrationBody">
             <h2>Registro de terceros</h2>
