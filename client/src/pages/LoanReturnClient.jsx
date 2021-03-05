@@ -2,17 +2,17 @@ import React from 'react';
 
 import Header from '../components/base/header'
 import Footer from '../components/base/footer'
-import BasketsRegistration from '../components/basketsRegistration'
+import LoanReturnClient from '../components/loanReturnClient'
 
 
-const basketsRegistration = () => {
+const loanReturnClient = () => {
     return (
         <div>
             <Header />
-            <BasketsRegistration />
+            <LoanReturnClient />
             <Footer />
         </div>
     )
 }
 
-export default basketsRegistration;
+export default loanReturnClient;

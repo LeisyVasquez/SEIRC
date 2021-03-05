@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";//import { saveToLocal } from "../localStorage/localStorage";
+import React, { useEffect, useState } from "react";
 import swal from "sweetalert2";
 import api from '../axios/axios';
+
 import { Container, Form } from "react-bootstrap";
 import '../styles/basketsRegistration.css';
 
@@ -15,11 +16,9 @@ const BasketsRegistration = () => {
             ...basketsData,
             [name]: value,
         }));
-        console.log(basketsData);
     }
 
     const sendData = () => {
-        console.log(basketsData)
         const data = {
             name: basketsData.name,
             type: basketsData.type,
@@ -41,6 +40,13 @@ const BasketsRegistration = () => {
                     title: "El tipo de canastilla ya existe",
                     confirmButtonText: "Entendido",
                     confirmButtonColor: "red",
+                });
+            }  else if (res.status === 201) {
+                swal.fire({
+                    icon: "success",
+                    title: "Canasta creada con éxito",
+                    confirmButtonText: "Entendido", 
+                    confirmButtonColor: "#70db24",
                 });
             } else if (res.status === 400) {
                 swal.fire({
@@ -64,22 +70,30 @@ const BasketsRegistration = () => {
         })
     }
 
+    const reset = (e) => {
+        swal.fire({
+            title: 'Advertencia',
+            text: '¿Seguro quieres cancelar este registro?',
+            icon: 'warning',
+            showCancelButton: true,
+            cancelButtonText: 'Sí',
+            confirmButtonText: 'No',
+            confirmButtonColor: "#f96332",
+            cancelButtonColor: "#70db24",
+        }).then((result) => {
+            if (!result.value) {
+                document.getElementById("form").reset();
+            }
+        })
+    }
 
     return (
         <div className="basketsRegistration" >
             <Container className="text-center mt-2 mx-auto my-5 p-5 bosy w-50" >
                 <h1 className="m-auto">Registro de canastillas</h1>
-                <form className="form-signin mt-5 py-4">
-                    {/*
-                        <input type="text" list="listapropietario" placeholder="Propietario" className="form-control mb-3" />
-                         <datalist id="listapropietario">
-                        <option>Empresa</option>
-                        <option>Proveedor</option>
-                        </datalist>
-                    */}
+                <form className="form-signin mt-5 py-4" id="form">
                     <Form.Group >
-                        <Form.Control as="select" className="mb-3" id="type" onChange={data}
-                        >
+                        <Form.Control as="select" className="mb-3" id="type" onChange={data}>
                             <option>Proveedor</option>
                             <option>Empresa</option>
                         </Form.Control>
@@ -98,15 +112,14 @@ const BasketsRegistration = () => {
                         placeholder="Cantidad base"
                         onChange={data}
                     />
-                    <textarea 
-                        class="form-control" 
-                        id="description" 
-                        rows="2" 
-                        placeholder="Descripción" 
+                    <textarea
+                        class="form-control"
+                        id="description"
+                        rows="2"
+                        placeholder="Descripción"
                         onChange={data}
                     />
-
-                    <button type="button" className="boton3 mt-5 mr-3 w-40 h-50">Cancelar</button>
+                    <button type="button" className="boton3 mt-5 mr-3 w-40 h-50" onClick={reset}>Cancelar</button>
                     <button type="button" className="boton2 mt-5 ml-3 w-40 h-50" onClick={sendData}>Finalizar</button>
                 </form>
             </Container>
