@@ -15,15 +15,20 @@ module.exports = {
                 }else{
                     if(!baskets){
                         const newBaskets = new Baskets(req.body);
-                        await newBaskets.save();
-                        res.status(201).json({message: newBaskets});
+                        await newBaskets.save((err,resulset)=>{
+                            if(err){
+                                res.status(500).json({state:0,message:err.message})
+                            }else{
+                                res.status(201).json({message: newBaskets});
+                            }
+                        });     
                     }else{
                         res.status(200).json({message:"Baskets exist"});
                     }
                 }
             })
         }catch(e){
-            res.status(500).json({state:0,message:err})
+            res.status(500).json({state:0,message:e})
         }
     },
     

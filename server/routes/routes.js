@@ -11,6 +11,6 @@ const{
 // Se realiza la creación de cada una de las rutas
 
 router.get('/',getMain);
-router.post('/registerBaskets/',isAuth,isRole,registerBaskets);
+router.post('/registerBaskets/',registerBaskets);
 
 module.exports = router;
