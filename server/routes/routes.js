@@ -4,7 +4,8 @@ const router = Router();
 const {isAuth,isRole} = require('./middlewares');
 const{ 
     getMain,
-    registerBaskets
+    registerBaskets,
+    registerThirdParties
     
 } = require('./controller');
 
@@ -12,5 +13,6 @@ const{
 
 router.get('/',getMain);
 router.post('/registerBaskets/',registerBaskets);
+router.post('/registerThirdParties/', registerThirdParties)
 
 module.exports = router;
