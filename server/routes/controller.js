@@ -17,7 +17,7 @@ module.exports = {
                         const newBaskets = new Baskets(req.body);
                         await newBaskets.save((err,resulset)=>{
                             if(err){
-                                res.status(500).json({state:0,message:err.message})
+                                res.status(400).json({message:err.message})
                             }else{
                                 res.status(201).json({message: newBaskets});
                             }
