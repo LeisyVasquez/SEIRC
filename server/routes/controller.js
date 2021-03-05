@@ -26,6 +26,7 @@ module.exports = {
             res.status(500).json({state:0,message:err})
         }
     },
+    
     signIn: (req,res)=>{
         User.find({ userName: req.body.userName }, (err, user) => {
             if (err) return res.status(500).send({ message: err })
