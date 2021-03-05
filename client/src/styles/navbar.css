@@ -1,0 +1,19 @@
+.navbar{
+    margin-bottom: 2vw;
+    border-bottom: 1px solid black;
+    box-shadow: 0px 2px 5px;
+    height: 65px;
+}
+
+.navbar .navItem{
+    border-bottom: 2px solid greenyellow;
+    color: #70db24;
+    border-radius: 40%;
+    transition: 0.5s;
+
+    margin-left: 1vw;
+}
+
+.navbar .navItem:hover{
+    color: yellow;
+}
