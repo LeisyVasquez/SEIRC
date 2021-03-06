@@ -5,88 +5,33 @@ import { Container, Form } from "react-bootstrap";
 
 import ButtonCancel from './base/buttonCancel';
 
+import LoanClient from './loanClient';
+import ReturnClient from './returnClient';
 
 
 const LoanReturnClient = () => {
-    const [basketsList,setBasketsList] = useState([{id:1,typeBaskets:"",quantity:0}]);
-    const [basketsListOther,setBasketsListOther] = useState([{id:1,typeBaskets:"",quantity:0}]);
-    
-
-    const addBasket = () => setBasketsList(basketsList=>[...basketsList,{id:basketsList[basketsList.length-1].id+1,typeBaskets:"",quantity:0}]);
-    const addBasketOther = () => setBasketsListOther(basketsListOther=>[...basketsListOther,{id:basketsListOther[basketsListOther.length-1].id+1,typeBaskets:"",quantity:0}]);
-
-    const deleteBasket = ()=>{
-        if(basketsList.length!==1){
-            const basketsListUpdate = basketsList.filter(({ id }) => id !== basketsList[basketsList.length-1].id);
-            setBasketsList(basketsListUpdate);
-        }
+    const [option,setOption] = useState(0); 
+    const setOptionClick = (e) =>{
+        if(e.target.value==="option1")setOption(0);
+        if(e.target.value==="option2")setOption(1);
     }
-    const deleteBasketOther = ()=>{
-        if(basketsListOther.length!==1){
-            const basketsListUpdate = basketsListOther.filter(({ id }) => id !== basketsListOther[basketsListOther.length-1].id);
-            setBasketsListOther(basketsListUpdate);
-        }
-    }
-
-    const onChangeFields = (e) => {basketsList[e.target.id-1][e.target.name] = e.target.value;  console.log(basketsList)}
-    const onChangeFieldsOther = (e) => {basketsListOther[e.target.id-1][e.target.name] = e.target.value; console.log(basketsListOther)}
-    
-
-
     return (
         <div className="basketsRegistration" >
             <Container className="text-center mt-2 mx-auto my-5 p-5 bosy w-50" >
                 <h2 className="m-auto">Clientes</h2>
                 <form className="form-signin mt-5 py-4" id="form">
                     <div class="form-check form-check-inline mx-0 mb-3" style={{ float: "left" }}>
-                        <input class="form-check-input " type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1" />
+                        <input class="form-check-input " type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1" onChange={setOptionClick} />
                         <label class="form-check-label fs-5" for="inlineRadio1">Préstamo</label>
                     </div>
                     <div class="form-check form-check-inline mb-3" >
-                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2" />
+                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2" onChange={setOptionClick} />
                         <label class="form-check-label fs-5" for="inlineRadio2">Devolución</label>
                     </div>
-                 <input type="text" class="form-control mb-3" placeholder="Nombre del cliente" list="listaclientes" />
-                        <datalist id="listaclientes">
-                            <option>Samuel</option>
-                            <option>Juan</option>
-                        </datalist>
-                    {basketsList.map((basket)=>(
-                        <div key={basket.id} class="input-group mb-3" >
-                        <input type="text" name="typeBaskets" id={basket.id} onChange={onChangeFields} class="form-control mr-4" placeholder="Nombre de la canasta" list="listacanastas" />
-                        <datalist id="listacanastas">
-                            <option>Verde</option>
-                            <option>Amarilla</option>
-                        </datalist>
-                        <input type="text" name="quantity" id={basket.id} onChange={onChangeFields} class="form-control" placeholder="Cantidad" />
-                        </div>
-                    ))}
-                    <button type="button" class="input-group-text ml-4" onClick={addBasket} > + </button>
-                    <button type="button" class="input-group-text ml-4" onClick={deleteBasket}> - </button>
-
-                    <section className="mt-4">
-                        <p class="text-start mt-4 mb-3">Otras canastillas</p>
-
-                        {basketsListOther.map((basket)=>(
-                        <div key={basket.id} class="input-group mb-3" >
-                        <input type="text" name="typeBaskets" id={basket.id} onChange={onChangeFieldsOther} class="form-control mr-4" placeholder="Nombre de la canasta" list="listacanastas" />
-                        <datalist id="listacanastas">
-                            <option>Verde</option>
-                            <option>Amarilla</option>
-                        </datalist>
-                        <input type="text" name="quantity" id={basket.id} onChange={onChangeFieldsOther} class="form-control" placeholder="Cantidad" />
-                        </div>
-                        ))}
-                    <button type="button" class="input-group-text ml-4" onClick={addBasketOther}> + </button>
-                    <button type="button" class="input-group-text ml-4" onClick={deleteBasketOther}> - </button>
-
-                    </section>
-                    <ButtonCancel/>
-                    <button type="button" className="boton2 mt-5 ml-3 w-40 h-50">Finalizar</button>
+                    {option===1?<ReturnClient/>:<LoanClient/>}
                 </form>
             </Container>
         </div>
     );
 }
-
 export default LoanReturnClient;
