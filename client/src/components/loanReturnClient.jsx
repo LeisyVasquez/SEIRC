@@ -5,6 +5,19 @@ import { Container, Form } from "react-bootstrap";
 
 
 const LoanReturnClient = () => {
+    const [basketsList,setBasketsList] = useState([{id:1}]);
+
+    const addBasket = ()=>{
+        setBasketsList(basketsList=>[...basketsList,{id:basketsList[basketsList.length-1].id+1}]);
+        console.log(basketsList);
+    } 
+    const deleteBasket = ()=>{
+        if(basketsList.length!==1){
+            const basketsListUpdate = basketsList.filter(({ id }) => id !== basketsList[basketsList.length-1].id);
+            setBasketsList(basketsListUpdate)
+        }
+    } 
+
 
     return (
         <div className="basketsRegistration" >
@@ -24,16 +37,18 @@ const LoanReturnClient = () => {
                             <option>Samuel</option>
                             <option>Juan</option>
                         </datalist>
-
-                    <div class="input-group mb-3">
+                    {basketsList.map((basket)=>(
+                        <div class="input-group mb-3">
                         <input type="text" class="form-control mr-4" placeholder="Nombre de la canasta" list="listacanastas" />
                         <datalist id="listacanastas">
                             <option>Verde</option>
                             <option>Amarilla</option>
                         </datalist>
                         <input type="text" class="form-control" placeholder="Cantidad" />
-                        <button type="button" class="input-group-text ml-4"> + </button>
-                    </div>
+                        </div>
+                    ))}
+                    <button type="button" class="input-group-text ml-4" onClick={addBasket}> + </button>
+                    <button type="button" class="input-group-text ml-4" onClick={deleteBasket}> - </button>
 
                     <section className="mt-4">
                         <p class="text-start mt-4 mb-3">Otras canastillas</p>
