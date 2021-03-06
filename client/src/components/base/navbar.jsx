@@ -5,6 +5,9 @@ import { Nav } from 'react-bootstrap';
 import '../../styles/navbar.css';
 
 const Navbar = () => {
+
+    
+
     return (
         <div className="navbar">
             <Nav>

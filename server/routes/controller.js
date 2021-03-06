@@ -88,5 +88,40 @@ module.exports = {
             if (user.typeUser !== req.body.typeUser) res.status(401).send({ message: 'Acceso denegado' });
             res.status(200).send({ message: "Acceso permitido" });
         })
-    }
+    },
+    registerUser: (req, res) => {
+        try {
+            User.findOne({ name: req.body.name }, async function (err, user) {
+                if (err) {
+                    res.status(500).json({ state: 0, message: "Error 2: " + err });
+                } else {
+                    if (!user) {
+                        User.findOne({ userName: req.body.userName }, async function (err, user) {
+                            if (!user) {
+                                req.body.userName = CryptoJS.AES.encrypt('Nombre encriptado', req.body.userName).toString();
+                                req.body.phone = CryptoJS.AES.encrypt('Teléfono encriptado', req.body.phone).toString();
+                                req.body.direction = CryptoJS.AES.encrypt('Dirección encriptada', req.body.direction).toString();
+                                req.body.password = CryptoJS.AES.encrypt('Contraseña encriptada', req.body.password).toString();
+
+                                const newUser = new User(req.body);
+                                await newUser.save((err, resulset) => {
+                                    if (err) {
+                                        res.status(500).json({ state: 0, message: "Error 3: " + err.message })
+                                    } else {
+                                        res.status(201).json({ message: newUser });
+                                    }
+                                });
+                            } else {
+                                res.status(200).json({ message: "ThirdParty user already exist" });
+                            }
+                        })
+                    } else {
+                        res.status(200).json({ message: "ThirdParty name already exist" });
+                    }
+                }
+            })
+        } catch (e) {
+            res.status(500).json({ state: 0, message: "Error 1: " + e })
+        }
+    },
 }
