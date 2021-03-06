@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import swal from "sweetalert2";
 import api from '../axios/axios';
 
+import ButtonCancel from './base/buttonCancel';
+
 import { Container, Form } from "react-bootstrap";
 import '../styles/basketsRegistration.css';
 
@@ -48,7 +50,7 @@ const BasketsRegistration = () => {
                     confirmButtonText: "Entendido", 
                     confirmButtonColor: "#70db24",
                 });
-            } else if (res.status === 400) {
+            } else if (res.status === 225) {
                 swal.fire({
                     icon: "error",
                     title: "Error",
@@ -67,23 +69,6 @@ const BasketsRegistration = () => {
                   });
             }
             */
-        })
-    }
-
-    const reset = (e) => {
-        swal.fire({
-            title: 'Advertencia',
-            text: '¿Seguro quieres cancelar este registro?',
-            icon: 'warning',
-            showCancelButton: true,
-            cancelButtonText: 'Sí',
-            confirmButtonText: 'No',
-            confirmButtonColor: "#f96332",
-            cancelButtonColor: "#70db24",
-        }).then((result) => {
-            if (!result.value) {
-                document.getElementById("form").reset();
-            }
         })
     }
 
@@ -119,8 +104,8 @@ const BasketsRegistration = () => {
                         placeholder="Descripción"
                         onChange={data}
                     />
-                    <button type="button" className="boton3 mt-5 mr-3 w-40 h-50" onClick={reset}>Cancelar</button>
-                    <button type="button" className="boton2 mt-5 ml-3 w-40 h-50" onClick={sendData}>Finalizar</button>
+                    <ButtonCancel/>
+                    <button type="button" className="boton2 ml-3 w-40 h-50" onClick={sendData}>Finalizar</button>
                 </form>
             </Container>
         </div>

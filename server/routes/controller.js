@@ -17,7 +17,8 @@ module.exports = {
                         const newBaskets = new Baskets(req.body);
                         await newBaskets.save((err, resulset) => {
                             if (err) {
-                                res.status(400).json({ message: err.message })
+                                res.status(225).json({ message: err.message })
+                                console.log(err.message)
                             } else {
                                 res.status(201).json({ message: newBaskets });
                             }
@@ -45,7 +46,7 @@ module.exports = {
     //Nombre  de las canastillas de la empresa
     getBasketsCompany: async (req, res) => {
         const basketsCompany = await Baskets.find({type:'Empresa'});
-        let namesBasketsCompany = [];
+        let namesBasketsCompany = [];   
         for(let i = 0; i<basketsCompany.length; i++ ){
             namesBasketsCompany.push(basketsCompany[i].name);
         }

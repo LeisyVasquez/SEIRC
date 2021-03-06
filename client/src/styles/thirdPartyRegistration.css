@@ -1,14 +1,6 @@
-.thirdPartyRegistrationBody{
-    padding: 2vw 20vw;
-}
-
-.thirdPartyRegistrationBody h2{
-    text-align: center;
-}
-
-.thirdPartyRegistrationBody .formulario{
-    border: 1px solid black;
-    padding: 1vw;
+.thirdPartyRegistrationBody .container {
+    background: white;
+    border-radius: 5px;
 }
 
 .thirdPartyRegistrationBody .formInput{
@@ -17,23 +9,16 @@
     width: 12vw;
 }
 
-.thirdPartyRegistrationBody .fila{
-    text-align: center;
-}
 
-.thirdPartyRegistrationBody .botones{
-    text-align: center;
-    margin-top: 1vw;
-}
-
-.thirdPartyRegistrationBody .botones{
-    text-align: center;
-    margin-top: 1vw;
-}
-
-.thirdPartyRegistrationBody .formButton{
-    margin: 1vw;
-    height: 3vw;
-    width: 10vw;
+.thirdPartyRegistrationBody .boton2{
+    color:black;
+    margin-left: auto;
+    margin-right: auto;
     font-size: 25px;
+    border-radius: 10px;
+    border: 2px solid #51C2D5;
+    background-color:#51C2D5;
+
 }
+
+
