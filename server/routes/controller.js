@@ -17,7 +17,7 @@ module.exports = {
                         const newBaskets = new Baskets(req.body);
                         await newBaskets.save((err, resulset) => {
                             if (err) {
-                                res.status(500).json({ state: 0, message: err.message })
+                                res.status(400).json({ message: err.message })
                             } else {
                                 res.status(201).json({ message: newBaskets });
                             }
@@ -31,6 +31,37 @@ module.exports = {
             res.status(500).json({ state: 0, message: e })
         }
     },
+
+    //Nombre de clientes
+    getClient: async (req, res) => {
+        const clients = await User.find({ $or: [{ typeUser: 'Cliente' }, { typeUser: 'Cliente-Proveedor' }] });
+        let namesClients = [];
+        for(let i = 0; i<clients.length; i++ ){
+            namesClients.push(clients[i].name);
+        }
+        res.json(namesClients);
+    },
+
+    //Nombre  de las canastillas de la empresa
+    getBasketsCompany: async (req, res) => {
+        const basketsCompany = await Baskets.find({type:'Empresa'});
+        let namesBasketsCompany = [];
+        for(let i = 0; i<basketsCompany.length; i++ ){
+            namesBasketsCompany.push(basketsCompany[i].name);
+        }
+        res.json(namesBasketsCompany);
+    },
+
+    //Nombre  de las canastillas de los proveedores
+    getBasketsProvider: async (req, res) => {
+        const basketsProvider = await Baskets.find({type:'Proveedor'});
+        let namesBasketsProvider = [];
+        for(let i = 0; i<basketsProvider.length; i++ ){
+            namesBasketsProvider.push(basketsProvider[i].name);
+        }
+        res.json(namesBasketsProvider);
+    },
+    
     signIn: (req, res) => {
         User.find({ userName: req.body.userName }, (err, user) => {
             if (err) return res.status(500).send({ message: err })
