@@ -1,6 +1,5 @@
 const Baskets = require('../models/Baskets');
 const User = require('../models/User');
-const ThirdParties = require('../models/ThirdParties')
 const CryptoJS = require('crypto-js');
 const service = require('./services')
 
@@ -58,25 +57,26 @@ module.exports = {
             res.status(200).send({ message: "Acceso permitido" });
         })
     },
-    registerThirdParties: (req, res) => {
+    registerUser: (req, res) => {
         try {
-            ThirdParties.findOne({ name: req.body.name }, async function (err, thirdParties) {
+            User.findOne({ name: req.body.name }, async function (err, user) {
                 if (err) {
                     res.status(500).json({ state: 0, message: "Error 2: " + err });
                 } else {
-                    if (!thirdParties) {
-                        ThirdParties.findOne({ user: req.body.user }, async function (err, thirdParties) {
-                            if (!thirdParties) {
-                                req.body.name = CryptoJS.AES.encrypt('Nombre encriptado', req.body.name).toString();
-                                req.body.user = CryptoJS.AES.encrypt('Nombre encriptado', req.body.user).toString();
-                                req.body.password = CryptoJS.AES.encrypt('Nombre encriptado', req.body.password).toString();
+                    if (!user) {
+                        User.findOne({ userName: req.body.userName }, async function (err, user) {
+                            if (!user) {
+                                req.body.userName = CryptoJS.AES.encrypt('Nombre encriptado', req.body.userName).toString();
+                                req.body.phone = CryptoJS.AES.encrypt('Teléfono encriptado', req.body.phone).toString();
+                                req.body.direction = CryptoJS.AES.encrypt('Dirección encriptada', req.body.direction).toString();
+                                req.body.password = CryptoJS.AES.encrypt('Contraseña encriptada', req.body.password).toString();
 
-                                const newThirdParties = new ThirdParties(req.body);
-                                await newThirdParties.save((err, resulset) => {
+                                const newUser = new User(req.body);
+                                await newUser.save((err, resulset) => {
                                     if (err) {
                                         res.status(500).json({ state: 0, message: "Error 3: " + err.message })
                                     } else {
-                                        res.status(201).json({ message: newThirdParties });
+                                        res.status(201).json({ message: newUser });
                                     }
                                 });
                             } else {
