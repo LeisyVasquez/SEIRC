@@ -18,7 +18,7 @@ const UserSchema = new Schema({
     typeUser: {
         type: String,
         required: [true, 'El tipo de usuario es necesario'],
-        enum : ['cliente','proveedor','clienteProveedor, administrador, superUsuario']        
+        enum : ['cliente','proveedor','clienteProveedor', 'administrador', 'superUsuario']        
     },
     phone: {
         type: Number,
