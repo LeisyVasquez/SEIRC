@@ -3,6 +3,9 @@ import swal from "sweetalert2";
 import api from '../axios/axios';
 import { Container, Form } from "react-bootstrap";
 
+import ButtonCancel from './base/buttonCancel';
+
+
 
 const LoanReturnClient = () => {
     const [basketsList,setBasketsList] = useState([{id:1}]);
@@ -23,7 +26,7 @@ const LoanReturnClient = () => {
         <div className="basketsRegistration" >
             <Container className="text-center mt-2 mx-auto my-5 p-5 bosy w-50" >
                 <h2 className="m-auto">Clientes</h2>
-                <form className="form-signin mt-5 py-4">
+                <form className="form-signin mt-5 py-4" id="form">
                     <div class="form-check form-check-inline mx-0 mb-3" style={{ float: "left" }}>
                         <input class="form-check-input " type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1" />
                         <label class="form-check-label fs-5" for="inlineRadio1">Préstamo</label>
@@ -62,8 +65,7 @@ const LoanReturnClient = () => {
                             <span class="input-group-text ml-4">+</span>
                         </div>
                     </section>
-
-                    <button type="button" className="boton3 mt-5 mr-3 w-40 h-50">Cancelar</button>
+                    <ButtonCancel/>
                     <button type="button" className="boton2 mt-5 ml-3 w-40 h-50">Finalizar</button>
                 </form>
             </Container>

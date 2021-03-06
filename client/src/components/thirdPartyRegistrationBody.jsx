@@ -1,40 +1,106 @@
-import React from 'react';
-import { Form } from 'react-bootstrap';
+import React, { useEffect, useState } from 'react';
+import { Form, Container } from 'react-bootstrap';
+import swal from "sweetalert2";
+import api from '../axios/axios';
+
+import ButtonCancel from './base/buttonCancel';
+
 import '../styles/thirdPartyRegistration.css';
 
-
 const ThirdPartyRegistrationBody = () => {
-    
+    const [userData, setUserData] = useState({});
+    useEffect(() => { });
+
+    const data = (e) => {
+        let name = e.target.id;
+        let value = e.target.value;
+        setUserData((state) => ({
+            ...userData,
+            [name]: value,
+        }
+        ));
+    }
+
+    const sendData = () => {
+        const data = {
+            name: userData.name,
+            typeUser: userData.typeUser,
+            phone: userData.phone,
+            direction: userData.direction,
+            userName: userData.userName,
+            password: userData.password,
+        }
+        api.post("/registerThirdParties", data).then((res, err) => {
+            if (res.status === 500) {
+                swal.fire({
+                    icon: "error",
+                    title: "Error en el servidor",
+                    text: "Intente nuevamente",
+                    confirmButtonText: "Entendido",
+                    confirmButtonColor: "red",
+                });
+            } else if (res.status === 200) {
+                swal.fire({
+                    icon: "error",
+                    title: "El nombre o nombre de usuario ya existe",
+                    confirmButtonText: "Entendido",
+                    confirmButtonColor: "red",
+                });
+            }  else if (res.status === 201) {
+                swal.fire({
+                    icon: "success",
+                    title: "¡Usuario registrado con éxito!",
+                    confirmButtonText: "Entendido", 
+                    confirmButtonColor: "#70db24",
+                });
+            } else if (res.status === 225) {
+                swal.fire({
+                    icon: "error",
+                    title: "Error",
+                    text: `${res.data.message}`,
+                    confirmButtonText: "Entendido",
+                    confirmButtonColor: "red",
+                });
+            }
+            /*
+            else{
+                swal.fire({
+                    icon: "error",
+                    title: "Digite todos los campos necesarios",
+                    confirmButtonText: "Entendido",
+                    confirmButtonColor: "#f96332",
+                  });
+            }
+            */
+        })
+    }
+
+
     return (
         <div className="thirdPartyRegistrationBody">
-            <h2>Registro de terceros</h2>
+            <Container className="text-center mt-2 mx-auto my-5 p-5 bosy w-50" >
+                <h2>Registro de terceros</h2>
+                <form className="form-signin mt-5" id="form">
+                    <input type="text" id="name" className="form-control mb-3" placeholder="Nombre del usuario" onChange={data} />
+                        <Form.Group >
+                            <Form.Control as="select"  id="typeUser" onChange={data}>
+                                <option value="">Tipo de usuario</option>
+                                <option value="cliente">Cliente</option>
+                                <option value="proveedor">Proveedor</option>
+                                <option value="clienteProveedor">Cliente-Proveedor</option>
+                            </Form.Control>
+                        </Form.Group>
+                        <input type="number" id="phone" className="form-control mb-3" placeholder="Teléfono" onChange={data} />
 
-            <div className="formulario">
-                <Form>
-                    <div className="fila">
-                        <select className="formInput">
-                            <option value="">Tipo</option>
-                            <option value="cliente">Cliente</option>
-                            <option value="croveedor">Proveedor</option>
-                            <option value="cliente/proveedor">Cliente - Proveedor</option>
-                        </select>
-                        <input type="text" className="formInput" placeholder="Contacto" />
-                        <input type="text" className="formInput" placeholder="Usuario" />
+                    <input type="text" id="direction" className="form-control mb-3" placeholder="Dirección" onChange={data} />
+                    <div class="input-group">
+                        <input type="text" id="userName" className="form-control mb-3 mr-3" placeholder="Nombre de usuario" onChange={data} />
+                        <input type="text" id="password" className="form-control " placeholder="Contraseña" onChange={data} />
                     </div>
-
-                    <div className="fila">
-                        <input type="text" className="formInput" placeholder="Nombre" />
-                        <input type="text" className="formInput" placeholder="Dirección" />
-                        <input type="text" className="formInput" placeholder="Contraseña" />
-                    </div>
-                </Form>
-            </div>
-
-            <div className="botones">
-                <button className="formButton">Cancelar</button>
-                <button className="formButton" type="submit">Aceptar</button>
-            </div>
-
+                    <ButtonCancel/>
+                    <button type="button" className="boton2 mt-4 ml-3 w-40 h-50" onClick={sendData}>Finalizar</button>
+                </form>
+            </Container>
         </div>
     )
 }

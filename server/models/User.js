@@ -5,14 +5,14 @@ const UserSchema = new Schema({
         type: String,
         unique: [true, 'El nombre ya existe'],
         required: [true, 'El nombre es necesario'],
-        maxlength: [50, 'El nombre no puede exceder los 50 caracteres'],
+        //Validar caracteres máximos por front.
         minlength: [3, 'El nombre debe contener 3 o más caracteres']
     },
     userName: {
         type: String,
         unique: [true, 'El nombre de usuario ya existe'],
         required: [true, 'El nombre de usuario es necesario'],
-        maxlength: [50, 'El nombre no puede exceder los 50 caracteres'],
+        //Validar caracteres máximos por front.
         minlength: [3, 'El nombre debe contener 3 o más caracteres']
     },
     typeUser: {
@@ -21,8 +21,8 @@ const UserSchema = new Schema({
         enum : ['cliente','proveedor','clienteProveedor', 'administrador', 'superUsuario']        
     },
     phone: {
-        type: Number,
-        maxlength: [10, 'El número no puede exceder los 10 caracteres'],
+        type: String,
+        //Validar caracteres máximos por front.
         minlength: [7, 'El número debe contener 3 o más caracteres']
     }, 
     direction:{
