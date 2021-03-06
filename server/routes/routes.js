@@ -15,8 +15,8 @@ const{
 // Se realiza la creación de cada una de las rutas
 
 router.get('/',getMain);
-router.post('/registerBaskets/',registerBaskets);
-router.post('/registerThirdParties/', registerUser);
+router.post('/registerBaskets',registerBaskets);
+router.post('/registerThirdParties', registerUser);
 router.get('/getClient',getClient);
 router.get('/getBasketsCompany', getBasketsCompany);
 router.get('/getBasketsProvider', getBasketsProvider);

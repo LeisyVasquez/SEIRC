@@ -93,7 +93,7 @@ module.exports = {
         try {
             User.findOne({ name: req.body.name }, async function (err, user) {
                 if (err) {
-                    res.status(500).json({ state: 0, message: "Error 2: " + err });
+                    res.status(500).json({ message: "Error al buscar usuarios existentes " + err });
                 } else {
                     if (!user) {
                         User.findOne({ userName: req.body.userName }, async function (err, user) {
@@ -106,7 +106,7 @@ module.exports = {
                                 const newUser = new User(req.body);
                                 await newUser.save((err, resulset) => {
                                     if (err) {
-                                        res.status(500).json({ state: 0, message: "Error 3: " + err.message })
+                                        res.status(500).json({ message: "Error al guardar usuario: " + err.message })
                                     } else {
                                         res.status(201).json({ message: newUser });
                                     }
@@ -121,7 +121,7 @@ module.exports = {
                 }
             })
         } catch (e) {
-            res.status(500).json({ state: 0, message: "Error 1: " + e })
+            res.status(500).json({message: e })
         }
     },
 }
