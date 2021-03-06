@@ -32,7 +32,6 @@ module.exports = {
             res.status(500).json({ state: 0, message: e })
         }
     },
-
     signIn: (req, res) => {
         User.find({ userName: req.body.userName }, (err, user) => {
             if (err) return res.status(500).send({ message: err })
@@ -59,7 +58,6 @@ module.exports = {
             res.status(200).send({ message: "Acceso permitido" });
         })
     },
-
     registerThirdParties: (req, res) => {
         try {
             ThirdParties.findOne({ name: req.body.name }, async function (err, thirdParties) {
@@ -69,6 +67,10 @@ module.exports = {
                     if (!thirdParties) {
                         ThirdParties.findOne({ user: req.body.user }, async function (err, thirdParties) {
                             if (!thirdParties) {
+                                req.body.name = CryptoJS.AES.encrypt('Nombre encriptado', req.body.name).toString();
+                                req.body.user = CryptoJS.AES.encrypt('Nombre encriptado', req.body.user).toString();
+                                req.body.password = CryptoJS.AES.encrypt('Nombre encriptado', req.body.password).toString();
+
                                 const newThirdParties = new ThirdParties(req.body);
                                 await newThirdParties.save((err, resulset) => {
                                     if (err) {
