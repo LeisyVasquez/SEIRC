@@ -10,7 +10,6 @@ const{
     getBasketsProvider,
     signIn,
     registerUser,
-    signIn
     
 } = require('./controller');
 
