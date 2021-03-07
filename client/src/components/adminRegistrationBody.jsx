@@ -7,7 +7,7 @@ import ButtonCancel from './base/buttonCancel';
 
 import '../styles/thirdPartyRegistration.css';
 
-const ThirdPartyRegistrationBody = () => {
+const AdminRegistrationBody = () => {
     const [userData, setUserData] = useState({});
     useEffect(() => { });
 
@@ -17,13 +17,14 @@ const ThirdPartyRegistrationBody = () => {
         setUserData((state) => ({
             ...userData,
             [name]: value,
-        }));
+        }
+        ));
     }
 
     const sendData = () => {
         const data = {
             name: userData.name,
-            typeUser: userData.typeUser,
+            typeUser: "administrador",
             phone: userData.phone,
             direction: userData.direction,
             userName: userData.userName,
@@ -68,20 +69,14 @@ const ThirdPartyRegistrationBody = () => {
     return (
         <div className="thirdPartyRegistrationBody">
             <Container className="text-center mt-2 mx-auto my-5 p-5 bosy w-50" >
-                <h2>Registro de terceros</h2>
+                <h2>Registro de administradores</h2>
                 <form className="form-signin mt-5" id="form">
                     <input type="text" id="name" className="form-control mb-3" placeholder="Nombre del usuario" onChange={data} />
-                    <Form.Group >
-                        <Form.Control as="select" id="typeUser" onChange={data}>
-                            <option value="">Tipo de usuario</option>
-                            <option value="cliente">Cliente</option>
-                            <option value="proveedor">Proveedor</option>
-                            <option value="clienteProveedor">Cliente-Proveedor</option>
-                        </Form.Control>
-                    </Form.Group>
+
                     <input type="number" id="phone" className="form-control mb-3" placeholder="Teléfono" onChange={data} />
 
                     <input type="text" id="direction" className="form-control mb-3" placeholder="Dirección" onChange={data} />
+                    
                     <div class="input-group">
                         <input type="text" id="userName" className="form-control mb-3 mr-3" placeholder="Nombre de usuario" onChange={data} />
                         <input type="text" id="password" className="form-control " placeholder="Contraseña" onChange={data} />
@@ -94,4 +89,4 @@ const ThirdPartyRegistrationBody = () => {
     )
 }
 
-export default ThirdPartyRegistrationBody;
+export default AdminRegistrationBody;
