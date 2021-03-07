@@ -6,7 +6,7 @@ module.exports = {
         const payload = {
             id: user.id
         }
-        return jwt.encode(payload,SECRETJWT);
+        return jwt.encode(payload,process.env.SECRETJWT);
     }
     
 }
