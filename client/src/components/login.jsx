@@ -1,12 +1,29 @@
 //import {React, useState, useEffect} from "react";
-//import api from '../axios/axios';
+import api from '../axios/axios';
 //import { saveToLocal } from "../localStorage/localStorage";
 //import swal from "sweetalert2";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Container from "react-bootstrap/Container";
 import '../styles/login.css';
 
-const login = () => {
+const Login = () => {
+    const [userData, setUserData] = useState({});
+    const data = (e) =>{
+       let value= e.target.value
+       let name = e.target.name
+       setUserData((state)=>({
+         ...userData,
+         [name]: value,
+       }));
+    }
+
+    const sendData = () =>{
+        const data = {
+            userName: userData.userName,
+            password: userData.password
+        }
+        api.post("/signIn", data)
+    }
     return (
         <div className="login" >
                 <Container className="text-center mt-2 mx-auto my-5 p-5 bosy w-50" >
@@ -17,18 +34,20 @@ const login = () => {
                             id="username"
                             className="form-control mb-3"
                             placeholder="Nombre de usuario"
+                            onChange={data}
                         />
                         <input
                             type="password"
                             id="password"
                             className="form-control"
                             placeholder="Contraseña"
+                            onChange={data}
                         />
-                        <button type="button" className="boton1 mt-5 w-50 h-50">Iniciar sesión</button>
+                        <button type="button" className="boton1 mt-5 w-50 h-50" onClick={sendData}>Iniciar sesión</button>
                     </form>
                 </Container>
         </div>
     );
 }
 
-export default login;
+export default Login;
