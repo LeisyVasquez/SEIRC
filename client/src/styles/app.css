@@ -1,6 +1,6 @@
 .app {
     font-family: 'Arvo', serif;
-    background-image: linear-gradient(to bottom right, yellow, #70db24);
+    background: linear-gradient(to top left, #70db24, yellow);
 }
 
 
