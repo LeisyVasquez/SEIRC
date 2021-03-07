@@ -8,10 +8,10 @@ import ButtonCancel from './base/buttonCancel';
 
 
 const LoanClient = () => {
+    
     const [basketsList,setBasketsList] = useState([{id:1,typeBaskets:"",quantity:0}]);
     const [basketsListOther,setBasketsListOther] = useState([{id:1,typeBaskets:"",quantity:0}]);
     
-
     const addBasket = () => setBasketsList(basketsList=>[...basketsList,{id:basketsList[basketsList.length-1].id+1,typeBaskets:"",quantity:0}]);
     const addBasketOther = () => setBasketsListOther(basketsListOther=>[...basketsListOther,{id:basketsListOther[basketsListOther.length-1].id+1,typeBaskets:"",quantity:0}]);
 
@@ -31,6 +31,28 @@ const LoanClient = () => {
     const onChangeFields = (e) => {basketsList[e.target.id-1][e.target.name] = e.target.value;  console.log(basketsList)}
     const onChangeFieldsOther = (e) => {basketsListOther[e.target.id-1][e.target.name] = e.target.value; console.log(basketsListOther)}
     
+
+    const BasketsCompany = async ()=>{
+        await api.get('/getBasketsCompany').then((res)=>{
+            return res;
+        }).catch((err)=>{
+            return [];
+        });
+    }
+    const BasketsProvider = async ()=>{
+        await api.get('/getBasketsProvider').then((res)=>{
+            return res;
+        }).catch((err)=>{
+            return [];
+        });
+    }
+    const client = async () => {
+        await api.get('/getClient').then((res)=>{
+            return res;
+        }).catch((err)=>{
+            return [];
+        });
+    }
 
 
     return (
