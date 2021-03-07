@@ -8,7 +8,9 @@ const{
     getClient,
     getBasketsCompany,
     getBasketsProvider,
-    registerUser
+    signIn,
+    registerUser,
+    signIn
     
 } = require('./controller');
 
@@ -17,6 +19,7 @@ const{
 router.get('/',getMain);
 router.post('/registerBaskets',registerBaskets);
 router.post('/registerThirdParties', registerUser);
+router.post('/signIn',signIn);
 router.get('/getClient',getClient);
 router.get('/getBasketsCompany', getBasketsCompany);
 router.get('/getBasketsProvider', getBasketsProvider);
