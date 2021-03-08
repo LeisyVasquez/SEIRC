@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 import swal from "sweetalert2";
 import api from '../axios/axios';
-import { Container, Form } from "react-bootstrap";
-
 import ButtonCancel from './base/buttonCancel';
 import {validation} from '../functions/basketValidation'
+import '../styles/loanReturnClient.css';
 
 
 const LoanClient = () => {
@@ -139,7 +138,7 @@ const LoanClient = () => {
     }
 
     return (
-        <div>
+        <div className="loanClient">
             <input type="text" id='client' class="form-control mb-3" placeholder="Nombre del cliente" list="listaclientes" />
             <datalist id="listaclientes">
                 {client.map((client) => (
@@ -159,10 +158,13 @@ const LoanClient = () => {
                     <input type="text" name="quantity" id={basket.id} onChange={onChangeFields} class="form-control" placeholder="Cantidad" />
                 </div>
             ))}
-            <button type="button" class="input-group-text ml-4" onClick={addBasket} > + </button>
-            <button type="button" class="input-group-text ml-4" onClick={deleteBasket}> - </button>
+            <div className="groupButtons">
+                <button type="button" class="iconAddBaskets mr-2" onClick={addBasket} > + </button>
+                <button type="button" class="iconAddBaskets ml-2" onClick={deleteBasket}>-</button>
+            </div>
 
             <section className="mt-4">
+                <br/>
                 <p class="text-start mt-4 mb-3">Otras canastillas</p>
 
                 {basketsListOther.map((basket) => (
@@ -177,9 +179,10 @@ const LoanClient = () => {
                         <input type="text" name="quantity" id={basket.id} onChange={onChangeFieldsOther} class="form-control" placeholder="Cantidad" />
                     </div>
                 ))}
-                <button type="button" class="input-group-text ml-4" onClick={addBasketOther}> + </button>
-                <button type="button" class="input-group-text ml-4" onClick={deleteBasketOther}> - </button>
-
+                <div className="groupButtons">
+                    <button type="button" class="iconAddBaskets mr-2" onClick={addBasketOther} > + </button>
+                    <button type="button" class="iconAddBaskets ml-2" onClick={deleteBasketOther}>-</button>
+                </div>
             </section>
             <ButtonCancel />
             <button type="button" className="boton2 mt-5 ml-3 w-40 h-50" onClick={validations}>Finalizar</button>
