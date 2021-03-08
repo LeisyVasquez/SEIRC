@@ -1,10 +1,24 @@
-import React from "react";
-
+import React,{useEffect} from "react";
+import api from '../axios/axios';
 import { Container, Form } from "react-bootstrap";
 import '../styles/home.css';
+import {getFromLocal} from '../functions/localStorage';
 
 const HomeSuperUser = () => {
+    useEffect(() => {
+        comprobation();
+    }, []);
     
+    function comprobation(){
+        api.post('/routeComprobation',{typeUser:['superUsuario']},{headers:{'authorization':`Bearer ${getFromLocal('tokenUser')}`}})
+        .then((res)=>{
+            if(res.status===201) window.location.href = '/'
+        }).catch((err)=>{
+            window.location.href = '/'
+        });
+    }
+
+
     return (
         <div className="homeSuperUsuario" >
             <Container className="text-center mt-2 mx-auto my-5 p-5 bosy w-50" >

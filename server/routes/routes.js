@@ -10,6 +10,7 @@ const{
     getBasketsProvider,
     signIn,
     registerUser,
+    isRolePage
     
 } = require('./controller');
 
@@ -22,6 +23,7 @@ router.post('/signIn',signIn);
 router.get('/getClient',getClient);
 router.get('/getBasketsCompany', getBasketsCompany);
 router.get('/getBasketsProvider', getBasketsProvider);
+router.post('/routeComprobation',isAuth,isRolePage);
 
 
 module.exports = router;

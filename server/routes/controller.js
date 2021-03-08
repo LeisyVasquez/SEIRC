@@ -74,9 +74,7 @@ module.exports = {
     signIn: (req, res) => {
         const userNameCrypto = encript(req.body.userName);
         const passwordCrypto = encript(req.body.password);
-
         User.find({ userName: userNameCrypto}, function(err, user) {
-            console.log(user)
             if (err) return res.status(500).json({ message: err })
             if (user.length === 0 ) return res.status(234).json({ message: 'No existe el usuario' })
             if (user[0].password !== passwordCrypto)return res.status(211).json({ message: 'Contraseña incorrecta' })
@@ -96,8 +94,10 @@ module.exports = {
         User.find({ _id: req.user.id }, (err, user) => {
             if (err) return res.status(500).send({ message: err })
             if (!user) return res.status(404).send({ message: 'No existe el id' })
-            if (user.typeUser !== req.body.typeUser) res.status(401).send({ message: 'Acceso denegado' });
-            res.status(200).send({ message: "Acceso permitido" });
+            for(let i = 0; i<req.body.typeUser.length;i++){
+                if(req.body.typeUser[i] ===user[0].typeUser ) return res.status(200).send({ message: "Acceso permitido" });
+            }
+            return res.status(201).send({ message: 'Acceso denegado' });
         })
     },
     registerUser: (req, res) => {
