@@ -43,7 +43,7 @@ module.exports = {
 
     //Nombre de clientes
     getClient: async (req, res) => {
-        const clients = await User.find({ $or: [{ typeUser: 'Cliente' }, { typeUser: 'Cliente-Proveedor' }] });
+        const clients = await User.find({ $or: [{ typeUser: 'cliente' }, { typeUser: 'cliente-Proveedor' }] });
         let namesClients = [];
         for(let i = 0; i<clients.length; i++ ){
             namesClients.push(clients[i].name);
@@ -82,7 +82,7 @@ module.exports = {
             return res.status(200).json({
                 message: 'Te has logueado correctamente',
                 token: service.createToken(user),
-                role: user.typeUser
+                role: user[0].typeUser
             })
         })
     },
