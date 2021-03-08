@@ -10,6 +10,12 @@
     height: 4vw;
 }
 
+/*
+.header #basic-nav-dropdown:nth-child(1){
+    margin-right: 3vw;
+    background-color: red;
+}
+*/
 .header .navItem, .header #basic-nav-dropdown{
     margin-right: 1vw;
     color: black !important;
@@ -22,4 +28,17 @@
 .header .nav{
     position: absolute;
     right: 0;
+}
+
+.header .circulo{
+    background-color: red;
+    border: 1px solid blue;
+    border-radius: 50%;
+}
+
+.header .flecha{
+    margin-right: 0px;
+    /*
+        margin-left: 17%;
+    */
 }

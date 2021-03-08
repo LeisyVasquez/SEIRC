@@ -12,14 +12,33 @@ const Header = () => {
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="nav mr-auto">
-                        <Nav.Link href="/" className="navItem">Login</Nav.Link>
-                        <Nav.Link href="/register" className="navItem">Registro_Terceros</Nav.Link>
-                        
-                            <NavDropdown title="Pruebame" id="basic-nav-dropdown" className="navItem">
-                                <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-                                <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
-                                <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
+
+                        <Nav.Link href="/homeAdmin" className="navItem">Inicio</Nav.Link>
+
+                        <NavDropdown title="Cliente" id="basic-nav-dropdown" className="navItem">
+                            <NavDropdown.Item href="#action/3.1">Añadir mov.</NavDropdown.Item>
+                            <NavDropdown.Item href="#action/3.2">V. Tipo mov.</NavDropdown.Item>
+                            <NavDropdown.Item href="#action/3.3">V. Cliente</NavDropdown.Item>
+                            <NavDropdown.Item href="#action/3.3">V. Tipo canastilla</NavDropdown.Item>
+                        </NavDropdown>
+
+                        <NavDropdown title="Proveedor" id="basic-nav-dropdown" className="navItem">
+                            <NavDropdown.Item href="#action/3.1">Añadir mov.</NavDropdown.Item>
+                            <NavDropdown.Item href="#action/3.2">V. Tipo mov.</NavDropdown.Item>
+                            <NavDropdown.Item href="#action/3.3">V. Cliente</NavDropdown.Item>
+                            <NavDropdown.Item href="#action/3.3">V. Tipo canastilla</NavDropdown.Item>
+                        </NavDropdown>
+
+                        <NavDropdown title="Registro" id="basic-nav-dropdown" className="navItem">
+                            <NavDropdown.Item href="#action/3.1">Usuario</NavDropdown.Item>
+                            <NavDropdown.Item href="#action/3.1">Canastilla</NavDropdown.Item>
+                        </NavDropdown>
+
+                        <div /*className="circulo"*/>
+                            <NavDropdown drop="left" menuAlign="right" id="basic-nav-dropdown" className="navItem flecha">
+                                <NavDropdown.Item href="#action/3.1">Cerrar sesión</NavDropdown.Item>
                             </NavDropdown>
+                        </div>
 
                     </Nav>
                 </Navbar.Collapse>
