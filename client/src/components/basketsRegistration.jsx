@@ -32,7 +32,7 @@ const BasketsRegistration = () => {
                 swal.fire({
                     icon: "error",
                     title: "Error en el servidor",
-                    text: "Intente iniciar sección de nuevo o vuelta más tarde",
+                    text: "Intente registrar de nuevo la canasta o vuelta más tarde",
                     confirmButtonText: "Entendido",
                     confirmButtonColor: "red",
                 });

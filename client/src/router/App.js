@@ -7,6 +7,11 @@ import ThirdPartyRegistration from '../pages/ThirdPartyRegistration';
 import AdminRegistration from '../pages/AdminRegistration'
 import BasketsRegistration from '../pages/BasketsRegistration';
 import LoanReturnClient from '../pages/LoanReturnClient';
+import HomeAdmin from '../pages/HomeAdmin';
+import HomeSuperUser from '../pages/HomeSuperUser';
+import HomeThirdParty from '../pages/HomeThirdParty';
+
+
 
 function App() {
   return (
@@ -14,10 +19,13 @@ function App() {
       <BrowserRouter>
         <Switch>
           <Route exact path="/" component={Login} />
-          <Route path="/register" component={ThirdPartyRegistration} />
+          <Route path="/thirdPartyRegistration" component={ThirdPartyRegistration} />
           <Route path="/adminRegistration" component={AdminRegistration} />
           <Route path="/basketsRegistration" component={BasketsRegistration} />
           <Route path="/loanReturnClient" component={LoanReturnClient} />
+          <Route path="/homeAdmin" component={HomeAdmin} />
+          <Route path="/homeSuperUser" component={HomeSuperUser} />
+          <Route path="/homeThirdParty" component={HomeThirdParty} />
         </Switch>
       </BrowserRouter>
     </div>
