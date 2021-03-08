@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Header from '../components/base/header'
+import HeaderSuperUser from '../components/base/headerSuperUser'
 import Footer from '../components/base/footer'
 import HomeSuperUser from '../components/homeSuperUser'
 
@@ -8,7 +8,7 @@ import HomeSuperUser from '../components/homeSuperUser'
 const homeSuperUser = () => {
     return (
         <div>
-            <Header />
+            <HeaderSuperUser />
             <HomeSuperUser />
             <Footer />
         </div>
