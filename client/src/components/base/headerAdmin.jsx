@@ -17,6 +17,7 @@ const HeaderAdmin = () => {
 
                         <NavDropdown title="Cliente" id="basic-nav-dropdown" className="navItem">
                             <NavDropdown.Item href="/loanReturnClient">Añadir mov.</NavDropdown.Item>
+                            <NavDropdown.Item href="#">Eliminar mov.</NavDropdown.Item>
                             <NavDropdown.Item href="#">V. Tipo mov.</NavDropdown.Item>
                             <NavDropdown.Item href="#">V. Cliente</NavDropdown.Item>
                             <NavDropdown.Item href="#">V. Tipo canastilla</NavDropdown.Item>
@@ -24,8 +25,9 @@ const HeaderAdmin = () => {
 
                         <NavDropdown title="Proveedor" id="basic-nav-dropdown" className="navItem">
                             <NavDropdown.Item href="#">Añadir mov.</NavDropdown.Item>
+                            <NavDropdown.Item href="#">Eliminar mov.</NavDropdown.Item>
                             <NavDropdown.Item href="#">V. Tipo mov.</NavDropdown.Item>
-                            <NavDropdown.Item href="#">V. Cliente</NavDropdown.Item>
+                            <NavDropdown.Item href="#">V. Proveedor</NavDropdown.Item>
                             <NavDropdown.Item href="#">V. Tipo canastilla</NavDropdown.Item>
                         </NavDropdown>
 
