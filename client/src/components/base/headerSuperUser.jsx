@@ -13,6 +13,8 @@ const HeaderSuperUser = () => {
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="nav mr-auto">
 
+                        <Nav.Link href="/homeAdmin" className="navItem">Inicio</Nav.Link>
+
                         <Nav.Link href="#" className="navItem">Reg. Admin</Nav.Link>
 
                         <NavDropdown title="Visualización" id="basic-nav-dropdown" className="navItem">
