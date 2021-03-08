@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Header from '../components/base/header'
+import HeaderThirdParty from '../components/base/headerThirdParty'
 import Footer from '../components/base/footer'
 import HomeThirdParty from '../components/homeThirdParty'
 
@@ -8,7 +8,7 @@ import HomeThirdParty from '../components/homeThirdParty'
 const homeThirdParty = () => {
     return (
         <div>
-            <Header />
+            <HeaderThirdParty />
             <HomeThirdParty />
             <Footer />
         </div>
