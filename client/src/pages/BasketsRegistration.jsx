@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Header from '../components/base/header'
+import HeaderAdmin from '../components/base/headerAdmin'
 import Footer from '../components/base/footer'
 import BasketsRegistration from '../components/basketsRegistration'
 
@@ -8,7 +8,7 @@ import BasketsRegistration from '../components/basketsRegistration'
 const basketsRegistration = () => {
     return (
         <div>
-            <Header />
+            <HeaderAdmin />
             <BasketsRegistration />
             <Footer />
         </div>
