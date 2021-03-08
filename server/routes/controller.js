@@ -1,7 +1,15 @@
 const Baskets = require('../models/Baskets');
 const User = require('../models/User');
-const CryptoJS = require('crypto-js');
+//const CryptoJS = require('crypto-js');
 const service = require('./services')
+require('dotenv').config({path: '../.env'});
+
+
+function encript(obj) {
+    var crypto = require('crypto')
+    var hmac = crypto.createHmac('sha1', process.env.SECRETCRYPTO).update(obj).digest('hex');
+    return hmac
+}
 
 module.exports = {
     getMain: (req, res) => {
@@ -64,12 +72,14 @@ module.exports = {
     },
     
     signIn: (req, res) => {
-        User.find({ userName: req.body.userName }, (err, user) => {
-            if (err) return res.status(500).send({ message: err })
-            if (!user) return res.status(404).send({ message: 'No existe el usuario' })
-            if (user.password !== req.body.password) res.status(401).send({ message: 'Contraseña incorrecta' })
+        const userNameCrypto = encript(req.body.userName);
+        const passwordCrypto = encript(req.body.password);
 
-            res.status(200).send({
+        User.find({ userName: userNameCrypto}, function(err, user) {
+            if (err) return res.status(500).json({ message: err })
+            if (!user) return res.status(404).json({ message: 'No existe el usuario' })
+            if (user[0].password !== passwordCrypto)return res.status(401).json({ message: 'Contraseña incorrecta' })
+            return res.status(200).json({
                 message: 'Te has logueado correctamente',
                 token: service.createToken(user),
                 role: user.typeUser
@@ -98,10 +108,10 @@ module.exports = {
                     if (!user) {
                         User.findOne({ userName: req.body.userName }, async function (err, user) {
                             if (!user) {
-                                req.body.userName = CryptoJS.AES.encrypt('Nombre encriptado', req.body.userName).toString();
-                                req.body.phone = CryptoJS.AES.encrypt('Teléfono encriptado', req.body.phone).toString();
-                                req.body.direction = CryptoJS.AES.encrypt('Dirección encriptada', req.body.direction).toString();
-                                req.body.password = CryptoJS.AES.encrypt('Contraseña encriptada', req.body.password).toString();
+                                req.body.userName = encript(req.body.userName);
+                                req.body.phone = encript(req.body.phone);
+                                req.body.direction = encript(req.body.direction);
+                                req.body.password = encript(req.body.password);
 
                                 const newUser = new User(req.body);
                                 await newUser.save((err, resulset) => {
