@@ -1,0 +1,29 @@
+.homeAdmin  .container{
+    background-color: white;
+    border-radius: 5px;
+}
+
+.homeAdmin .logo{
+    width: 50vh;
+    width: 50vh;
+}
+
+.homeSuperUsuario .container{
+    background-color: white;
+    border-radius: 5px;
+}
+
+.homeSuperUsuario .logo{
+    width: 50vh;
+    width: 50vh;
+}
+
+.homeTerceros .container{
+    background-color: white;
+    border-radius: 5px;
+}
+
+.homeTerceros .logo{
+    width: 50vh;
+    width: 50vh;
+}

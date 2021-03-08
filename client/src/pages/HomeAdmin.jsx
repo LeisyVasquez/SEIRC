@@ -2,17 +2,17 @@ import React from 'react';
 
 import HeaderAdmin from '../components/base/headerAdmin'
 import Footer from '../components/base/footer'
-import BasketsRegistration from '../components/basketsRegistration'
+import HomeAdmin from '../components/homeAdmin'
 
 
-const basketsRegistration = () => {
+const homeAdmin = () => {
     return (
         <div>
             <HeaderAdmin />
-            <BasketsRegistration />
+            <HomeAdmin />
             <Footer />
         </div>
     )
 }
 
-export default basketsRegistration;
+export default homeAdmin;

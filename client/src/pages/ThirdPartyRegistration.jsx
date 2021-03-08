@@ -1,15 +1,13 @@
 import React from 'react';
 
-import Header from '../components/base/header';
+import HeaderAdmin from '../components/base/headerAdmin';
 import Footer from '../components/base/footer';
-import Navbar from '../components/base/navbar'
 import ThirdPartyRegistrationBody from '../components/thirdPartyRegistrationBody';
 
 const ThirdPartyRegistration = () => {
     return (
         <div className="thirdPartyRegistration">
-            <Header />
-            <Navbar />
+            <HeaderAdmin />
             <ThirdPartyRegistrationBody />
             <Footer />
         </div>

@@ -51,7 +51,7 @@ module.exports = {
         res.json(namesClients);
     },
 
-    //Nombre  de las canastillas de la empresa
+    //Nombre  de las canastillas de la empresa  
     getBasketsCompany: async (req, res) => {
         const basketsCompany = await Baskets.find({type:'Empresa'});
         let namesBasketsCompany = [];   
@@ -76,9 +76,10 @@ module.exports = {
         const passwordCrypto = encript(req.body.password);
 
         User.find({ userName: userNameCrypto}, function(err, user) {
+            console.log(user)
             if (err) return res.status(500).json({ message: err })
-            if (!user) return res.status(404).json({ message: 'No existe el usuario' })
-            if (user[0].password !== passwordCrypto)return res.status(401).json({ message: 'Contraseña incorrecta' })
+            if (user.length === 0 ) return res.status(234).json({ message: 'No existe el usuario' })
+            if (user[0].password !== passwordCrypto)return res.status(211).json({ message: 'Contraseña incorrecta' })
             return res.status(200).json({
                 message: 'Te has logueado correctamente',
                 token: service.createToken(user),

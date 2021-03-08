@@ -1,19 +1,15 @@
 import React from 'react';
 
-import '../../styles/header.css'
+import '../../styles/header.css';
 
-import { Nav } from 'react-bootstrap';
+import { Navbar } from 'react-bootstrap';
 
 const Header = () => {
     return (
         <div className="header">
-            <Nav
-                activeKey="/"
-            >
-                <Nav.Item>
-                    <Nav.Link href="/"><img src="https://github.com/LeisyVasquez/SEIRC/blob/main/client/public/images/logo.png?raw=true" alt="logo" /></Nav.Link>
-                </Nav.Item>
-            </Nav>
+            <Navbar expand="lg">
+                <Navbar.Brand href="#home"><img src="https://github.com/LeisyVasquez/SEIRC/blob/main/client/public/images/logo.png?raw=true" alt="logo" /></Navbar.Brand>
+            </Navbar>
         </div>
     )
 }
