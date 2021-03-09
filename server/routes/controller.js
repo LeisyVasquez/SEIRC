@@ -14,6 +14,20 @@ function encript(obj) {
     return hmac
 }
 
+function generatorDate(){
+    var d = new Date();
+    month = '' + (d.getMonth() + 1),
+    day = '' + d.getDate(),
+    year = d.getFullYear();
+    return day+"/"+month+"/"+year;
+}
+
+function generatorHour(){
+    var d = new Date();
+    hours = '' + d.getHours(),
+    minutes = '' + d.getMinutes();
+    return hours+":"+minutes;
+}
 
 
 module.exports = {
@@ -25,11 +39,6 @@ module.exports = {
         try {
             const { name, type, description, baseQuantily } = req.body;
 
-            var d = new Date(date),
-            month = '' + (d.getMonth() + 1),
-            day = '' + d.getDate(),
-            year = d.getFullYear();
-            const date = day+month+year;
 
             Baskets.findOne({ name: name }, async function (err, baskets) {
                 if (err) {
@@ -161,23 +170,15 @@ module.exports = {
             const name = req.body.name;
             const consolidated = req.body.basketsLoan;
             const typeUser = "cliente"
+            const movemenType = "prestamo"
+
+            const date = generatorDate();
+            const hour = generatorHour();
+
             Order.findOne({ name: name }, async function (err, order) {
                 if (!order) {
                     const newOrder = new Order({name, typeUser, consolidated});
-                    await newOrder.save((err, resulset) => {
-                        if (err) {
-                            res.status(500).json({ message: "Error al guardar la orden: " + err.message })
-                        } else {
-                            const newHistory = new History({name:name,typeUser:typeUser,movemenType:movemenType,date:date,baskets:consolidated});
-                            await newHistory.save((err)=>{
-                                if(err){
-                                    res.status(500).json({ message: "Error al guardar el historial: " + err.message })
-                                }else{
-                                    res .status(201);
-                                }
-                            });
-                        }
-                    });
+                    await newOrder.save();
                 } if (order) {
                     for (const property in consolidated) {
                         const increment = parseInt(consolidated[property],10);
@@ -185,21 +186,59 @@ module.exports = {
                         else order.consolidated[property] = increment;
                     }
                     await Order.findByIdAndUpdate(order._id,{$set:order});
-                    const newHistory = new History({name:name,typeUser:typeUser,movemenType:movemenType,date:date,baskets:consolidated});
-                    await newHistory.save((err)=>{
-                        if(err){
-                            res.status(500).json({ message: "Error al guardar el historial: " + err.message })
-                        }else{
-                            res .status(201);
-                        }
-                    });
                 } if (err) {
-                    res.send('Error inesperado')
+                    return res.status(254).send('Error inesperado')
                 }
+                const newHistory = new History({name:name,typeUser:typeUser,movemenType:movemenType,date:date,hour:hour,baskets:consolidated});     
+                await newHistory.save();
+                return res.status(201).send('ok');              
             })
         }
         catch (e) {
-            res.json(e)
+            res.status(254).json(e) // 254 es provicional (500)
         }
+    },
+    returnClient: (req,res)=>{
+        try {
+            const name = req.body.name;
+            const consolidated = req.body.basketsLoan;
+            const typeUser = "cliente"
+            const movemenType = "devolucion"
+
+            const date = generatorDate();
+            const hour = generatorHour();
+
+            Order.findOne({ name: name }, async function (err, order) {
+                if (!order) {
+                    res.status(254).json('No existe la order');  // 254 es provicional (500)
+                } if (order) {
+                    for (const property in consolidated) {
+                        const decrement = parseInt(consolidated[property],10);
+
+                        if(order.consolidated.hasOwnProperty(property)){
+                            const valueAux = order.consolidated[property] - decrement;
+                            if(valueAux<0) res.status(255).json('No se puede generar esta acción, revisa de nuevo los datos');
+                            else if(valueAux===0) delete order.consolidated[property];
+                            else order.consolidated[property] = valueAux;
+                        }else{
+                            res.status(256).json('No se tiene la propiedad indicada');
+                        }
+                    }
+                    await Order.findByIdAndUpdate(order._id,{$set:order});
+                } if (err) {
+                    return res.status(254).send('Error inesperado')
+                }
+                const newHistory = new History({name:name,typeUser:typeUser,movemenType:movemenType,date:date,hour:hour,baskets:consolidated});     
+                await newHistory.save();
+                return res.status(201).send('ok');              
+            })
+        }
+        catch (e) {
+            res.status(254).json(e) // 254 es provicional (500)
+        }
+
+
     }
+
+
 }
