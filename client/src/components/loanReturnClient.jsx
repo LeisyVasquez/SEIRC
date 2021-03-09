@@ -21,8 +21,8 @@ const LoanReturnClient = () => {
                 <h2 className="m-auto">Clientes</h2>
                 <form className="form-signin mt-5 py-4" id="form">
                     <div class="form-check form-check-inline mx-0 mb-3" style={{ float: "left" }}>
-                        <input class="form-check-input " type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1" onChange={setOptionClick} />
-                        <label class="form-check-label fs-5" for="inlineRadio1">Préstamo</label>
+                        <input class="form-check-input " type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1" onChange={setOptionClick}/>
+                        <label class="form-check-label fs-5" for="inlineRadio1" >Préstamo</label>
                     </div>
                     <div class="form-check form-check-inline mb-3" >
                         <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2" onChange={setOptionClick} />

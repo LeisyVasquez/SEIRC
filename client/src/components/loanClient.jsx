@@ -133,7 +133,7 @@ const LoanClient = () => {
 
    function validations(){ 
        if(validationClient() && validationBasketsCompany() && validationBasketsProvider()){
-           console.log("Todo correcto")
+           
        }
     }
 

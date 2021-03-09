@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import swal from "sweetalert2";
 import api from '../axios/axios';
-
 import ButtonCancel from './base/buttonCancel';
-
 import { Container, Form } from "react-bootstrap";
 import '../styles/basketsRegistration.css';
 
+
 const BasketsRegistration = () => {
     const [basketsData, setBasketsData] = useState({});
+    let cont = 0; 
     useEffect(() => { });
 
     const data = (e) => {
@@ -19,6 +19,7 @@ const BasketsRegistration = () => {
             [name]: value,
         }));
     }
+    
 
     const sendData = () => {
         const data = {

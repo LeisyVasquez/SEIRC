@@ -1,7 +1,7 @@
 const { Schema, model } = require('mongoose');
 const Baskets = require('./Baskets');
 
-const OrderSchema = new Schema({
+const HistorySchema = new Schema({
     name: {
         type: String,
         unique: true,
@@ -14,10 +14,19 @@ const OrderSchema = new Schema({
         required: [true, 'El tipo de usuario es necesario'],
         enum : ['cliente','proveedor']        
     },
-    consolidated: {  
-       
+    movemenType:{
+        type:String,
+        required: [true, 'El tipo de movimiento es necesario'],
+        enum: ['prestamo','devolucion']
+    }, 
+    date:{
+        type:String,
+        required: [true, 'No se ingreso fecha']
+    },
+    baskets:{
+        
     }
     
 });
 
-module.exports = model('Order', OrderSchema);
+module.exports = model('History', HistorySchema);

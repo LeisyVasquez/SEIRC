@@ -1,9 +1,12 @@
 const Baskets = require('../models/Baskets');
 const User = require('../models/User');
-//const CryptoJS = require('crypto-js');
+const Order = require('../models/Order');
+const History = require('../models/History')
 const service = require('./services')
-require('dotenv').config({path: '../.env'});
-
+require('dotenv').config({ path: '../.env' });
+const fs = require('fs');
+const path = require('path');
+const { resolveSoa } = require('dns');
 
 function encript(obj) {
     var crypto = require('crypto')
@@ -11,18 +14,35 @@ function encript(obj) {
     return hmac
 }
 
+
+
 module.exports = {
     getMain: (req, res) => {
         res.send('<h1>Bienvenido a la API</h1>');
     },
     registerBaskets: (req, res) => {
+
         try {
-            Baskets.findOne({ name: req.body.name }, async function (err, baskets) {
+            const { name, type, description, baseQuantily } = req.body;
+
+            var d = new Date(date),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+            const date = day+month+year;
+
+            Baskets.findOne({ name: name }, async function (err, baskets) {
                 if (err) {
                     res.status(500).json({ state: 0, message: err });
                 } else {
                     if (!baskets) {
-                        const newBaskets = new Baskets(req.body);
+                        let code = parseInt(fs.readFileSync(path.join(__dirname, '../config/createCode.txt')), 10) + 1;
+                        fs.writeFileSync(path.join(__dirname, '../config/createCode.txt'), code + "");
+                        let temporalBaseQuantily = baseQuantily;
+                        let newBaskets;
+                        if (type === "Empresa") newBaskets = new Baskets({ name, code, type, description, baseQuantily, temporalBaseQuantily });
+                        else newBaskets = new Baskets({ name, code, type, description });
+
                         await newBaskets.save((err, resulset) => {
                             if (err) {
                                 res.status(225).json({ message: err.message })
@@ -45,7 +65,7 @@ module.exports = {
     getClient: async (req, res) => {
         const clients = await User.find({ $or: [{ typeUser: 'cliente' }, { typeUser: 'cliente-Proveedor' }] });
         let namesClients = [];
-        for(let i = 0; i<clients.length; i++ ){
+        for (let i = 0; i < clients.length; i++) {
             namesClients.push(clients[i].name);
         }
         res.json(namesClients);
@@ -53,31 +73,31 @@ module.exports = {
 
     //Nombre  de las canastillas de la empresa  
     getBasketsCompany: async (req, res) => {
-        const basketsCompany = await Baskets.find({type:'Empresa'});
-        let namesBasketsCompany = [];   
-        for(let i = 0; i<basketsCompany.length; i++ ){
-            namesBasketsCompany.push(basketsCompany[i].name);
+        const basketsCompany = await Baskets.find({ type: 'Empresa' });
+        let namesBasketsCompany = [];
+        for (let i = 0; i < basketsCompany.length; i++) {
+            namesBasketsCompany.push(basketsCompany[i].code + "-" + basketsCompany[i].name);
         }
         res.json(namesBasketsCompany);
     },
 
     //Nombre  de las canastillas de los proveedores
     getBasketsProvider: async (req, res) => {
-        const basketsProvider = await Baskets.find({type:'Proveedor'});
+        const basketsProvider = await Baskets.find({ type: 'Proveedor' });
         let namesBasketsProvider = [];
-        for(let i = 0; i<basketsProvider.length; i++ ){
-            namesBasketsProvider.push(basketsProvider[i].name);
+        for (let i = 0; i < basketsProvider.length; i++) {
+            namesBasketsProvider.push(basketsProvider[i].code + "-" + basketsProvider[i].name);
         }
         res.json(namesBasketsProvider);
     },
-    
+
     signIn: (req, res) => {
         const userNameCrypto = encript(req.body.userName);
         const passwordCrypto = encript(req.body.password);
-        User.find({ userName: userNameCrypto}, function(err, user) {
+        User.find({ userName: userNameCrypto }, function (err, user) {
             if (err) return res.status(500).json({ message: err })
-            if (user.length === 0 ) return res.status(234).json({ message: 'No existe el usuario' })
-            if (user[0].password !== passwordCrypto)return res.status(211).json({ message: 'Contraseña incorrecta' })
+            if (user.length === 0) return res.status(234).json({ message: 'No existe el usuario' })
+            if (user[0].password !== passwordCrypto) return res.status(211).json({ message: 'Contraseña incorrecta' })
             return res.status(200).json({
                 message: 'Te has logueado correctamente',
                 token: service.createToken(user),
@@ -94,8 +114,8 @@ module.exports = {
         User.find({ _id: req.user.id }, (err, user) => {
             if (err) return res.status(500).send({ message: err })
             if (!user) return res.status(404).send({ message: 'No existe el id' })
-            for(let i = 0; i<req.body.typeUser.length;i++){
-                if(req.body.typeUser[i] ===user[0].typeUser ) return res.status(200).send({ message: "Acceso permitido" });
+            for (let i = 0; i < req.body.typeUser.length; i++) {
+                if (req.body.typeUser[i] === user[0].typeUser) return res.status(200).send({ message: "Acceso permitido" });
             }
             return res.status(201).send({ message: 'Acceso denegado' });
         })
@@ -132,7 +152,54 @@ module.exports = {
                 }
             })
         } catch (e) {
-            res.status(500).json({message: e })
+            res.status(500).json({ message: e })
         }
     },
+
+    loanClient: (req, res) => {
+        try {
+            const name = req.body.name;
+            const consolidated = req.body.basketsLoan;
+            const typeUser = "cliente"
+            Order.findOne({ name: name }, async function (err, order) {
+                if (!order) {
+                    const newOrder = new Order({name, typeUser, consolidated});
+                    await newOrder.save((err, resulset) => {
+                        if (err) {
+                            res.status(500).json({ message: "Error al guardar la orden: " + err.message })
+                        } else {
+                            const newHistory = new History({name:name,typeUser:typeUser,movemenType:movemenType,date:date,baskets:consolidated});
+                            await newHistory.save((err)=>{
+                                if(err){
+                                    res.status(500).json({ message: "Error al guardar el historial: " + err.message })
+                                }else{
+                                    res .status(201);
+                                }
+                            });
+                        }
+                    });
+                } if (order) {
+                    for (const property in consolidated) {
+                        const increment = parseInt(consolidated[property],10);
+                        if(order.consolidated.hasOwnProperty(property)) order.consolidated[property]+= increment;
+                        else order.consolidated[property] = increment;
+                    }
+                    await Order.findByIdAndUpdate(order._id,{$set:order});
+                    const newHistory = new History({name:name,typeUser:typeUser,movemenType:movemenType,date:date,baskets:consolidated});
+                    await newHistory.save((err)=>{
+                        if(err){
+                            res.status(500).json({ message: "Error al guardar el historial: " + err.message })
+                        }else{
+                            res .status(201);
+                        }
+                    });
+                } if (err) {
+                    res.send('Error inesperado')
+                }
+            })
+        }
+        catch (e) {
+            res.json(e)
+        }
+    }
 }
