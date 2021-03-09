@@ -80,6 +80,7 @@ const BasketsRegistration = () => {
                 <form className="form-signin mt-5 py-4" id="form">
                     <Form.Group >
                         <Form.Control as="select" className="mb-3" id="type" onChange={data}>
+                            <option>-- Selecciona el dueño --</option>
                             <option>Proveedor</option>
                             <option>Empresa</option>
                         </Form.Control>

@@ -30,6 +30,16 @@ function generatorHour(){
 }
 
 
+function findNamesBaskets(allBaskets,consolidatedUser){
+    let listBasketsResult = [];
+    for(let i = 0; i<consolidatedUser.length;i++){
+        listBasketsResult.push(consolidatedUser[i] + "-" + allBaskets[consolidatedUser[i]]);
+    }
+    return listBasketsResult;
+}
+
+
+
 module.exports = {
     getMain: (req, res) => {
         res.send('<h1>Bienvenido a la API</h1>');
@@ -38,8 +48,6 @@ module.exports = {
 
         try {
             const { name, type, description, baseQuantily } = req.body;
-
-
             Baskets.findOne({ name: name }, async function (err, baskets) {
                 if (err) {
                     res.status(500).json({ state: 0, message: err });
@@ -99,7 +107,33 @@ module.exports = {
         }
         res.json(namesBasketsProvider);
     },
+    getBasketsReturn: async (req,res)=>{
+        try{
+            const baskets = await Baskets.find();
+            let namesBaskets = {};
+            let consolidated = [];
+            for (let i = 0; i < baskets.length; i++) {  
+                namesBaskets[baskets[i].code] = baskets[i].name;
+            } 
 
+            Order.findOne({ name: req.params.name }, async function (err, order) {
+                if (!order) {
+                    return res.status(255).json({});
+                } if (order) {
+                    consolidated = Object.keys(order.consolidated);
+                    const result = findNamesBaskets(namesBaskets,consolidated);
+                    return res.status(200).json({res:result});
+
+                } if (err) {
+                    return res.status(254).send('Error inesperado');
+                }           
+            })
+        }catch(e){
+            return res.status(254).send('Error inesperado');
+        }
+        
+    },
+    
     signIn: (req, res) => {
         const userNameCrypto = encript(req.body.userName);
         const passwordCrypto = encript(req.body.password);

@@ -12,8 +12,8 @@ const{
     registerUser,
     isRolePage,
     loanClient,
-    returnClient
-    
+    returnClient,
+    getBasketsReturn
 } = require('./controller');
 
 // Se realiza la creación de cada una de las rutas
@@ -25,6 +25,7 @@ router.post('/signIn',signIn);
 router.get('/getClient',getClient);
 router.get('/getBasketsCompany', getBasketsCompany);
 router.get('/getBasketsProvider', getBasketsProvider);
+router.get('/getBasketsReturn/:name', getBasketsReturn);
 router.post('/routeComprobation',isAuth,isRolePage);
 router.post('/loanClient',loanClient);
 router.post('/returnClient',returnClient);
