@@ -89,17 +89,20 @@ const LoanClient = () => {
 
     function validationBasketsCompany() {
         const resultCompany = validation(basketsCompany, basketsList).split(' ');
-        switch (resultCompany[0]) {
-            case "-1": confirmationMessage('error', 'La cantidad debe ser un número entero', `El error está ubicado en la fila #${resultCompany[1]} de las canastillas de la empresa`, 1)
-                return false;
-                break;
-            case "-2": confirmationMessage('error', 'Canastilla repetida', `El error está ubicado en la fila #${resultCompany[1]} de las canastillas de la empresa`, 1)
-                return false;
-                break;
-            case "-3": confirmationMessage('error', 'Canastilla no encontrada', `El error está ubicado en la fila #${resultCompany[1]} de las canastillas de la empresa`, 1)
-                return false;
-                break;
+        if (parseInt(resultCompany[1], 10) !== 1 || basketsList.length > 1 || !(basketsList[parseInt(resultCompany[1], 10) - 1].typeBaskets === "" && (basketsList[parseInt(resultCompany[1], 10) - 1].quantity === "" || basketsList[parseInt(resultCompany[1], 10) - 1].quantity === 0))) {
+            switch (resultCompany[0]) {
+                case "-1": confirmationMessage('error', 'La cantidad debe ser un número entero', `El error está ubicado en la fila #${resultCompany[1]} de las canastillas de la empresa`, 1)
+                    return false;
+                    break;
+                case "-2": confirmationMessage('error', 'Canastilla repetida', `El error está ubicado en la fila #${resultCompany[1]} de las canastillas de la empresa`, 1)
+                    return false;
+                    break;
+                case "-3": confirmationMessage('error', 'Canastilla no encontrada', `El error está ubicado en la fila #${resultCompany[1]} de las canastillas de la empresa`, 1)
+                    return false;
+                    break;
+            }
         }
+        
         return true;
     }
 
@@ -121,19 +124,31 @@ const LoanClient = () => {
         return true;
     }
 
-    function validationClient() {
-        
+    function validationClient() {    
         const clientAux = document.getElementById('client').value;
         for (let i = 0; i < client.length; i++) {
             if (client[i] === clientAux) return true;
         }
-        confirmationMessage('error', 'Cliente no encontrado', `Por favor ingrese en el campo "Nombre del cliente" un nombre válido `, 2)
+        confirmationMessage('error', 'Cliente no encontrado', `Por favor ingrese en el campo "Nombre del cliente" un nombre válido `, 1)
         return false;
     }
 
+    function validationClientBaskets() {
+        if(basketsList.length === 1 && basketsListOther.length ===1 && 
+            basketsList[0].typeBaskets === "" && basketsListOther[0].typeBaskets === "" &&
+            (basketsList[0].quantity === "" || basketsList[0].quantity === 0)&& 
+            (basketsListOther[0].quantity === "" || basketsListOther[0].quantity === 0)){
+            confirmationMessage('error', 'Campos vacíos', `Por favor ingrese valores`, 1)
+            return false;
+        }
+
+        return true;
+    }   
+
 
     function validations() {
-        if (validationClient() && validationBasketsCompany() && validationBasketsProvider()) {
+        
+        if (validationClient() && validationClientBaskets() && validationBasketsCompany() && validationBasketsProvider()) {
             const basketsLoan = {};
             const baskets = basketsListOther.concat(basketsList);
             const clientAux = document.getElementById('client').value;
@@ -145,10 +160,11 @@ const LoanClient = () => {
             }
             const data = {
                 name: clientAux,
-                basketsLoan: basketsLoan
+                basketsLoan: basketsLoan,
+                typeUser:"cliente"
             }
             console.log(data)
-            api.post('/loanClient',data).then((res,err)=>{
+            api.post('/loanClientProvider',data).then((res,err)=>{
                 if(err || res.status === 254) confirmationMessage('error', 'Error en el servidor', `Por favor intente de nuevo o regrese más tarde`, 1)
                 if(res.status === 201) confirmationMessage('success', 'Prestamo generado correctamente','','entendido','green') 
             })

@@ -120,10 +120,11 @@ const ReturnClient = () => {
             }
             const data = {
                 name: clientAux,
-                basketsReturn: basketsReturn
+                basketsReturn: basketsReturn,
+                typeUser: "cliente"
             }
             console.log(data)
-            api.post('/returnClient', data).then((res, err) => {
+            api.post('/returnClientProvider', data).then((res, err) => {
                 //Control de errores, falta aclarar el del catch
                 if (res.status === 254) confirmationMessage('error', 'Error', `No se le ha prestado uno o varios tipos canastas que devuelve, por lo tanto no se puede devolver algo que no se presto`, 1)
                 if (res.status === 255 || res.status === 256 || res.status === 257) confirmationMessage('error', 'Error, no se puede generar esta acción', `${res.data.message}`, 1)

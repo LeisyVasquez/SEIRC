@@ -11,8 +11,8 @@ const{
     signIn,
     registerUser,
     isRolePage,
-    loanClient,
-    returnClient,
+    loanClientProvider,
+    returnClientProvider,
     getBasketsReturn,
     getClientByOrder
 } = require('./controller');
@@ -28,8 +28,8 @@ router.get('/getBasketsCompany', getBasketsCompany);
 router.get('/getBasketsProvider', getBasketsProvider);
 router.get('/getBasketsReturn/:name', getBasketsReturn);
 router.post('/routeComprobation',isAuth,isRolePage);
-router.post('/loanClient',loanClient);
-router.post('/returnClient',returnClient);
+router.post('/loanClientProvider',loanClientProvider);
+router.post('/returnClientProvider',returnClientProvider);
 router.get('/getClientByOrder',getClientByOrder);
 
 

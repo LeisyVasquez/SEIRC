@@ -215,11 +215,11 @@ module.exports = {
         }
     },
 
-    loanClient: (req, res) => {
+    loanClientProvider: (req, res) => {
         try {
             const name = req.body.name;
             const consolidated = req.body.basketsLoan;
-            const typeUser = "cliente"
+            const typeUser = req.body.typeUser;
             const movemenType = "prestamo"
 
             const date = generatorDate();
@@ -248,11 +248,11 @@ module.exports = {
             res.status(254).json(e) // 254 es provicional (500)
         }
     },
-    returnClient: (req,res)=>{
+    returnClientProvider: (req,res)=>{
         try {
             const name = req.body.name;
             const consolidated = req.body.basketsReturn;
-            const typeUser = "cliente"
+            const typeUser = req.body.typeUser;
             const movemenType = "devolucion"
 
             const date = generatorDate();
@@ -266,14 +266,21 @@ module.exports = {
                         const decrement = parseInt(consolidated[property],10);
                         if(order.consolidated.hasOwnProperty(property)){
                             const valueAux = order.consolidated[property] - decrement;
+                            var flag = false;
                             if(valueAux<0) return res.status(255).json({message: `La cantidad devuelta de canastas con código ${property} está incorrecta revisa de nuevo los datos`});
-                            else if(valueAux===0) delete order.consolidated[property];
-                            else order.consolidated[property] = valueAux;
+                            else if(valueAux===0){
+                                if(Object.keys(order.consolidated).length === 1){
+                                    await Order.deleteOne({ _id:order._id});
+                                    flag = true;
+                                } else delete order.consolidated[property];
+                                
+                            } else order.consolidated[property] = valueAux;
+                            
                         }else{
                             return res.status(256).json({message: `La canastilla con cógido ${property} no se encuentra prestada`});
                         }
                     }
-                    await Order.findByIdAndUpdate(order._id,{$set:order});
+                    if(!flag) await Order.findByIdAndUpdate(order._id,{$set:order});
                 } if (err) {
                     return res.status(257).json({message: 'Error inesperado'})
                 }
@@ -288,6 +295,5 @@ module.exports = {
 
 
     }
-
-
+    
 }
