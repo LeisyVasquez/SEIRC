@@ -72,7 +72,7 @@ module.exports = {
 
     //Nombre de clientes
     getClient: async (req, res) => {
-        const clients = await User.find({ $or: [{ typeUser: 'cliente' }, { typeUser: 'cliente-Proveedor' }] });
+        const clients = await User.find({ $or: [{ typeUser: 'cliente' }, { typeUser: 'clienteProveedor' }] });
         let namesClients = [];
         for (let i = 0; i < clients.length; i++) {
             namesClients.push(clients[i].name);
