@@ -10,6 +10,7 @@ import LoanReturnClient from '../pages/LoanReturnClient';
 import HomeAdmin from '../pages/HomeAdmin';
 import HomeSuperUser from '../pages/HomeSuperUser';
 import HomeThirdParty from '../pages/HomeThirdParty';
+import NotAuthorized from '../pages/NotAuthorized';
 
 
 
@@ -26,6 +27,7 @@ function App() {
           <Route path="/homeAdmin" component={HomeAdmin} />
           <Route path="/homeSuperUser" component={HomeSuperUser} />
           <Route path="/homeThirdParty" component={HomeThirdParty} />
+          <Route path="/notAuthorized" component={NotAuthorized} />
         </Switch>
       </BrowserRouter>
     </div>
