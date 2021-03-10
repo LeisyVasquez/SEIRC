@@ -17,9 +17,16 @@ const HeaderSuperUser = () => {
 
                         <Nav.Link href="/adminRegistration" className="navItem">Reg. Admin</Nav.Link>
 
-                        <NavDropdown title="Visualización" id="basic-nav-dropdown" className="navItem">
-                            <NavDropdown.Item href="#">Cliente</NavDropdown.Item>
-                            <NavDropdown.Item href="#">Proveedor</NavDropdown.Item>
+                        <NavDropdown title="Cliente" id="basic-nav-dropdown" className="navItem">
+                            <NavDropdown.Item href="#">V. Tipo mov.</NavDropdown.Item>
+                            <NavDropdown.Item href="#">V. Cliente</NavDropdown.Item>
+                            <NavDropdown.Item href="#">V. Tipo canastilla</NavDropdown.Item>
+                        </NavDropdown>
+
+                        <NavDropdown title="Proveedor" id="basic-nav-dropdown" className="navItem">
+                            <NavDropdown.Item href="#">V. Tipo mov.</NavDropdown.Item>
+                            <NavDropdown.Item href="#">V. Proveedor</NavDropdown.Item>
+                            <NavDropdown.Item href="#">V. Tipo canastilla</NavDropdown.Item>
                         </NavDropdown>
 
                         <div /*className="circulo"*/>

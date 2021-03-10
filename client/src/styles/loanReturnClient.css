@@ -1,0 +1,25 @@
+.returnClient .iconAddBaskets{
+    width: 5vh;
+    height: 5vh;
+    border-radius: 10px;
+    float: left;
+    border: 2px solid #c8c6a7;
+    background-color:#dddddd;
+}
+
+.returnClient .groupButtons{
+    display: block;
+}
+
+.loanClient .iconAddBaskets{
+    width: 5vh;
+    height: 5vh;
+    border-radius: 10px;
+    float: left;
+    border: 2px solid #c8c6a7;
+    background-color:#dddddd;
+}
+
+.loanClient.groupButtons{
+    display: block;
+}
