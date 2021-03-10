@@ -235,7 +235,7 @@ module.exports = {
     returnClient: (req,res)=>{
         try {
             const name = req.body.name;
-            const consolidated = req.body.basketsLoan;
+            const consolidated = req.body.basketsReturn;
             const typeUser = "cliente"
             const movemenType = "devolucion"
 
@@ -248,19 +248,18 @@ module.exports = {
                 } if (order) {
                     for (const property in consolidated) {
                         const decrement = parseInt(consolidated[property],10);
-
                         if(order.consolidated.hasOwnProperty(property)){
                             const valueAux = order.consolidated[property] - decrement;
-                            if(valueAux<0) res.status(255).json('No se puede generar esta acción, revisa de nuevo los datos');
+                            if(valueAux<0) return res.status(255).json({message: `La cantidad devuelta de canastas con código ${property} está incorrecta revisa de nuevo los datos`});
                             else if(valueAux===0) delete order.consolidated[property];
                             else order.consolidated[property] = valueAux;
                         }else{
-                            res.status(256).json('No se tiene la propiedad indicada');
+                            return res.status(256).json({message: `La canastilla con cógido ${property} no se encuentra prestada`});
                         }
                     }
                     await Order.findByIdAndUpdate(order._id,{$set:order});
                 } if (err) {
-                    return res.status(254).send('Error inesperado')
+                    return res.status(257).json({message: 'Error inesperado'})
                 }
                 const newHistory = new History({name:name,typeUser:typeUser,movemenType:movemenType,date:date,hour:hour,baskets:consolidated});     
                 await newHistory.save();
