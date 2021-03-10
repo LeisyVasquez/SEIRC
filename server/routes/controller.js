@@ -38,6 +38,18 @@ function findNamesBaskets(allBaskets,consolidatedUser){
     return listBasketsResult;
 }
 
+function findNamesClients(orders,clients){
+    const ordersSet = new Set();
+    const result = [];
+    for(let i = 0; i<orders.length;i++){
+        ordersSet.add(orders[i].name);
+    }
+    for(let i = 0;i<clients.length;i++){
+        if(ordersSet.has(clients[i].name)) result.push(clients[i].name);
+    }
+    return result;
+}
+
 
 
 module.exports = {
@@ -87,7 +99,11 @@ module.exports = {
         }
         res.json(namesClients);
     },
-
+    getClientByOrder: async (req,res) =>{
+        const clients = await User.find({ $or: [{ typeUser: 'cliente' }, { typeUser: 'clienteProveedor' }] });
+        const orders = await Order.find();
+        res.send(findNamesClients(orders,clients));
+    },
     //Nombre  de las canastillas de la empresa  
     getBasketsCompany: async (req, res) => {
         const basketsCompany = await Baskets.find({ type: 'Empresa' });

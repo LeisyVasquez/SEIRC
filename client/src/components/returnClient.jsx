@@ -29,7 +29,7 @@ const ReturnClient = () => {
     const onChangeFields = (e) => { basketsList[e.target.id - 1][e.target.name] = e.target.value; console.log(basketsList) }
 
     async function funClient() {
-        await api.get('/getClient').then((res) => {
+        await api.get('/getClientByOrder').then((res) => {
             saveClient(res.data);
             setClientList(res.data);
         }).catch((err) => {

@@ -13,7 +13,8 @@ const{
     isRolePage,
     loanClient,
     returnClient,
-    getBasketsReturn
+    getBasketsReturn,
+    getClientByOrder
 } = require('./controller');
 
 // Se realiza la creación de cada una de las rutas
@@ -29,6 +30,8 @@ router.get('/getBasketsReturn/:name', getBasketsReturn);
 router.post('/routeComprobation',isAuth,isRolePage);
 router.post('/loanClient',loanClient);
 router.post('/returnClient',returnClient);
+router.get('/getClientByOrder',getClientByOrder);
+
 
 
 module.exports = router;
