@@ -93,7 +93,7 @@ const ReturnClient = () => {
             case "-2": confirmationMessage('error', 'Canastilla repetida', `El error está ubicado en la fila #${resultCompany[1]}`, 1)
                 return false;
                 break;
-            case "-3": confirmationMessage('error', 'Canastilla no encontrada', `La canastilla con cógido ${allBasketsUser[resultCompany[1]-1]} no se encuentra prestada`, 1)
+            case "-3": confirmationMessage('error', 'Canastilla no encontrada', `La canastilla con cógido ${allBasketsUser[resultCompany[1] - 1]} no se encuentra prestada`, 1)
                 return false;
                 break;
         }
