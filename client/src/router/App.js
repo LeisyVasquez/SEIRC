@@ -12,6 +12,7 @@ import HomeAdmin from '../pages/HomeAdmin';
 import HomeSuperUser from '../pages/HomeSuperUser';
 import HomeThirdParty from '../pages/HomeThirdParty';
 import DeleteClient from '../pages/DeleteClient';
+import NotAuthorized from '../pages/NotAuthorized';
 
 
 
@@ -30,6 +31,7 @@ function App() {
           <Route path="/homeSuperUser" component={HomeSuperUser} />
           <Route path="/homeThirdParty" component={HomeThirdParty} />
           <Route path="/deleteClient" component={DeleteClient} />
+          <Route path="/notAuthorized" component={NotAuthorized} />
         </Switch>
       </BrowserRouter>
     </div>
