@@ -7,14 +7,14 @@ import ButtonCancel from './base/buttonCancel';
 
 
 
-const ReturnClient = () => {
+const ReturnProvider = () => {
     const [basketsList, setBasketsList] = useState([{ id: 1, typeBaskets: "", quantity: 0 }]);
     const [allBasketsUser, setAllBasketsUser] = useState([]);
-    const [clientList, setClientList] = useState([]);
-    const [clientSet, setClientSet] = useState(new Set());
+    const [providerList, setProviderList] = useState([]);
+    const [providerSet, setProviderSet] = useState(new Set());
 
     useEffect(() => {
-        funClient();
+        funProvider();
     }, []);
 
     const addBasket = () => setBasketsList(basketsList => [...basketsList, { id: basketsList[basketsList.length - 1].id + 1, typeBaskets: "", quantity: 0 }]);
@@ -28,30 +28,28 @@ const ReturnClient = () => {
 
     const onChangeFields = (e) => { basketsList[e.target.id - 1][e.target.name] = e.target.value; console.log(basketsList) }
 
-    async function funClient() {
-        await api.get('/getClientProviderByOrder/cliente').then((res) => {
-            saveClient(res.data);
-            setClientList(res.data);
+    async function funProvider() {
+        await api.get('/getClientProviderByOrder/proveedor').then((res) => {
+            saveProvider(res.data);
+            setProviderList(res.data);
         }).catch((err) => {
             return [];
         });
     }
 
-    function saveClient(list) {
+    function saveProvider(list) {
         const clientSetAux = new Set();
         for (let i = 0; i < list.length; i++) {
             clientSetAux.add(list[i]);
         }
-        setClientSet(clientSetAux);
+        setProviderSet(clientSetAux);
     }
 
     const onChangeName = async (e) => {
-        if (clientSet.has(e.target.value)) {
-            console.log("hola");
+        if (providerSet.has(e.target.value)) {
             await api.get(`/getBasketsReturn/${e.target.value}`).then((res) => {
                 if (res.status === 200) {
                     setAllBasketsUser(res.data.res);
-
                 } else {
                     setAllBasketsUser([]);
                 }
@@ -93,23 +91,23 @@ const ReturnClient = () => {
             case "-2": confirmationMessage('error', 'Canastilla repetida', `El error está ubicado en la fila #${resultCompany[1]}`, 1)
                 return false;
                 break;
-            case "-3": confirmationMessage('error', 'Canastilla no encontrada', `La canastilla con cógido ${allBasketsUser[resultCompany[1] - 1]} no se encuentra prestada`, 1)
+            case "-3": confirmationMessage('error', 'Canastilla no encontrada', `La canastilla con cógido ${allBasketsUser[resultCompany[1]-1]} no se encuentra prestada`, 1)
                 return false;
                 break;
         }
         return true;
     }
-    function validationClient() {
+    function validationProvider() {
         const clientAux = document.getElementById('client').value;
-        for (let i = 0; i < clientList.length; i++) {
-            if (clientList[i] === clientAux) return true;
+        for (let i = 0; i < providerList.length; i++) {
+            if (providerList[i] === clientAux) return true;
         }
         confirmationMessage('error', 'Cliente no encontrado', `Por favor ingrese en el campo "Nombre del cliente" un nombre válido `, 1)
         return false;
     }
 
     function validations() {
-        if (validationClient() && validationBaskets()) {
+        if (validationProvider() && validationBaskets()) {
             const clientAux = document.getElementById('client').value;
             const basketsReturn = {}
             for (let i = 0; i < basketsList.length; i++) {
@@ -121,7 +119,7 @@ const ReturnClient = () => {
             const data = {
                 name: clientAux,
                 basketsReturn: basketsReturn,
-                typeUser: "cliente"
+                typeUser: "proveedor"
             }
             console.log(data)
             api.post('/returnClientProvider', data).then((res, err) => {
@@ -136,9 +134,9 @@ const ReturnClient = () => {
 
     return (
         <div className="returnClient">
-            <input type="text" id="client" class="form-control mb-3" placeholder="Nombre del cliente" list="listaclientes" onChange={onChangeName} />
-            <datalist id="listaclientes">
-                {clientList.map((clien) => (
+            <input type="text" id="client" class="form-control mb-3" placeholder="Nombre del proveedor" list="listaproveedor" onChange={onChangeName} />
+            <datalist id="listaproveedor">
+                {providerList.map((clien) => (
                     <option>{clien}</option>
                 ))}
             </datalist>
@@ -154,8 +152,6 @@ const ReturnClient = () => {
                     <input type="text" name="quantity" id={basket.id} onChange={onChangeFields} class="form-control" placeholder="Cantidad" />
                 </div>
             ))}
-
-
             <div className="groupButtons">
                 <button type="button" class="iconAddBaskets mr-2" onClick={addBasket} > + </button>
                 <button type="button" class="iconAddBaskets ml-2" onClick={deleteBasket}>-</button>
@@ -168,4 +164,4 @@ const ReturnClient = () => {
     );
 }
 
-export default ReturnClient;
+export default ReturnProvider;

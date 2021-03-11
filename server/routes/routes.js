@@ -14,7 +14,10 @@ const{
     loanClientProvider,
     returnClientProvider,
     getBasketsReturn,
-    getClientByOrder
+    getClientProviderByOrder,
+    getProvider,
+    getGeneralHistory,
+    getHistoryByName
 } = require('./controller');
 
 // Se realiza la creación de cada una de las rutas
@@ -30,8 +33,9 @@ router.get('/getBasketsReturn/:name', getBasketsReturn);
 router.post('/routeComprobation',isAuth,isRolePage);
 router.post('/loanClientProvider',loanClientProvider);
 router.post('/returnClientProvider',returnClientProvider);
-router.get('/getClientByOrder',getClientByOrder);
-
-
+router.get('/getClientProviderByOrder/:typeUser',getClientProviderByOrder);
+router.get('/getProvider',getProvider);
+router.get('/getGeneralHistory/:typeUser',getGeneralHistory);
+router.get('/getGeneralByHistory/:typeUser/:name',getHistoryByName);
 
 module.exports = router;

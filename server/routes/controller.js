@@ -38,7 +38,7 @@ function findNamesBaskets(allBaskets,consolidatedUser){
     return listBasketsResult;
 }
 
-function findNamesClients(orders,clients){
+function findNamesClientsProviders(orders,clients){
     const ordersSet = new Set();
     const result = [];
     for(let i = 0; i<orders.length;i++){
@@ -99,14 +99,24 @@ module.exports = {
         }
         res.json(namesClients);
     },
-    getClientByOrder: async (req,res) =>{
-        const clients = await User.find({ $or: [{ typeUser: 'cliente' }, { typeUser: 'clienteProveedor' }] });
-        const orders = await Order.find();
-        res.send(findNamesClients(orders,clients));
+
+    getProvider: async (req,res)=>{
+        const providers = await User.find({ $or: [{ typeUser: 'proveedor' }, { typeUser: 'clienteProveedor' }] });
+        let namesProviders = [];
+        for (let i = 0; i < providers.length; i++) {
+            namesProviders.push(providers[i].name);
+        }
+        res.json(namesProviders);
+    },
+
+    getClientProviderByOrder: async (req,res) =>{
+        const users = await User.find({ $or: [{ typeUser:  req.params.typeUser }, { typeUser: 'clienteProveedor' }] });
+        const orders = await Order.find({typeUser:  req.params.typeUser});
+        res.send(findNamesClientsProviders(orders,users));
     },
     //Nombre  de las canastillas de la empresa  
     getBasketsCompany: async (req, res) => {
-        const basketsCompany = await Baskets.find({ type: 'Empresa' });
+        const basketsCompany = await Baskets.find({ $or: [{ type: 'Empresa' }, { type: 'Empresa-Proveedor' }] });
         let namesBasketsCompany = [];
         for (let i = 0; i < basketsCompany.length; i++) {
             namesBasketsCompany.push(basketsCompany[i].code + "-" + basketsCompany[i].name);
@@ -116,7 +126,7 @@ module.exports = {
 
     //Nombre  de las canastillas de los proveedores
     getBasketsProvider: async (req, res) => {
-        const basketsProvider = await Baskets.find({ type: 'Proveedor' });
+        const basketsProvider = await Baskets.find({ $or: [{ type: 'Proveedor' }, { type: 'Empresa-Proveedor' }] });
         let namesBasketsProvider = [];
         for (let i = 0; i < basketsProvider.length; i++) {
             namesBasketsProvider.push(basketsProvider[i].code + "-" + basketsProvider[i].name);
@@ -133,6 +143,7 @@ module.exports = {
             } 
 
             Order.findOne({ name: req.params.name }, async function (err, order) {
+                console.log(order);
                 if (!order) {
                     return res.status(255).json({});
                 } if (order) {
@@ -225,7 +236,7 @@ module.exports = {
             const date = generatorDate();
             const hour = generatorHour();
 
-            Order.findOne({ name: name }, async function (err, order) {
+            Order.findOne({ name: name, typeUser:typeUser}, async function (err, order) {
                 if (!order) {
                     const newOrder = new Order({name, typeUser, consolidated});
                     await newOrder.save();
@@ -254,14 +265,15 @@ module.exports = {
             const consolidated = req.body.basketsReturn;
             const typeUser = req.body.typeUser;
             const movemenType = "devolucion"
-
+            
             const date = generatorDate();
             const hour = generatorHour();
 
-            Order.findOne({ name: name }, async function (err, order) {
+            Order.findOne({ name: name,typeUser:typeUser }, async function (err, order) {
                 if (!order) {
                     res.status(254).json('No existe la order');  // 254 es provicional (500)
                 } if (order) {
+                    
                     for (const property in consolidated) {
                         const decrement = parseInt(consolidated[property],10);
                         if(order.consolidated.hasOwnProperty(property)){
@@ -292,8 +304,41 @@ module.exports = {
         catch (e) {
             res.status(254).json(e) // 254 es provicional (500)
         }
+    },
 
+    //Obtener historial de clientes / proveedores
+    getGeneralHistory: (req,res)=>{
+        try{
+            History.find({typeUser:req.params.typeUser, date:generatorDate()}, function(err,historys){
+                if(err){
+                    return res.status(254).json(e)
+                }
+                if(!historys.length!==0){
+                    return res.send(historys);
+                }else{
+                    return res.status(254).json('No existe el historial');
+                }
+            })
+        }catch(e){
+            res.status(254).json(e) // 254 es provicional (500)
+        }
+    },
 
+    getHistoryByName: (req,res)=>{
+        try{
+            History.find({name:req.params.name,typeUser:req.params.typeUser, date:generatorDate()}, function(err,historys){
+                if(err){
+                    return res.status(254).json(e)
+                }
+                if(!historys.length!==0){
+                    return res.send(historys);
+                }else{
+                    return res.status(254).json('No existe el historial');
+                }
+            })
+        }catch(e){
+            res.status(254).json(e) // 254 es provicional (500)
+        }
     }
-    
+
 }
