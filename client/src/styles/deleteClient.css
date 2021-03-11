@@ -1,0 +1,44 @@
+.deleteClient  .container{
+    background-color: white;
+    border-radius: 5px;
+}
+
+
+.deleteClient .boton4{
+    width: 3vh;
+    height: 4vh;
+    margin-left: 90%;
+}
+
+.deleteClient .iconAdd{
+    width: 5vh;
+    height: 5vh;
+    border-radius: 10px;
+    border: 2px solid #c8c6a7;
+    background-color:#dddddd;
+}
+
+.deleteClient .boton5{
+    color:black;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 25px;
+    border-radius: 10px;
+    border: 2px solid #51C2D5;
+    background-color:#51C2D5;
+}
+
+.deleteClient .card {
+    position: relative;
+    margin: 0.5rem 0 1rem 0;
+    background-color: #fff;
+    transition: -webkit-box-shadow 0.25s;
+    transition: box-shadow 0.25s;
+    transition: box-shadow 0.25s, -webkit-box-shadow 0.25s;
+    border-radius: 2px;
+  }
+
+  .deleteClient .card:hover {
+    box-shadow: 0 14px 25px #70db24;
+    transform: translateY(-15px);
+  }

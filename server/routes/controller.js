@@ -304,8 +304,41 @@ module.exports = {
         catch (e) {
             res.status(254).json(e) // 254 es provicional (500)
         }
+    },
 
+    //Obtener historial de clientes / proveedores
+    getGeneralHistory: (req,res)=>{
+        try{
+            History.find({typeUser:req.params.typeUser, date:generatorDate()}, function(err,historys){
+                if(err){
+                    return res.status(254).json(e)
+                }
+                if(!historys.length!==0){
+                    return res.send(historys);
+                }else{
+                    return res.status(254).json('No existe el historial');
+                }
+            })
+        }catch(e){
+            res.status(254).json(e) // 254 es provicional (500)
+        }
+    },
 
+    getHistoryByName: (req,res)=>{
+        try{
+            History.find({name:req.params.name,typeUser:req.params.typeUser, date:generatorDate()}, function(err,historys){
+                if(err){
+                    return res.status(254).json(e)
+                }
+                if(!historys.length!==0){
+                    return res.send(historys);
+                }else{
+                    return res.status(254).json('No existe el historial');
+                }
+            })
+        }catch(e){
+            res.status(254).json(e) // 254 es provicional (500)
+        }
     }
-    
+
 }
