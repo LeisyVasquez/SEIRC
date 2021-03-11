@@ -83,6 +83,7 @@ const BasketsRegistration = () => {
                             <option>-- Selecciona el dueño --</option>
                             <option>Proveedor</option>
                             <option>Empresa</option>
+                            <option>Empresa-Proveedor</option>
                         </Form.Control>
                     </Form.Group>
                     <input

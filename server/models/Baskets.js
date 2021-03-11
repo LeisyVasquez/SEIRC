@@ -17,7 +17,7 @@ const BasketsSchema = new Schema({
     type: {
         type: String,
         required: [true, 'El tipo de canastilla es necesario'],
-        enum : ['Empresa','Proveedor']        
+        enum : ['Empresa','Proveedor','Empresa-Proveedor']        
     },
     description:{
         type: String, 
