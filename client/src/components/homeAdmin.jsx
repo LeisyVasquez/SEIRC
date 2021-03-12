@@ -11,7 +11,7 @@ const HomeAdmin = () => {
     function comprobation(){
         api.post('/routeComprobation',{typeUser:['administrador']},{headers:{'authorization':`Bearer ${getFromLocal('tokenUser')}`}})
         .then((res)=>{
-            if(res.status===201) window.location.href = '/'
+            if(res.status===201) window.location.href = '/notAuthorized'
         }).catch((err)=>{
             window.location.href = '/'
         });
