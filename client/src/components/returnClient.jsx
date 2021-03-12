@@ -122,7 +122,6 @@ const ReturnClient = () => {
                 basketsReturn: basketsReturn,
                 typeUser: "cliente"
             }
-            console.log(data)
             api.post('/returnClientProvider', data).then((res, err) => {
                 //Control de errores, falta aclarar el del catch
                 if (res.status === 254) confirmationMessage('error', 'Error', `No se le ha prestado uno o varios tipos canastas que devuelve, por lo tanto no se puede devolver algo que no se presto`, 1)
