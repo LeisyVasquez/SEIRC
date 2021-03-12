@@ -4,22 +4,89 @@ import { Container, Button, Modal } from "react-bootstrap";
 import '../styles/deleteClient.css';
 import { getFromLocal } from '../functions/localStorage'
 const DeleteClient = () => {
-    const [showInsert, setShowInsert] = useState(false);
-    const handleCloseInsert = () => setShowInsert(false);
-    const handleShowInsert = () => setShowInsert(true);
-    let flag = true; 
-    let name;
-    let typeUser;
+    useEffect(
+        () => {
+            getGeneralHistory()
+        }, []
+    );
 
-    const nameClient = (e) =>{
-        name = e.target.value; 
+    const [historyData, setHistoryData] = useState([]);
+    const [listNamesClients, setListNamesClient] = useState([]);
+    const [listNamesClientsSet, setListNamesClientsSet] = useState(new Set());
+    const [idCard, setIdCard] = useState({});
+
+
+    const [showBasketsData, setShowBasketsData] = useState(false);
+    const [deleteMovement, setDeleteMovement] = useState(false);
+
+    const handleCloseBaskets = () => setShowBasketsData(false);
+    const handleCloseDelete = () => setDeleteMovement(false);
+    const handleShowBaskets = (e) => {
+        setShowBasketsData(true);
+        setIdCard(e.target.value)
+        console.log(idCard);
     }
 
-    const clientHistory = () =>{
-        typeUser = "cliente";
+    const handleDeleteBasket = (e) => {
+        setDeleteMovement(true);
+        setIdCard(e.target.value)
+        console.log(idCard);
+    }
+
+    function saveClient(list) {
+        const clientSetAux = new Set();
+        for (let i = 0; i < list.length; i++) {
+            clientSetAux.add(list[i]);
+        }
+        setListNamesClientsSet(clientSetAux)
+    }
+
+    let flag = true;
+    let name;
+
+    const getGeneralHistory = () => {
+        api.get(`/getGeneralHistory/cliente`).then((res, err) => {
+            setHistoryData(res.data[0]);
+            setListNamesClient(res.data[1]);
+            if (err || res.status === 254) console.log(err);
+            else console.log(res.data)
+            saveClient(res.data[1]);
+        })
+    }
+
+
+    const nameClient = async (e) => {
+        name = e.target.value;
+        if (listNamesClientsSet.has(name)) {
+            console.log('La lista tiene el nombre ', name)
+            api.get(`/getHistoryByName/cliente/${name}`).then((res,err)=>{
+                if(res) console.log(res.data)
+                else console.log(err)
+                setHistoryData(res.data);
+            })
+        } else {
+            getGeneralHistory()
+        }
+    }
+
+    const clientHistory = () => {
         flag = false;
         console.log(name);
-        console.log(typeUser);
+        console.log(historyData);
+        console.log(listNamesClients);
+    }
+
+    {/*
+    
+    */}
+    const arrayDataBasketsById = [];
+    function showBaskets() {
+        const historyDataCard = historyData.filter(cards => cards._id === idCard);
+        const objectDataBasketsById = historyDataCard[0];
+        for (const property in objectDataBasketsById) {
+            arrayDataBasketsById.push(`${property}: ${objectDataBasketsById[property]}`)
+        }
+        console.log(objectDataBasketsById)
     }
 
     return (
@@ -31,46 +98,83 @@ const DeleteClient = () => {
                 <div className="mb-5">
                     <input
                         type="search"
-                        className="form-control w-50 m-auto d-inline"
+                        className="form-control w-75 m-auto"
                         placeholder="Nombre del cliente"
+                        list="listClients"
                         onChange={nameClient}
                     />
-                    <button type="button" className="boton5 ml-5" onClick={clientHistory}>Buscar</button>
-                </div>
-                
-                {/*Tarjetas con el historial*/}
-                <div className="row row-cols-1 row-cols-md-3 g-4">
-                    <div className="col">
-                        <div className=" card h-100 w-100 ">
-                            <div className="card-body">
-                                <input type="image" src="https://raw.githubusercontent.com/JuanManuel-GAA/equipo7_gaa_ppi2020/master/Recursos%20gu%C3%ADa/iconDelete.png" className="boton4"></input>
-                                <h5 className="card-title" id="nombre">Elkin</h5>
-                                <p className="card-text" id="descripcion">Prestamo</p>
-                                <p className="card-text" id="descripcion">Hora</p>
-                                <button type="button" className="iconAdd mr-2" onClick={handleShowInsert}>+</button>
-                            </div>
-                        </div>
-                    </div>
+                    <datalist id="listClients">
+                        {listNamesClients.map((clien) => (
+                            <option>{clien}</option>
+                        ))}
+                    </datalist>
                 </div>
 
-                {/*Modal*/}
-                <Modal show={showInsert} onHide={handleCloseInsert} centered>
-                <Modal.Header closeButton style={{ background: 'rgb(112, 219, 36,0.3)' }}>
-                    <Modal.Title>Más detalles de la cuenta</Modal.Title>
-                </Modal.Header>
-                <Modal.Body style={{ background: 'rgb(112, 219, 36,0.3)' }}>
-                    
-                </Modal.Body>
-                <Modal.Footer style={{ background: 'rgb(112, 219, 36,0.3)' }}>
-                    <Button variant="secondary" onClick={handleCloseInsert}>Cerrar</Button>
-                    
-                </Modal.Footer>
-            </Modal>
+                {/*Tarjetas con el historial*/}
+                <div className="row row-cols-1 row-cols-md-3 g-4">
+                    {historyData.map((item) =>
+                        <>
+                            <div className="col">
+                                <div className=" card h-100 w-100" key={item._id}>
+                                    <div className="card-body">
+                                        <input type="image" src="https://raw.githubusercontent.com/JuanManuel-GAA/equipo7_gaa_ppi2020/master/Recursos%20gu%C3%ADa/iconDelete.png" className="boton4" value={item._id} onClick={handleDeleteBasket} />
+                                        <div className="h-25">
+                                            <h5 className="card-title" id="nombre">{item.name}</h5>
+                                        </div>
+                                        <p className="card-text" id="descripcion">{item.typeMovement}</p>
+                                        <p className="card-text" id="descripcion">{item.hour}</p>
+                                        <button type="button" className="iconAdd mr-2" value={item._id} onClick={handleShowBaskets}>+</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </>
+                    )
+                    }
+                </div>
+
+                {/*Modal ver más*/}
+                <Modal show={showBasketsData} onHide={handleCloseBaskets} centered>
+                    <Modal.Header closeButton style={{ background: 'rgb(112, 219, 36,0.3)' }}>
+                        <Modal.Title>Más detalles de la cuenta</Modal.Title>
+                    </Modal.Header>
+                    {showBaskets()}
+                    {arrayDataBasketsById.map((baskets) => {
+                        <>
+                            <Modal.Body style={{ background: 'rgb(112, 219, 36,0.3)' }}>
+                                <p>{baskets}</p>
+                            </Modal.Body>
+                        </>
+                    })}
+                    <Modal.Footer style={{ background: 'rgb(112, 219, 36,0.3)' }}>
+                        <Button variant="secondary" onClick={handleCloseBaskets}>Cerrar</Button>
+                    </Modal.Footer>
+                </Modal>
+
+                {/*Modal eliminar movimiento*/}
+                <Modal show={deleteMovement} onHide={handleCloseDelete} centered>
+                    <Modal.Header closeButton style={{ background: 'rgb(252, 3, 25, 0.1)' }}>
+                        <Modal.Title>Eliminar movimiento</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body style={{ background: 'rgb(252, 3, 25, 0.1)' }}>
+                        <h3>Ingrese la contraseña para confirmar</h3>
+                        <input
+                        type="password"
+                        className="form-control w-50 my-5 mx-auto"
+                        placeholder="Contraseña"
+                        list="listClients"
+                    />
+                    </Modal.Body>
+                    <Modal.Footer style={{ background: 'rgb(252, 3, 25, 0.1)' }}>
+                        <Button variant="secondary" onClick={handleCloseDelete}>Cerrar</Button>
+                    </Modal.Footer>
+                </Modal>
+
             </Container>
         </div>
     );
 }
 
 export default DeleteClient;
+
 
 

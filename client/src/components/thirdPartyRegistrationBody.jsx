@@ -27,7 +27,7 @@ const ThirdPartyRegistrationBody = () => {
             phone: userData.phone,
             direction: userData.direction,
             userName: userData.userName,
-            password: userData.password,
+            password: userData.password
         }
         api.post("/registerThirdParties", data).then((res, err) => {
             if (res.status === 500) {

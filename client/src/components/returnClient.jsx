@@ -51,7 +51,6 @@ const ReturnClient = () => {
             await api.get(`/getBasketsReturn/${e.target.value}`).then((res) => {
                 if (res.status === 200) {
                     setAllBasketsUser(res.data.res);
-
                 } else {
                     setAllBasketsUser([]);
                 }

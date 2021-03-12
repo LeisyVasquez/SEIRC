@@ -17,7 +17,8 @@ const{
     getClientProviderByOrder,
     getProvider,
     getGeneralHistory,
-    getHistoryByName
+    getHistoryByName,
+    deleteClientMovement
 } = require('./controller');
 
 // Se realiza la creación de cada una de las rutas
@@ -36,6 +37,7 @@ router.post('/returnClientProvider',returnClientProvider);
 router.get('/getClientProviderByOrder/:typeUser',getClientProviderByOrder);
 router.get('/getProvider',getProvider);
 router.get('/getGeneralHistory/:typeUser',getGeneralHistory);
-router.get('/getGeneralByHistory/:typeUser/:name',getHistoryByName);
+router.get('/getHistoryByName/:typeUser/:name',getHistoryByName);
+router.put('/deleteClientMovement',deleteClientMovement)
 
 module.exports = router;

@@ -50,6 +50,18 @@ function findNamesClientsProviders(orders,clients){
     return result;
 }
 
+function findNamesClientsProvidersHistory(history){
+    const namesAux = new Set();
+    const finalNames = [];
+    for(let i = 0;i<history.length;i++){
+        if(!namesAux.has(history[i].name)){
+            namesAux.add(history[i].name);
+            finalNames.push(history[i].name);
+        }
+    }
+    return finalNames;    
+}
+
 
 
 module.exports = {
@@ -314,7 +326,7 @@ module.exports = {
                     return res.status(254).json(e)
                 }
                 if(!historys.length!==0){
-                    return res.send(historys);
+                    return res.send([historys,findNamesClientsProvidersHistory(historys)]);
                 }else{
                     return res.status(254).json('No existe el historial');
                 }
@@ -338,6 +350,21 @@ module.exports = {
             })
         }catch(e){
             res.status(254).json(e) // 254 es provicional (500)
+        }
+    }, 
+
+
+    deleteClientMovement: (req, res)=>{
+        try{
+            
+            User.findOne({typeUser: "superUsuario"}, function(err, res){
+                console.log(res)
+            })
+
+
+
+        }catch(e){
+
         }
     }
 
