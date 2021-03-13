@@ -354,7 +354,6 @@ module.exports = {
         }
     },
 
-
     deleteClientMovement: (req, res) => {
         //password, idHistory
         try {
@@ -411,7 +410,20 @@ module.exports = {
         } catch (e) {
             console.log(e)
         }
-    }
+    }, 
 
+    getPasswordSuperUser: (req,res) =>{
+        try{
+            User.findOne({typeUser:"superUsuario"}, function (err,result) {
+                if(err)  res.status(254) // 254 es provicional (500)
+                else  {
+                    res.status(200).json({message:result.password})
+                }
+            })
+        }catch(e){
+            console.log(e);
+            res.status(254)
+        }
+    }
 }
 

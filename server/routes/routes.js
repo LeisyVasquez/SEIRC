@@ -18,11 +18,12 @@ const{
     getProvider,
     getGeneralHistory,
     getHistoryByName,
-    deleteClientMovement
+    deleteClientMovement,
+    getPasswordSuperUser
 } = require('./controller');
 
-// Se realiza la creación de cada una de las rutas
 
+// Se realiza la creación de cada una de las rutas
 router.get('/',getMain);
 router.post('/registerBaskets',registerBaskets);
 router.post('/registerThirdParties', registerUser);
@@ -38,6 +39,7 @@ router.get('/getClientProviderByOrder/:typeUser',getClientProviderByOrder);
 router.get('/getProvider',getProvider);
 router.get('/getGeneralHistory/:typeUser',getGeneralHistory);
 router.get('/getHistoryByName/:typeUser/:name',getHistoryByName);
-router.put('/deleteClientMovement',deleteClientMovement)
+router.put('/deleteClientMovement',deleteClientMovement);
+router.get('/getPasswordSuperUser', getPasswordSuperUser);
 
 module.exports = router;
