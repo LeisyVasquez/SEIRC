@@ -2,17 +2,17 @@ import React from 'react';
 
 import HeaderAdmin from '../components/base/headerAdmin'
 import Footer from '../components/base/footer'
-import DeleteClient from '../components/deleteClient'
+import DeleteMovementClient from '../components/deleteMovementClient'
 
 
-const deleteClient = () => {
+const deleteMovementClient = () => {
     return (
         <div>
             <HeaderAdmin />
-            <DeleteClient />
+            <DeleteMovementClient />
             <Footer />
         </div>
     )
 }
 
-export default deleteClient;
+export default deleteMovementClient;

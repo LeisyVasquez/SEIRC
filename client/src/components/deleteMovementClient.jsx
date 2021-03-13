@@ -4,9 +4,11 @@ import { Container, Button, Modal } from "react-bootstrap";
 import '../styles/deleteClient.css';
 import { getFromLocal } from '../functions/localStorage';
 import swal from "sweetalert2";
-const DeleteClient = () => {
+
+const DeleteMovementClient = () => {
     useEffect(
         () => {
+            getPasswordSuperUser()
             getGeneralHistory()
         }, []
     );
@@ -15,15 +17,32 @@ const DeleteClient = () => {
     const [listNamesClients, setListNamesClient] = useState([]);
     const [listNamesClientsSet, setListNamesClientsSet] = useState(new Set());
     const [deleteMovement, setDeleteMovement] = useState(false);
+    const [passwordSuperUser, setPasswordSuperUser] = useState('');
+    const [idCard, setIdCard] = useState('');
 
+    const getPasswordSuperUser = () => {
+        api.get('/getPasswordSuperUser').then((res, err) => {
+            if (res) setPasswordSuperUser(res.data.message);
+            else {
+                swal.fire({
+                    icon: 'error',
+                    title: 'Error en el servidor',
+                    text: 'Reinicie la página, si vuelve a parecer de nuevo este mensaje inicie más tarde',
+                    confirmButtonText: "Entendido"
+                })
+            }
+        })
+
+    }
     const handleCloseDelete = () => setDeleteMovement(false);
 
-    const handleShowBaskets = (e) => {     
+    const handleShowBaskets = (e) => {
         showBaskets(e.target.value);
     }
 
     const handleDeleteBasket = (e) => {
         setDeleteMovement(true);
+        setIdCard(e.target.value)
     }
 
     function saveClient(list) {
@@ -50,8 +69,8 @@ const DeleteClient = () => {
     const nameClient = async (e) => {
         name = e.target.value;
         if (listNamesClientsSet.has(name)) {
-            api.get(`/getHistoryByName/cliente/${name}`).then((res,err)=>{
-                if(res) console.log(res.data)
+            api.get(`/getHistoryByName/cliente/${name}`).then((res, err) => {
+                if (res) console.log(res.data)
                 else console.log(err)
                 setHistoryData(res.data);
             })
@@ -60,26 +79,59 @@ const DeleteClient = () => {
         }
     }
 
-    
+
     function showBaskets(idCard) {
         const historyDataCard = historyData.filter(cards => cards._id === idCard);
         const objectDataBasketsById = historyDataCard[0].baskets;
         let html = '<table style="width:100%"><th>Código</th><th>Cantidad</th>';
         for (const property in objectDataBasketsById) {
-           html+=`<tr><td>${property}</td><td>${objectDataBasketsById[property]}</td><tr>`;
-        }    
-        html+='</table>'
+            html += `<tr><td>${property}</td><td>${objectDataBasketsById[property]}</td><tr>`;
+        }
+        html += '</table>'
 
         swal.fire({
             icon: 'info',
             title: 'Canastillas',
-            html:html,
+            html: html,
             confirmButtonText: "Entendido"
-        }) 
+        })
     }
 
-    function deleteHistory(e){
-        console.log(e.target.value);
+    async function deleteHistory(e) {
+        if (passwordSuperUser === e.target.value) {
+            console.log('contraseña correcta')
+            const data = {
+                password: e.target.value,
+                idHistory: idCard
+            }
+            await api.put('/deleteMovementClient',data).then((res,err)=>{
+                console.log(err)
+                console.log(res)
+                if(res.status === 254 || err){
+                    swal.fire({
+                        icon: 'error',
+                        title: 'Error en el servidor',
+                        text: 'Reinicie la página, intente de nuevo o regrese más tarde',
+                        confirmButtonText: "Entendido"
+                    })
+                }else if(res.status === 255){
+                    swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: `${res.data.message}`,
+                        confirmButtonText: "Entendido"
+                    })
+                }else if(res.status === 201){
+                    console.log('Buenaaas')
+                    window.location.href = '/deleteMovementClient'
+                }
+                else{
+                    console.log('Buenaas, aqui estoy')
+                }
+            })
+        }else{
+            console.log('No lee la contraseña completa')
+        }
     }
 
     return (
@@ -114,8 +166,8 @@ const DeleteClient = () => {
                                         <div className="h-25">
                                             <h5 className="card-title" id="nombre">{item.name}</h5>
                                         </div>
-                                        <p className="card-text" id="descripcion">{item.typeMovement}</p>
-                                        <p className="card-text" id="descripcion">{item.hour}</p>
+                                        <p className="card-text">{(item.movemenType === "prestamo"? "Préstamo":"Devolución")}</p>
+                                        <p className="card-text">{item.hour}</p>
                                         <button type="button" className="iconAdd mr-2" value={item._id} onClick={handleShowBaskets}>+</button>
                                     </div>
                                 </div>
@@ -133,12 +185,12 @@ const DeleteClient = () => {
                     <Modal.Body style={{ background: 'rgb(252, 3, 25, 0.1)' }}>
                         <h3>Ingrese la contraseña para confirmar</h3>
                         <input
-                        onChange={deleteHistory}
-                        type="password"
-                        className="form-control w-50 my-5 mx-auto"
-                        placeholder="Contraseña"
-                        list="listClients"
-                    />
+                            onChange={deleteHistory}
+                            type="password"
+                            className="form-control w-50 my-5 mx-auto"
+                            placeholder="Contraseña"
+                            list="listClients"
+                        />
                     </Modal.Body>
                     <Modal.Footer style={{ background: 'rgb(252, 3, 25, 0.1)' }}>
                         <Button variant="secondary" onClick={handleCloseDelete}>Cerrar</Button>
@@ -150,7 +202,7 @@ const DeleteClient = () => {
     );
 }
 
-export default DeleteClient;
+export default DeleteMovementClient;
 
 
 

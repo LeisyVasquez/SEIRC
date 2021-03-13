@@ -11,7 +11,7 @@ import LoanReturnProvider from '../pages/LoanReturnProvider'
 import HomeAdmin from '../pages/HomeAdmin';
 import HomeSuperUser from '../pages/HomeSuperUser';
 import HomeThirdParty from '../pages/HomeThirdParty';
-import DeleteClient from '../pages/DeleteClient';
+import DeleteMovementClient from '../pages/DeleteMovementClient';
 import NotAuthorized from '../pages/NotAuthorized';
 
 
@@ -30,7 +30,7 @@ function App() {
           <Route path="/homeAdmin" component={HomeAdmin} />
           <Route path="/homeSuperUser" component={HomeSuperUser} />
           <Route path="/homeThirdParty" component={HomeThirdParty} />
-          <Route path="/deleteClient" component={DeleteClient} />
+          <Route path="/deleteMovementClient" component={DeleteMovementClient} />
           <Route path="/notAuthorized" component={NotAuthorized} />
         </Switch>
       </BrowserRouter>

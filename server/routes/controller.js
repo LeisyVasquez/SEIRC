@@ -292,7 +292,7 @@ module.exports = {
                         if (order.consolidated.hasOwnProperty(property)) {
                             const valueAux = order.consolidated[property] - decrement;
                             var flag = false;
-                            if (valueAux < 0) return res.status(255).json({ message: `La cantidad devuelta de canastas con código ${property} está incorrecta revisa de nuevo los datos` });
+                            if (valueAux < 0) return res.status(255).json({ message: `La canastilla con código ${property} no se puede operar` });
                             else if (valueAux === 0) {
                                 if (Object.keys(order.consolidated).length === 1) {
                                     await Order.deleteOne({ _id: order._id });
@@ -354,23 +354,20 @@ module.exports = {
         }
     },
 
-    deleteClientMovement: (req, res) => {
-        //password, idHistory
+    deleteMovementClient: (req, result1) => {
         try {
-            const password = encript("123456789");
-            console.log(password)
-            User.findOne({ $and: [{ typeUser: "superUsuario" }, { password: password }] }, function (err, res) {
-                if (res) {
-                    const idHistory = '604bfd9168b1a11d085735fd'
+            const {password, idHistory} = req.body
+            User.findOne({ $and: [{ typeUser: "superUsuario" }, { password: password }] }, function (err, result) {
+                if (result) {
                     History.findByIdAndUpdate(idHistory, {
                         $set: { status: 'inactivo' }
                     }, function (err, res) {
                         if (err) {
                             console.log('error');
+                            result1.status(254)
                         } else {
                             const movementType = res.movemenType;
                             if (movementType === "devolucion") {
-                                console.log(res)
                                 const data = {
                                     "name": res.name,
                                     "basketsLoan": res.baskets,
@@ -379,11 +376,13 @@ module.exports = {
                                 console.log(data)
                                 axios.post('http://localhost:8085/api/loanClientProvider', data)
                                     .then(response => {
-                                        console.log(response.data);
-                                        console.log('todo bien')
+                                        result1.status(response.status)
+                                        console.log(response.status);
+                                        
                                     })
                                     .catch(error => {
                                         console.log(error);
+                                        result1.status(254)
                                     });
                             } else{
                                 const data = {
@@ -394,21 +393,23 @@ module.exports = {
                                 console.log(data)
                                 axios.post('http://localhost:8085/api/returnClientProvider', data)
                                     .then(response => {
-                                        console.log(response.data);
-                                        console.log('todo bien')
+                                        result1.status(response.status)
+                                        console.log(response.status);
                                     })
                                     .catch(error => {
                                         console.log(error);
+                                        result1.status(254)
                                     });
                             } 
                         }
                     })
                 }
-                else console.log('Contraseña incorrecta 3')
-                if (err) console.log('aqui toy en el error')
+                else result1.status(254)
+                
             })
         } catch (e) {
             console.log(e)
+            result1.status(254)
         }
     }, 
 
