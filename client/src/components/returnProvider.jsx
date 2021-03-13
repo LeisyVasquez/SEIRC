@@ -47,7 +47,7 @@ const ReturnProvider = () => {
 
     const onChangeName = async (e) => {
         if (providerSet.has(e.target.value)) {
-            await api.get(`/getBasketsReturn/${e.target.value}`).then((res) => {
+            await api.get(`/getBasketsReturn/${e.target.value}/proveedor`).then((res) => {
                 if (res.status === 200) {
                     setAllBasketsUser(res.data.res);
                 } else {

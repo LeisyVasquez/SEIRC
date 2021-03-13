@@ -48,7 +48,7 @@ const ReturnClient = () => {
     const onChangeName = async (e) => {
         if (clientSet.has(e.target.value)) {
             console.log("hola");
-            await api.get(`/getBasketsReturn/${e.target.value}`).then((res) => {
+            await api.get(`/getBasketsReturn/${e.target.value}/cliente`).then((res) => {
                 if (res.status === 200) {
                     setAllBasketsUser(res.data.res);
                 } else {
