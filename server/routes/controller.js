@@ -353,7 +353,7 @@ module.exports = {
         }
     },
 
-    deleteMovementClient: (req, res) => {
+    deleteMovementClientProvider: (req, res) => {
         try {
             const {password, idHistory} = req.body
             User.findOne({ $and: [{ typeUser: "superUsuario" }, { password: password }] },function(errPassword,resultPassword){

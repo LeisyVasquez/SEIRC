@@ -12,6 +12,7 @@ import HomeAdmin from '../pages/HomeAdmin';
 import HomeSuperUser from '../pages/HomeSuperUser';
 import HomeThirdParty from '../pages/HomeThirdParty';
 import DeleteMovementClient from '../pages/DeleteMovementClient';
+import DeleteMovementProvider from '../pages/DeleteMovementProvider';
 import NotAuthorized from '../pages/NotAuthorized';
 
 
@@ -31,6 +32,7 @@ function App() {
           <Route path="/homeSuperUser" component={HomeSuperUser} />
           <Route path="/homeThirdParty" component={HomeThirdParty} />
           <Route path="/deleteMovementClient" component={DeleteMovementClient} />
+          <Route path="/deleteMovementProvider" component={DeleteMovementProvider} />
           <Route path="/notAuthorized" component={NotAuthorized} />
         </Switch>
       </BrowserRouter>
