@@ -7,6 +7,7 @@ require('dotenv').config({ path: '../.env' });
 const fs = require('fs');
 const path = require('path');
 const { resolveSoa } = require('dns');
+const axios = require('axios');
 
 function encript(obj) {
     var crypto = require('crypto')
@@ -14,52 +15,52 @@ function encript(obj) {
     return hmac
 }
 
-function generatorDate(){
+function generatorDate() {
     var d = new Date();
     month = '' + (d.getMonth() + 1),
-    day = '' + d.getDate(),
-    year = d.getFullYear();
-    return day+"/"+month+"/"+year;
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+    return day + "/" + month + "/" + year;
 }
 
-function generatorHour(){
+function generatorHour() {
     var d = new Date();
     hours = '' + d.getHours(),
-    minutes = '' + d.getMinutes();
-    return hours+":"+minutes;
+        minutes = '' + d.getMinutes();
+    return hours + ":" + minutes;
 }
 
 
-function findNamesBaskets(allBaskets,consolidatedUser){
+function findNamesBaskets(allBaskets, consolidatedUser) {
     let listBasketsResult = [];
-    for(let i = 0; i<consolidatedUser.length;i++){
+    for (let i = 0; i < consolidatedUser.length; i++) {
         listBasketsResult.push(consolidatedUser[i] + "-" + allBaskets[consolidatedUser[i]]);
     }
     return listBasketsResult;
 }
 
-function findNamesClientsProviders(orders,clients){
+function findNamesClientsProviders(orders, clients) {
     const ordersSet = new Set();
     const result = [];
-    for(let i = 0; i<orders.length;i++){
+    for (let i = 0; i < orders.length; i++) {
         ordersSet.add(orders[i].name);
     }
-    for(let i = 0;i<clients.length;i++){
-        if(ordersSet.has(clients[i].name)) result.push(clients[i].name);
+    for (let i = 0; i < clients.length; i++) {
+        if (ordersSet.has(clients[i].name)) result.push(clients[i].name);
     }
     return result;
 }
 
-function findNamesClientsProvidersHistory(history){
+function findNamesClientsProvidersHistory(history) {
     const namesAux = new Set();
     const finalNames = [];
-    for(let i = 0;i<history.length;i++){
-        if(!namesAux.has(history[i].name)){
+    for (let i = 0; i < history.length; i++) {
+        if (!namesAux.has(history[i].name)) {
             namesAux.add(history[i].name);
             finalNames.push(history[i].name);
         }
     }
-    return finalNames;    
+    return finalNames;
 }
 
 
@@ -112,7 +113,7 @@ module.exports = {
         res.json(namesClients);
     },
 
-    getProvider: async (req,res)=>{
+    getProvider: async (req, res) => {
         const providers = await User.find({ $or: [{ typeUser: 'proveedor' }, { typeUser: 'clienteProveedor' }] });
         let namesProviders = [];
         for (let i = 0; i < providers.length; i++) {
@@ -121,10 +122,10 @@ module.exports = {
         res.json(namesProviders);
     },
 
-    getClientProviderByOrder: async (req,res) =>{
-        const users = await User.find({ $or: [{ typeUser:  req.params.typeUser }, { typeUser: 'clienteProveedor' }] });
-        const orders = await Order.find({typeUser:  req.params.typeUser});
-        res.send(findNamesClientsProviders(orders,users));
+    getClientProviderByOrder: async (req, res) => {
+        const users = await User.find({ $or: [{ typeUser: req.params.typeUser }, { typeUser: 'clienteProveedor' }] });
+        const orders = await Order.find({ typeUser: req.params.typeUser });
+        res.send(findNamesClientsProviders(orders, users));
     },
     //Nombre  de las canastillas de la empresa  
     getBasketsCompany: async (req, res) => {
@@ -145,34 +146,34 @@ module.exports = {
         }
         res.json(namesBasketsProvider);
     },
-    getBasketsReturn: async (req,res)=>{
-        try{
+    getBasketsReturn: async (req, res) => {
+        try {
             const baskets = await Baskets.find();
             let namesBaskets = {};
             let consolidated = [];
-            for (let i = 0; i < baskets.length; i++) {  
+            for (let i = 0; i < baskets.length; i++) {
                 namesBaskets[baskets[i].code] = baskets[i].name;
-            } 
+            }
 
-            Order.findOne({ name: req.params.name }, async function (err, order) {
+            Order.findOne({ name: req.params.name, typeUser:req.params.typeUser }, async function (err, order) {
                 console.log(order);
                 if (!order) {
                     return res.status(255).json({});
                 } if (order) {
                     consolidated = Object.keys(order.consolidated);
-                    const result = findNamesBaskets(namesBaskets,consolidated);
-                    return res.status(200).json({res:result});
+                    const result = findNamesBaskets(namesBaskets, consolidated);
+                    return res.status(200).json({ res: result });
 
                 } if (err) {
                     return res.status(254).send('Error inesperado');
-                }           
+                }
             })
-        }catch(e){
+        } catch (e) {
             return res.status(254).send('Error inesperado');
         }
-        
+
     },
-    
+
     signIn: (req, res) => {
         const userNameCrypto = encript(req.body.userName);
         const passwordCrypto = encript(req.body.password);
@@ -248,69 +249,69 @@ module.exports = {
             const date = generatorDate();
             const hour = generatorHour();
 
-            Order.findOne({ name: name, typeUser:typeUser}, async function (err, order) {
+            Order.findOne({ name: name, typeUser: typeUser }, async function (err, order) {
                 if (!order) {
-                    const newOrder = new Order({name, typeUser, consolidated});
+                    const newOrder = new Order({ name, typeUser, consolidated });
                     await newOrder.save();
                 } if (order) {
                     for (const property in consolidated) {
-                        const increment = parseInt(consolidated[property],10);
-                        if(order.consolidated.hasOwnProperty(property)) order.consolidated[property]+= increment;
+                        const increment = parseInt(consolidated[property], 10);
+                        if (order.consolidated.hasOwnProperty(property)) order.consolidated[property] += increment;
                         else order.consolidated[property] = increment;
                     }
-                    await Order.findByIdAndUpdate(order._id,{$set:order});
+                    await Order.findByIdAndUpdate(order._id, { $set: order });
                 } if (err) {
                     return res.status(254).send('Error inesperado')
                 }
-                const newHistory = new History({name:name,typeUser:typeUser,movemenType:movemenType,date:date,hour:hour,baskets:consolidated});     
+                const newHistory = new History({ name: name, typeUser: typeUser, movemenType: movemenType, date: date, hour: hour, baskets: consolidated });
                 await newHistory.save();
-                return res.status(201).send('ok');              
+                return res.status(201).send('ok');
             })
         }
         catch (e) {
             res.status(254).json(e) // 254 es provicional (500)
         }
     },
-    returnClientProvider: (req,res)=>{
+    returnClientProvider: (req, res) => {
         try {
             const name = req.body.name;
             const consolidated = req.body.basketsReturn;
             const typeUser = req.body.typeUser;
             const movemenType = "devolucion"
-            
+
             const date = generatorDate();
             const hour = generatorHour();
 
-            Order.findOne({ name: name,typeUser:typeUser }, async function (err, order) {
+            Order.findOne({ name: name, typeUser: typeUser }, async function (err, order) {
                 if (!order) {
                     res.status(254).json('No existe la order');  // 254 es provicional (500)
                 } if (order) {
-                    
+
                     for (const property in consolidated) {
-                        const decrement = parseInt(consolidated[property],10);
-                        if(order.consolidated.hasOwnProperty(property)){
+                        const decrement = parseInt(consolidated[property], 10);
+                        if (order.consolidated.hasOwnProperty(property)) {
                             const valueAux = order.consolidated[property] - decrement;
                             var flag = false;
-                            if(valueAux<0) return res.status(255).json({message: `La cantidad devuelta de canastas con código ${property} está incorrecta revisa de nuevo los datos`});
-                            else if(valueAux===0){
-                                if(Object.keys(order.consolidated).length === 1){
-                                    await Order.deleteOne({ _id:order._id});
+                            if (valueAux < 0) return res.status(255).json({ message: `La cantidad devuelta de canastas con código ${property} está incorrecta revisa de nuevo los datos` });
+                            else if (valueAux === 0) {
+                                if (Object.keys(order.consolidated).length === 1) {
+                                    await Order.deleteOne({ _id: order._id });
                                     flag = true;
                                 } else delete order.consolidated[property];
-                                
+
                             } else order.consolidated[property] = valueAux;
-                            
-                        }else{
-                            return res.status(256).json({message: `La canastilla con cógido ${property} no se encuentra prestada`});
+
+                        } else {
+                            return res.status(256).json({ message: `La canastilla con cógido ${property} no se encuentra prestada` });
                         }
                     }
-                    if(!flag) await Order.findByIdAndUpdate(order._id,{$set:order});
+                    if (!flag) await Order.findByIdAndUpdate(order._id, { $set: order });
                 } if (err) {
-                    return res.status(257).json({message: 'Error inesperado'})
+                    return res.status(257).json({ message: 'Error inesperado' })
                 }
-                const newHistory = new History({name:name,typeUser:typeUser,movemenType:movemenType,date:date,hour:hour,baskets:consolidated});     
+                const newHistory = new History({ name: name, typeUser: typeUser, movemenType: movemenType, date: date, hour: hour, baskets: consolidated });
                 await newHistory.save();
-                return res.status(201).send('ok');              
+                return res.status(201).send('ok');
             })
         }
         catch (e) {
@@ -319,53 +320,98 @@ module.exports = {
     },
 
     //Obtener historial de clientes / proveedores
-    getGeneralHistory: (req,res)=>{
-        try{
-            History.find({typeUser:req.params.typeUser, date:generatorDate()}, function(err,historys){
-                if(err){
+    getGeneralHistory: (req, res) => {
+        try {
+            History.find({ typeUser: req.params.typeUser, date: generatorDate(), status: 'activo' }, function (err, historys) {
+                if (err) {
                     return res.status(254).json(e)
                 }
-                if(!historys.length!==0){
-                    return res.send([historys,findNamesClientsProvidersHistory(historys)]);
-                }else{
+                if (!historys.length !== 0) {
+                    return res.send([historys, findNamesClientsProvidersHistory(historys)]);
+                } else {
                     return res.status(254).json('No existe el historial');
                 }
             })
-        }catch(e){
+        } catch (e) {
             res.status(254).json(e) // 254 es provicional (500)
         }
     },
 
-    getHistoryByName: (req,res)=>{
-        try{
-            History.find({name:req.params.name,typeUser:req.params.typeUser, date:generatorDate()}, function(err,historys){
-                if(err){
+    getHistoryByName: (req, res) => {
+        try {
+            History.find({ name: req.params.name, typeUser: req.params.typeUser, date: generatorDate(), status: 'activo' }, function (err, historys) {
+                if (err) {
                     return res.status(254).json(e)
                 }
-                if(!historys.length!==0){
+                if (!historys.length !== 0) {
                     return res.send(historys);
-                }else{
+                } else {
                     return res.status(254).json('No existe el historial');
                 }
             })
-        }catch(e){
+        } catch (e) {
             res.status(254).json(e) // 254 es provicional (500)
         }
-    }, 
+    },
 
 
-    deleteClientMovement: (req, res)=>{
-        try{
-            
-            User.findOne({typeUser: "superUsuario"}, function(err, res){
-                console.log(res)
+    deleteClientMovement: (req, res) => {
+        //password, idHistory
+        try {
+            const password = encript("123456789");
+            console.log(password)
+            User.findOne({ $and: [{ typeUser: "superUsuario" }, { password: password }] }, function (err, res) {
+                if (res) {
+                    const idHistory = '604bfd9168b1a11d085735fd'
+                    History.findByIdAndUpdate(idHistory, {
+                        $set: { status: 'inactivo' }
+                    }, function (err, res) {
+                        if (err) {
+                            console.log('error');
+                        } else {
+                            const movementType = res.movemenType;
+                            if (movementType === "devolucion") {
+                                console.log(res)
+                                const data = {
+                                    "name": res.name,
+                                    "basketsLoan": res.baskets,
+                                    "typeUser": res.typeUser
+                                }; 
+                                console.log(data)
+                                axios.post('http://localhost:8085/api/loanClientProvider', data)
+                                    .then(response => {
+                                        console.log(response.data);
+                                        console.log('todo bien')
+                                    })
+                                    .catch(error => {
+                                        console.log(error);
+                                    });
+                            } else{
+                                const data = {
+                                    "name": res.name,
+                                    "basketsReturn": res.baskets,
+                                    "typeUser": res.typeUser
+                                }
+                                console.log(data)
+                                axios.post('http://localhost:8085/api/returnClientProvider', data)
+                                    .then(response => {
+                                        console.log(response.data);
+                                        console.log('todo bien')
+                                    })
+                                    .catch(error => {
+                                        console.log(error);
+                                    });
+                            } 
+                        }
+                    })
+                }
+                else console.log('Contraseña incorrecta 3')
+                if (err) console.log('aqui toy en el error')
             })
-
-
-
-        }catch(e){
-
+        } catch (e) {
+            console.log(e)
         }
     }
 
 }
+

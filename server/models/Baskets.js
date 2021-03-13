@@ -30,5 +30,4 @@ const BasketsSchema = new Schema({
         type: Number
     }
 });
-
 module.exports = model('Baskets', BasketsSchema);

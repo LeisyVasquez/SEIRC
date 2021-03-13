@@ -27,7 +27,11 @@ const HistorySchema = new Schema({
         required: [true, 'No se ingreso hora']
     },
     baskets:{
-        
+    }, 
+    status:{
+        type: String,
+        enum: ['activo','inactivo'],
+        default: 'activo'
     }
     
 });

@@ -30,7 +30,7 @@ router.post('/signIn',signIn);
 router.get('/getClient',getClient);
 router.get('/getBasketsCompany', getBasketsCompany);
 router.get('/getBasketsProvider', getBasketsProvider);
-router.get('/getBasketsReturn/:name', getBasketsReturn);
+router.get('/getBasketsReturn/:name/:typeUser', getBasketsReturn);
 router.post('/routeComprobation',isAuth,isRolePage);
 router.post('/loanClientProvider',loanClientProvider);
 router.post('/returnClientProvider',returnClientProvider);
