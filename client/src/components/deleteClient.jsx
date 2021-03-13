@@ -14,25 +14,16 @@ const DeleteClient = () => {
     const [historyData, setHistoryData] = useState([]);
     const [listNamesClients, setListNamesClient] = useState([]);
     const [listNamesClientsSet, setListNamesClientsSet] = useState(new Set());
-    //const [idCard, setIdCard] = useState('');
-    const [arrayDataBasketsById,setArrayDataBasketsById] = useState([]);
-
-    const [showBasketsData, setShowBasketsData] = useState(false);
     const [deleteMovement, setDeleteMovement] = useState(false);
 
-    const handleCloseBaskets = () => setShowBasketsData(false);
     const handleCloseDelete = () => setDeleteMovement(false);
 
     const handleShowBaskets = (e) => {     
-        //setIdCard(e.target.value);
         showBaskets(e.target.value);
-        //setShowBasketsData(true);
-        
     }
 
     const handleDeleteBasket = (e) => {
         setDeleteMovement(true);
-        //setIdCard(e.target.value)
     }
 
     function saveClient(list) {
@@ -43,7 +34,6 @@ const DeleteClient = () => {
         setListNamesClientsSet(clientSetAux)
     }
 
-    let flag = true;
     let name;
 
     const getGeneralHistory = () => {
@@ -60,7 +50,6 @@ const DeleteClient = () => {
     const nameClient = async (e) => {
         name = e.target.value;
         if (listNamesClientsSet.has(name)) {
-            console.log('La lista tiene el nombre ', name)
             api.get(`/getHistoryByName/cliente/${name}`).then((res,err)=>{
                 if(res) console.log(res.data)
                 else console.log(err)
@@ -71,32 +60,26 @@ const DeleteClient = () => {
         }
     }
 
-    /*const clientHistory = () => {
-        flag = false;
-        console.log(name);
-        console.log(historyData);
-        console.log(listNamesClients);
-    }*/
-
     
     function showBaskets(idCard) {
         const historyDataCard = historyData.filter(cards => cards._id === idCard);
         const objectDataBasketsById = historyDataCard[0].baskets;
-        let html = '';
+        let html = '<table style="width:100%"><th>Código</th><th>Cantidad</th>';
         for (const property in objectDataBasketsById) {
-           html+=`<p>${property}: ${objectDataBasketsById[property]}</p>`;
-        }     
-        
+           html+=`<tr><td>${property}</td><td>${objectDataBasketsById[property]}</td><tr>`;
+        }    
+        html+='</table>'
+
         swal.fire({
             icon: 'info',
-            title: 'Canastillas ha eliminar',
+            title: 'Canastillas',
             html:html,
-            showDenyButton: true,
-            showCancelButton: true,
-            confirmButtonText: `Aceptar`,
-            denyButtonText: `Cancel`
-        })
+            confirmButtonText: "Entendido"
+        }) 
+    }
 
+    function deleteHistory(e){
+        console.log(e.target.value);
     }
 
     return (
@@ -142,23 +125,6 @@ const DeleteClient = () => {
                     }
                 </div>
 
-                {/*Modal ver más*/}
-                <Modal show={showBasketsData} onHide={handleCloseBaskets} centered>
-                    <Modal.Header closeButton style={{ background: 'rgb(112, 219, 36,0.3)' }}>
-                        <Modal.Title>Más detalles de la cuenta</Modal.Title>
-                    </Modal.Header>
-                    {arrayDataBasketsById.map((baskets) => {
-                        <>
-                            <Modal.Body style={{ background: 'rgb(112, 219, 36,0.3)' }}>
-                                <p>{baskets}</p>
-                            </Modal.Body>
-                        </>
-                    })}
-                    <Modal.Footer style={{ background: 'rgb(112, 219, 36,0.3)' }}>
-                        <Button variant="secondary" onClick={handleCloseBaskets}>Cerrar</Button>
-                    </Modal.Footer>
-                </Modal>
-
                 {/*Modal eliminar movimiento*/}
                 <Modal show={deleteMovement} onHide={handleCloseDelete} centered>
                     <Modal.Header closeButton style={{ background: 'rgb(252, 3, 25, 0.1)' }}>
@@ -167,6 +133,7 @@ const DeleteClient = () => {
                     <Modal.Body style={{ background: 'rgb(252, 3, 25, 0.1)' }}>
                         <h3>Ingrese la contraseña para confirmar</h3>
                         <input
+                        onChange={deleteHistory}
                         type="password"
                         className="form-control w-50 my-5 mx-auto"
                         placeholder="Contraseña"
