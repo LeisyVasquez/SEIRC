@@ -4,7 +4,7 @@ import api from '../axios/axios';
 import ButtonCancel from './base/buttonCancel';
 import { validation } from '../functions/basketValidation'
 import '../styles/loanReturnClient.css';
-
+import { saveToLocal } from "../functions/localStorage";
 
 const LoanProvider = () => {
 
@@ -44,7 +44,7 @@ const LoanProvider = () => {
         });
     }
 
-    function confirmationMessage(icon, title, text, tipo) {
+    function confirmationMessage(icon, title, text, tipo,data) {
         if (tipo === 1) {
             swal.fire({
                 icon: `${icon}`,
@@ -59,9 +59,12 @@ const LoanProvider = () => {
                 title: `${title}`,
                 text: `${text}`,
                 confirmButtonText: "Aceptar",
-                cancelButtonText: "Cancelar",
                 confirmButtonColor: "blue",
-                cancelButtonColor: "red",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                  saveToLocal("data",JSON.stringify(data));
+                  //Enrutamiento a página del pdf
+                }
             });
         }
     }
@@ -111,7 +114,7 @@ const LoanProvider = () => {
         
         if (validationProvider() && validationProviderBaskets() && validationBasketsProvider()) {
             const basketsLoan = {};
-            const baskets = basketsList.concat(basketsList);
+            const baskets = basketsList;
             const providerAux = document.getElementById('proveedor').value;
             for (let i = 0; i < baskets.length; i++) {
                 const typeBaskets = baskets[i].typeBaskets;
@@ -122,12 +125,16 @@ const LoanProvider = () => {
             const data = {
                 name: providerAux,
                 basketsLoan: basketsLoan,
-                typeUser:"proveedor"
+                typeUser:"proveedor",
+                type:1
             }
-            console.log(data)
             api.post('/loanClientProvider',data).then((res,err)=>{
                 if(err || res.status === 254) confirmationMessage('error', 'Error en el servidor', `Por favor intente de nuevo o regrese más tarde`, 1)
-                if(res.status === 201) confirmationMessage('success', 'Prestamo generado correctamente','','entendido','green') 
+                if(res.status === 201){
+                    data['basketsLoan'] = baskets;
+                    data['movemenType'] = 'Préstamo';
+                    confirmationMessage('success', 'Prestamo generado correctamente','',2,data);
+                } 
             })
         }
     }

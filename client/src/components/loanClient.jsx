@@ -4,7 +4,7 @@ import api from '../axios/axios';
 import ButtonCancel from './base/buttonCancel';
 import { validation } from '../functions/basketValidation'
 import '../styles/loanReturnClient.css';
-
+import { saveToLocal } from "../functions/localStorage";
 
 const LoanClient = () => {
 
@@ -65,7 +65,7 @@ const LoanClient = () => {
         });
     }
 
-    function confirmationMessage(icon, title, text, tipo) {
+    function confirmationMessage(icon, title, text, tipo,data) {
         if (tipo === 1) {
             swal.fire({
                 icon: `${icon}`,
@@ -80,9 +80,12 @@ const LoanClient = () => {
                 title: `${title}`,
                 text: `${text}`,
                 confirmButtonText: "Aceptar",
-                cancelButtonText: "Cancelar",
                 confirmButtonColor: "blue",
-                cancelButtonColor: "red",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                  saveToLocal("data",JSON.stringify(data));
+                  //Enrutamiento a página del pdf
+                }
             });
         }
     }
@@ -150,7 +153,11 @@ const LoanClient = () => {
         
         if (validationClient() && validationClientBaskets() && validationBasketsCompany() && validationBasketsProvider()) {
             const basketsLoan = {};
-            const baskets = basketsListOther.concat(basketsList);
+            var baskets = []
+            if(basketsListOther.length ===1 && basketsListOther[0].typeBaskets==="" && 
+            (basketsListOther[0].quantity === "" || basketsListOther[0].quantity === 0)) baskets = basketsList;
+            else baskets = basketsListOther.concat(basketsList);
+            
             const clientAux = document.getElementById('client').value;
             for (let i = 0; i < baskets.length; i++) {
                 const typeBaskets = baskets[i].typeBaskets;
@@ -161,12 +168,16 @@ const LoanClient = () => {
             const data = {
                 name: clientAux,
                 basketsLoan: basketsLoan,
-                typeUser:"cliente"
+                typeUser:"cliente",
+                type:1
             }
-            console.log(data)
             api.post('/loanClientProvider',data).then((res,err)=>{
                 if(err || res.status === 254) confirmationMessage('error', 'Error en el servidor', `Por favor intente de nuevo o regrese más tarde`, 1)
-                if(res.status === 201) confirmationMessage('success', 'Prestamo generado correctamente','','entendido','green') 
+                if(res.status === 201){
+                    data['basketsLoan'] = baskets;
+                    data['movemenType'] = 'Préstamo';
+                    confirmationMessage('success', 'Prestamo generado correctamente','',2,data);
+                } 
             })
         }
     }

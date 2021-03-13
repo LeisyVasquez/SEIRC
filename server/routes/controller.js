@@ -245,7 +245,7 @@ module.exports = {
             const consolidated = req.body.basketsLoan;
             const typeUser = req.body.typeUser;
             const movemenType = "prestamo"
-
+            const type = req.body.type;
             const date = generatorDate();
             const hour = generatorHour();
 
@@ -263,9 +263,14 @@ module.exports = {
                 } if (err) {
                     return res.status(254).send('Error inesperado')
                 }
-                const newHistory = new History({ name: name, typeUser: typeUser, movemenType: movemenType, date: date, hour: hour, baskets: consolidated });
-                await newHistory.save();
-                return res.status(201).send('ok');
+                if(type===1){
+                    const newHistory = new History({ name: name, typeUser: typeUser, movemenType: movemenType, date: date, hour: hour, baskets: consolidated });
+                    await newHistory.save();
+                    return res.status(201).send('ok');
+                }else{
+                    return res.status(201).send('ok');
+                }
+
             })
         }
         catch (e) {
@@ -278,9 +283,10 @@ module.exports = {
             const consolidated = req.body.basketsReturn;
             const typeUser = req.body.typeUser;
             const movemenType = "devolucion"
-
+            const type = req.body.type;
             const date = generatorDate();
             const hour = generatorHour();
+
             Order.findOne({ name: name, typeUser: typeUser }, async function (err, order) {
                 if (!order) {
                     res.status(254).json('No existe la order');  // 254 es provicional (500)
@@ -308,9 +314,13 @@ module.exports = {
                 } if (err) {
                     return res.status(257).json({ message: 'Error inesperado' })
                 }
-                const newHistory = new History({ name: name, typeUser: typeUser, movemenType: movemenType, date: date, hour: hour, baskets: consolidated });
-                await newHistory.save();
-                return res.status(201).send('ok');
+                if(type===1){
+                    const newHistory = new History({ name: name, typeUser: typeUser, movemenType: movemenType, date: date, hour: hour, baskets: consolidated });
+                    await newHistory.save();
+                    return res.status(201).send('ok');
+                }else{
+                    return res.status(201).send('ok');
+                }
             })
         }
         catch (e) {
@@ -364,7 +374,8 @@ module.exports = {
                         if(resultHistory){
                             const data = {
                                 name: resultHistory.name,
-                                typeUser: resultHistory.typeUser
+                                typeUser: resultHistory.typeUser,
+                                type:2
                             }
                             if(resultHistory.movemenType === "devolucion"){
                                 data["basketsLoan"] = resultHistory.baskets;
@@ -400,7 +411,6 @@ module.exports = {
                     });
                 }
             });
-
         }catch(e){
             res.status(254).send('mal');
         } 

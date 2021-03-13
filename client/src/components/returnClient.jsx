@@ -4,7 +4,7 @@ import api from '../axios/axios';
 import '../styles/loanReturnClient.css';
 import { validation } from '../functions/basketValidation'
 import ButtonCancel from './base/buttonCancel';
-
+import { saveToLocal } from "../functions/localStorage";
 
 
 const ReturnClient = () => {
@@ -61,7 +61,7 @@ const ReturnClient = () => {
     }
 
 
-    function confirmationMessage(icon, title, text, tipo) {
+    function confirmationMessage(icon, title, text, tipo,data) {
         if (tipo === 1) {
             swal.fire({
                 icon: `${icon}`,
@@ -76,9 +76,12 @@ const ReturnClient = () => {
                 title: `${title}`,
                 text: `${text}`,
                 confirmButtonText: "Aceptar",
-                cancelButtonText: "Cancelar",
                 confirmButtonColor: "blue",
-                cancelButtonColor: "red",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                  saveToLocal("data",JSON.stringify(data));
+                  //Enrutamiento a página del pdf
+                }
             });
         }
     }
@@ -110,6 +113,7 @@ const ReturnClient = () => {
     function validations() {
         if (validationClient() && validationBaskets()) {
             const clientAux = document.getElementById('client').value;
+            const baskets = basketsList;
             const basketsReturn = {}
             for (let i = 0; i < basketsList.length; i++) {
                 const typeBaskets = basketsList[i].typeBaskets;
@@ -120,14 +124,19 @@ const ReturnClient = () => {
             const data = {
                 name: clientAux,
                 basketsReturn: basketsReturn,
-                typeUser: "cliente"
+                typeUser: "cliente",
+                type:1
             }
             api.post('/returnClientProvider', data).then((res, err) => {
                 //Control de errores, falta aclarar el del catch
                 if (res.status === 254) confirmationMessage('error', 'Error', `No se le ha prestado uno o varios tipos canastas que devuelve, por lo tanto no se puede devolver algo que no se presto`, 1)
                 if (res.status === 255 || res.status === 256 || res.status === 257) confirmationMessage('error', 'Error, no se puede generar esta acción', `${res.data.message}`, 1)
                 //Confirmación 
-                if (res.status === 201) confirmationMessage('success', 'Devolución generada correctamente', '', 'entendido', 'green')
+                if(res.status === 201){
+                    data['basketsReturn'] = baskets;
+                    data['movemenType'] = 'Devolución';
+                    confirmationMessage('success', 'Prestamo generado correctamente','',2,data);
+                } 
             })
         }
     }
