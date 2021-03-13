@@ -97,17 +97,16 @@ const DeleteMovementClient = () => {
         })
     }
 
-    async function deleteHistory(e) {
+    function deleteHistory(e) {
         if (passwordSuperUser === e.target.value) {
             console.log('contraseña correcta')
             const data = {
                 password: e.target.value,
                 idHistory: idCard
             }
-            await api.put('/deleteMovementClient',data).then((res,err)=>{
-                console.log(err)
-                console.log(res)
-                if(res.status === 254 || err){
+            api.put('/deleteMovementClient',data).then((res)=>{
+                console.log("Holaaaa");
+                if(res.status === 254){
                     swal.fire({
                         icon: 'error',
                         title: 'Error en el servidor',
@@ -118,16 +117,22 @@ const DeleteMovementClient = () => {
                     swal.fire({
                         icon: 'error',
                         title: 'Error',
-                        text: `${res.data.message}`,
+                        text: `Este movimiento no se puede eliminar`,
                         confirmButtonText: "Entendido"
                     })
                 }else if(res.status === 201){
-                    console.log('Buenaaas')
                     window.location.href = '/deleteMovementClient'
                 }
                 else{
                     console.log('Buenaas, aqui estoy')
                 }
+            }).catch((err)=>{
+                swal.fire({
+                    icon: 'error',
+                    title: 'Error en el servidor',
+                    text: 'Reinicie la página, intente de nuevo o regrese más tarde',
+                    confirmButtonText: "Entendido"
+                })
             })
         }else{
             console.log('No lee la contraseña completa')

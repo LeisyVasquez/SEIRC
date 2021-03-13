@@ -281,7 +281,6 @@ module.exports = {
 
             const date = generatorDate();
             const hour = generatorHour();
-
             Order.findOne({ name: name, typeUser: typeUser }, async function (err, order) {
                 if (!order) {
                     res.status(254).json('No existe la order');  // 254 es provicional (500)
@@ -354,63 +353,57 @@ module.exports = {
         }
     },
 
-    deleteMovementClient: (req, result1) => {
+    deleteMovementClient: (req, res) => {
         try {
             const {password, idHistory} = req.body
-            User.findOne({ $and: [{ typeUser: "superUsuario" }, { password: password }] }, function (err, result) {
-                if (result) {
-                    History.findByIdAndUpdate(idHistory, {
-                        $set: { status: 'inactivo' }
-                    }, function (err, res) {
-                        if (err) {
-                            console.log('error');
-                            result1.status(254)
-                        } else {
-                            const movementType = res.movemenType;
-                            if (movementType === "devolucion") {
-                                const data = {
-                                    "name": res.name,
-                                    "basketsLoan": res.baskets,
-                                    "typeUser": res.typeUser
-                                }; 
-                                console.log(data)
-                                axios.post('http://localhost:8085/api/loanClientProvider', data)
-                                    .then(response => {
-                                        result1.status(response.status)
-                                        console.log(response.status);
-                                        
-                                    })
-                                    .catch(error => {
-                                        console.log(error);
-                                        result1.status(254)
-                                    });
-                            } else{
-                                const data = {
-                                    "name": res.name,
-                                    "basketsReturn": res.baskets,
-                                    "typeUser": res.typeUser
-                                }
-                                console.log(data)
-                                axios.post('http://localhost:8085/api/returnClientProvider', data)
-                                    .then(response => {
-                                        result1.status(response.status)
-                                        console.log(response.status);
-                                    })
-                                    .catch(error => {
-                                        console.log(error);
-                                        result1.status(254)
-                                    });
-                            } 
+            User.findOne({ $and: [{ typeUser: "superUsuario" }, { password: password }] },function(errPassword,resultPassword){
+                if(errPassword) return res.status(254).send('mal');
+                if(resultPassword){
+                    History.findById(idHistory,function(errHistory,resultHistory){
+                        if(errHistory) return res.status(254).send('mal');
+                        if(resultHistory){
+                            const data = {
+                                name: resultHistory.name,
+                                typeUser: resultHistory.typeUser
+                            }
+                            if(resultHistory.movemenType === "devolucion"){
+                                data["basketsLoan"] = resultHistory.baskets;
+                                axios.post('http://localhost:8085/api/loanClientProvider',data).then((response)=>{
+                                    if(response.status===201){
+                                        History.findByIdAndUpdate(idHistory, {$set: { status: 'inactivo' }},function(errUpdate,resultUpdate){
+                                            if(errUpdate)return res.status(254).send('mal');
+                                            return res.status(response.status).send(response.data);
+                                        })
+                                    } else{
+                                        return res.status(response.status).send(response.data);
+                                    }
+                                   
+                                }).catch((error)=>{
+                                    return res.status(254).send('mal');
+                                })
+                            }else {
+                                data["basketsReturn"] = resultHistory.baskets;
+                                axios.post('http://localhost:8085/api/returnClientProvider',data).then((response)=>{
+                                    if(response.status===201){
+                                        History.findByIdAndUpdate(idHistory, {$set: { status: 'inactivo' }},function(errUpdate,resultUpdate){
+                                            if(errUpdate)return res.status(254).send('mal');
+                                            return res.status(response.status).send(response.data);
+                                        })
+                                    }else{
+                                        return res.status(response.status).send(response.data);
+                                    }   
+                                }).catch((error)=>{
+                                    return res.status(254).send('mal');
+                                })
+                            }
                         }
-                    })
+                    });
                 }
-                else result1.status(254)
-                
-            })
-        } catch (e) {
-            console.log(e)
-            result1.status(254)
-        }
+            });
+
+        }catch(e){
+            res.status(254).send('mal');
+        } 
     }, 
 
     getPasswordSuperUser: (req,res) =>{
