@@ -16,6 +16,7 @@ import DeleteMovementProvider from '../pages/DeleteMovementProvider';
 import NotAuthorized from '../pages/NotAuthorized';
 import DisplayByClient from '../pages/DisplayByClient';
 import TypeMovementClient from '../pages/TypeMovementClient';
+import DisplayByProvider from '../pages/DisplayByProvider';
 
 
 function App() {
@@ -37,6 +38,7 @@ function App() {
           <Route path="/notAuthorized" component={NotAuthorized} />
           <Route path="/displayByClient" component={DisplayByClient} />
           <Route path="/typeMovementClient" component={TypeMovementClient} />;
+          <Route path="/displayByProvider" component={DisplayByProvider} />
         </Switch>
       </BrowserRouter>
     </div>

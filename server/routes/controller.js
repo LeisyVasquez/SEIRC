@@ -390,7 +390,7 @@ module.exports = {
                 if (!historys.length !== 0) {
                     return res.send(historys);
                 } else {
-                    return res.status(254).json('No existe el historial');
+                    return res.status(255).json('No existe el historial');
                 }
             })
         } catch (e) {
@@ -401,8 +401,9 @@ module.exports = {
     getGeneralOrder: (req,res)=>{
         try{   
             Order.find({typeUser:req.params.typeUser},function(err,orders){
+                console.log(orders);
                 if(err) return res.status(254).json(e);
-                if(orders.length!==1){
+                if(orders.length!==0){
                     const list = findTotalOneQuantityBaskets(orders);
                     return res.send([orders,findNamesClientsProvidersHistoryOrder(orders),list,findTotalQuantityBaskets(list)]);
                 }else{
