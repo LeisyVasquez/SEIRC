@@ -76,8 +76,13 @@ const DisplayByProvider = () => {
 
     return (
         <div className="displayByClientProvider">
+            
             <Container className="text-center mt-2 my-5 mx-auto p-5 bosy w-70">
-                <h1 className="m-auto py-5">Visualización por proveedores</h1>
+                <Container className="labelTotal w-25 p-3">
+                    Cantidad total: {totalQuantityBaskets}
+                </Container>
+
+                <h1 className="mx-auto py-3 mb-3">Visualización por proveedores</h1>
 
                 {/* Sección de búsqueda*/}
                 <div className="mb-5">

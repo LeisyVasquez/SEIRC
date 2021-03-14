@@ -26,3 +26,9 @@
     box-shadow: 0 14px 25px #70db24;
     transform: translateY(-15px);
   }
+
+  .displayByClientProvider .labelTotal{
+    height: 8vh;
+    margin-left: 78%;
+    background-color:#acff00;
+}
