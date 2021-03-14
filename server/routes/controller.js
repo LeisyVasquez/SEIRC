@@ -51,7 +51,7 @@ function findNamesClientsProviders(orders, clients) {
     return result;
 }
 
-function findNamesClientsProvidersHistory(history) {
+function findNamesClientsProvidersHistoryOrder(history) {
     const namesAux = new Set();
     const finalNames = [];
     for (let i = 0; i < history.length; i++) {
@@ -336,7 +336,7 @@ module.exports = {
                     return res.status(254).json(e)
                 }
                 if (!historys.length !== 0) {
-                    return res.send([historys, findNamesClientsProvidersHistory(historys)]);
+                    return res.send([historys, findNamesClientsProvidersHistoryOrder(historys)]);
                 } else {
                     return res.status(254).json('No existe el historial');
                 }
@@ -356,6 +356,35 @@ module.exports = {
                     return res.send(historys);
                 } else {
                     return res.status(254).json('No existe el historial');
+                }
+            })
+        } catch (e) {
+            res.status(254).json(e) // 254 es provicional (500)
+        }
+    },
+
+    getGeneralOrder: (req,res)=>{
+        try{   
+            Order.find({typeUser:req.params.typeUser},function(err,orders){
+                if(err) return res.status(254).json(e);
+                if(orders.length!==1){
+                    return res.send([orders,findNamesClientsProvidersHistoryOrder(orders)]);
+                }else{
+                    return res.status(255).json('No existe el historial');
+                }
+            })
+        }catch(e){
+            return res.status(254).json(e);
+        }
+    },
+    getOrderByName: (req,res)=>{
+        try {
+            Order.findOne({ name: req.params.name, typeUser: req.params.typeUser}, function (err, order) {
+                if(err) return res.status(254).json(e);
+                if(order.length!==1){
+                    return res.send(order);
+                }else{
+                    return res.status(255).json('No existe el historial');
                 }
             })
         } catch (e) {

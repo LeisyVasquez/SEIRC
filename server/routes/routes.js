@@ -19,7 +19,9 @@ const{
     getGeneralHistory,
     getHistoryByName,
     deleteMovementClientProvider,
-    getPasswordSuperUser
+    getPasswordSuperUser,
+    getGeneralOrder,
+    getOrderByName
 } = require('./controller');
 
 
@@ -41,5 +43,7 @@ router.get('/getGeneralHistory/:typeUser',getGeneralHistory);
 router.get('/getHistoryByName/:typeUser/:name',getHistoryByName);
 router.put('/deleteMovementClientProvider',deleteMovementClientProvider);
 router.get('/getPasswordSuperUser', getPasswordSuperUser);
+router.get('/getGeneralOrder/:typeUser',getGeneralOrder);
+router.get('/getOrderByName/:typeUser/:name',getOrderByName)
 
 module.exports = router;
