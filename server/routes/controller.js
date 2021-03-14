@@ -63,6 +63,25 @@ function findNamesClientsProvidersHistoryOrder(history) {
     return finalNames;
 }
 
+function findTotalOneQuantityBaskets(orders){
+    const finalTotalOneQuantityBaskets = {};
+    for (let i = 0; i < orders.length; i++) {
+        let sumQuantity = 0;
+        for(property in orders[i].consolidated){
+            sumQuantity+=orders[i].consolidated[property];
+        }
+        finalTotalOneQuantityBaskets[orders[i].name] = sumQuantity;
+    }
+    return finalTotalOneQuantityBaskets;
+}
+
+function findTotalQuantityBaskets(obj){
+    let sum = 0;
+    for(property in obj){
+        sum+=obj[property];
+    }
+    return sum;
+}
 
 
 module.exports = {
@@ -368,7 +387,8 @@ module.exports = {
             Order.find({typeUser:req.params.typeUser},function(err,orders){
                 if(err) return res.status(254).json(e);
                 if(orders.length!==1){
-                    return res.send([orders,findNamesClientsProvidersHistoryOrder(orders)]);
+                    const list = findTotalOneQuantityBaskets(orders);
+                    return res.send([orders,findNamesClientsProvidersHistoryOrder(orders),list,findTotalQuantityBaskets(list)]);
                 }else{
                     return res.status(255).json('No existe el historial');
                 }
@@ -382,7 +402,7 @@ module.exports = {
             Order.findOne({ name: req.params.name, typeUser: req.params.typeUser}, function (err, order) {
                 if(err) return res.status(254).json(e);
                 if(order.length!==1){
-                    return res.send(order);
+                    return res.send([order]);
                 }else{
                     return res.status(255).json('No existe el historial');
                 }

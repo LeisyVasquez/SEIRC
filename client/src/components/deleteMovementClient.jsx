@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import api from '../axios/axios';
 import { Container, Button, Modal } from "react-bootstrap";
 import '../styles/deleteClient.css';
-import { getFromLocal } from '../functions/localStorage';
 import swal from "sweetalert2";
 
 const DeleteMovementClient = () => {
@@ -32,7 +31,6 @@ const DeleteMovementClient = () => {
                 })
             }
         })
-
     }
     const handleCloseDelete = () => setDeleteMovement(false);
 
@@ -53,7 +51,6 @@ const DeleteMovementClient = () => {
         setListNamesClientsSet(clientSetAux)
     }
 
-    let name;
 
     const getGeneralHistory = () => {
         api.get(`/getGeneralHistory/cliente`).then((res, err) => {
@@ -67,7 +64,7 @@ const DeleteMovementClient = () => {
 
 
     const nameClient = async (e) => {
-        name = e.target.value;
+        const name = e.target.value;
         if (listNamesClientsSet.has(name)) {
             api.get(`/getHistoryByName/cliente/${name}`).then((res, err) => {
                 if (res) console.log(res.data)
