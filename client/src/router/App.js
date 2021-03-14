@@ -7,12 +7,15 @@ import ThirdPartyRegistration from '../pages/ThirdPartyRegistration';
 import AdminRegistration from '../pages/AdminRegistration'
 import BasketsRegistration from '../pages/BasketsRegistration';
 import LoanReturnClient from '../pages/LoanReturnClient';
+import LoanReturnProvider from '../pages/LoanReturnProvider'
 import HomeAdmin from '../pages/HomeAdmin';
 import HomeSuperUser from '../pages/HomeSuperUser';
 import HomeThirdParty from '../pages/HomeThirdParty';
+import DeleteMovementClient from '../pages/DeleteMovementClient';
+import DeleteMovementProvider from '../pages/DeleteMovementProvider';
 import NotAuthorized from '../pages/NotAuthorized';
+import DisplayByClient from '../pages/DisplayByClient';
 import PdfPreview from '../pages/PdfPreview'
-
 
 
 function App() {
@@ -25,10 +28,14 @@ function App() {
           <Route path="/adminRegistration" component={AdminRegistration} />
           <Route path="/basketsRegistration" component={BasketsRegistration} />
           <Route path="/loanReturnClient" component={LoanReturnClient} />
+          <Route path="/loanReturnProvider" component={LoanReturnProvider} />
           <Route path="/homeAdmin" component={HomeAdmin} />
           <Route path="/homeSuperUser" component={HomeSuperUser} />
           <Route path="/homeThirdParty" component={HomeThirdParty} />
+          <Route path="/deleteMovementClient" component={DeleteMovementClient} />
+          <Route path="/deleteMovementProvider" component={DeleteMovementProvider} />
           <Route path="/notAuthorized" component={NotAuthorized} />
+          <Route path="/displayByClient" component={DisplayByClient} />
         </Switch>
       </BrowserRouter>
     </div>

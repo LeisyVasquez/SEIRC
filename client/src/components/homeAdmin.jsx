@@ -1,10 +1,22 @@
-import React from "react";
-
-import { Container } from "react-bootstrap";
+import React, {useEffect} from "react";
+import api from '../axios/axios';
+import { Container, Form } from "react-bootstrap";
 import '../styles/home.css';
-
+import {getFromLocal} from '../functions/localStorage'
 const HomeAdmin = () => {
+    useEffect(() => {
+        comprobation();
+    }, []);
     
+    function comprobation(){
+        api.post('/routeComprobation',{typeUser:['administrador']},{headers:{'authorization':`Bearer ${getFromLocal('tokenUser')}`}})
+        .then((res)=>{
+            if(res.status===201) window.location.href = '/notAuthorized'
+        }).catch((err)=>{
+            window.location.href = '/'
+        });
+    }
+
     return (
         <div className="homeAdmin" >
             <Container className="text-center mt-2 mx-auto my-5 p-5 bosy w-50" >

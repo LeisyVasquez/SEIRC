@@ -18,6 +18,7 @@ const Login = () => {
       
     }
 
+    
     const sendData = () =>{
         console.log(userData)
         const data = {
@@ -53,7 +54,17 @@ const Login = () => {
                 
             } else if(res.status === 200){
                 saveToLocal('tokenUser',res.data.token)
-                console.log(res.data.token)
+                switch(res.data.role){
+                    case "cliente" || "proveedor" || "clienteProveedor":
+                        window.location.href = 'http://localhost:3000/homeThirdParty'
+                    break;
+                    case "administrador":
+                        window.location.href = 'http://localhost:3000/homeAdmin'
+                    break;
+                    case "superUsuario":
+                        window.location.href = 'http://localhost:3000/homeSuperUser'
+                    break;
+                }
             }
         })
     }

@@ -2,17 +2,17 @@ import React from 'react';
 
 import HeaderAdmin from '../components/base/headerAdmin'
 import Footer from '../components/base/footer'
-import NotAuthorized from '../components/notAuthorized'
+import DeleteMovementClient from '../components/deleteMovementClient'
 
 
-const notAuthorized = () => {
+const deleteMovementClient = () => {
     return (
         <div>
-            <Header />
-            <NotAuthorized />
+            <HeaderAdmin />
+            <DeleteMovementClient />
             <Footer />
         </div>
     )
 }
 
-export default notAuthorized;
+export default deleteMovementClient;

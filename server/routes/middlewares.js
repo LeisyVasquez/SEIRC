@@ -7,8 +7,9 @@ module.exports = {
     /*Nos permite comprobar la validez del token si este es válido se guarda el 
     payload de este en el req */
     isAuth: (req,res, next)=>{
-        if(!req.headers.autorization) return res.status(403).send({ message: 'No tienes autorización' });
-        const token = req.headers.autorization.split(' ')[1];
+        //console.log(req.headers.authorization);
+        if(!req.headers.authorization) return res.status(403).send({ message: 'No tienes autorización' });
+        const token = req.headers.authorization.split(' ')[1];
         try{
             const payload = jwt.decode(token,process.env.SECRETJWT);
             req.user = payload;

@@ -2,17 +2,17 @@ import React from 'react';
 
 import HeaderAdmin from '../components/base/headerAdmin'
 import Footer from '../components/base/footer'
-import NotAuthorized from '../components/notAuthorized'
+import LoanReturnProvider from '../components/loanReturnProvider'
 
 
-const notAuthorized = () => {
+const loanReturnProvider = () => {
     return (
         <div>
-            <Header />
-            <NotAuthorized />
+            <HeaderAdmin />
+            <LoanReturnProvider/>
             <Footer />
         </div>
     )
 }
 
-export default notAuthorized;
+export default loanReturnProvider;

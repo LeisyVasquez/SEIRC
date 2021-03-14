@@ -13,16 +13,10 @@ const OrderSchema = new Schema({
         required: [true, 'El tipo de usuario es necesario'],
         enum : ['cliente','proveedor']        
     },
-    consolidated: {     
-    },
-    actions:{
-        income: {
-            
-        },
-        expenses: {
-            
-        }
+    consolidated: {  
+       
     }
+    
 });
 
 module.exports = model('Order', OrderSchema);
