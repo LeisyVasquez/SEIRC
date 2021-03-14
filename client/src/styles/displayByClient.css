@@ -1,16 +1,10 @@
-.deleteClient  .container{
+.displayByClient  .container{
     background-color: white;
     border-radius: 5px;
 }
 
-/*Botón eliminar*/
-.deleteClient .boton4{
-    width: 3vh;
-    height: 4vh;
-    margin-left: 90%;
-}
 
-.deleteClient .iconAdd{
+.displayByClient .iconAdd{
     width: 5vh;
     height: 5vh;
     border-radius: 10px;
@@ -18,7 +12,7 @@
     background-color:#dddddd;
 }
 
-.deleteClient .card {
+.displayByClient .card {
     position: relative;
     margin: 0.5rem 0 1rem 0;
     background-color: #fff;
@@ -28,7 +22,7 @@
     border-radius: 2px;
   }
 
-  .deleteClient .card:hover {
+  .displayByClient .card:hover {
     box-shadow: 0 14px 25px #70db24;
     transform: translateY(-15px);
   }
