@@ -1,6 +1,6 @@
 import React from 'react';
 
-import HeaderAdmin from '../components/base/headerAdmin'
+import Header from '../components/base/header'
 import Footer from '../components/base/footer'
 import NotAuthorized from '../components/notAuthorized'
 

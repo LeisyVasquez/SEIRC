@@ -36,6 +36,7 @@ function App() {
           <Route path="/deleteMovementProvider" component={DeleteMovementProvider} />
           <Route path="/notAuthorized" component={NotAuthorized} />
           <Route path="/displayByClient" component={DisplayByClient} />
+          <Route path="/pdfPreview" component={PdfPreview} />
         </Switch>
       </BrowserRouter>
     </div>
