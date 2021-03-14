@@ -502,18 +502,30 @@ module.exports = {
             const dateChange = date.split('-')[0]+"/"+date.split('-')[1]+"/"+date.split('-')[2];
 
             History.find({typeUser:typeUser,date:dateChange},(err,historys)=>{
-                if(err) return res.status(254).send(err);
+                if(err) { return res.status(254).send(err);}
                 if(historys.length!==0){
                     const result = findSumQuantityByTypeMovement(historys);
-                    return res.send(result);
-                }else return res.status(254).send('Historys no encontradas');
+                    return res.send([{id:1,date:dateChange,typeMovement:'Préstamo',total:result[0]},{id:2,date:dateChange,typeMovement:'Devolución',total:result[1]}]);
+                }else return res.status(255).send('Historys no encontradas');
             });
         }catch(e){
+            console.log("hola"); 
             res.status(254).send(e);
         }
     },
     getQuantityTotalByMovement:(req,res)=>{
-
+        try{
+            const{typeUser} = req.params;
+            History.find({typeUser:typeUser},(err,historys)=>{
+                if(err) return res.status(254).send(err);
+                if(historys.length!==0){
+                    const result = findSumQuantityByTypeMovement(historys);
+                    return res.send([{id:1,date:generatorDate(),typeMovement:'Préstamo',total:result[0]},{id:2,date:generatorDate(),typeMovement:'Devolución',total:result[1]}]);
+                }else return res.status(255).send('Historys no encontradas');
+            });
+        }catch(e){
+            res.status(254).send(e);
+        }
     }
 }
 

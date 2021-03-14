@@ -22,7 +22,8 @@ const{
     getPasswordSuperUser,
     getGeneralOrder,
     getOrderByName,
-    getQuantityByTypeMovement
+    getQuantityByTypeMovement,
+    getQuantityTotalByMovement
 } = require('./controller');
 
 
@@ -47,5 +48,6 @@ router.get('/getPasswordSuperUser', getPasswordSuperUser);
 router.get('/getGeneralOrder/:typeUser',getGeneralOrder);
 router.get('/getOrderByName/:typeUser/:name',getOrderByName)
 router.get('/getQuantityByTypeMovement/:typeUser/:date',getQuantityByTypeMovement)
+router.get('/getQuantityTotalByMovement/:typeUser',getQuantityTotalByMovement);
 
 module.exports = router;

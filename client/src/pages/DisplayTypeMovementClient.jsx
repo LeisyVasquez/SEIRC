@@ -2,17 +2,17 @@ import React from 'react';
 
 import Header from '../components/base/header';
 import Footer from '../components/base/footer';
-import TypeMovementClient from '../components/typeMovementClient';
+import DisplayTypeMovementClient from '../components/displayTypeMovementClient';
 
 
-const typeMovementClient = () => {
+const displayTypeMovementClient = () => {
     return (
         <div>
             <Header />
-            <TypeMovementClient/>
+            <DisplayTypeMovementClient/>
             <Footer />
         </div>
     )
 }
 
-export default typeMovementClient;
+export default displayTypeMovementClient;
