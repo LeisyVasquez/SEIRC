@@ -21,7 +21,8 @@ const{
     deleteMovementClientProvider,
     getPasswordSuperUser,
     getGeneralOrder,
-    getOrderByName
+    getOrderByName,
+    getQuantityByTypeMovement
 } = require('./controller');
 
 
@@ -45,5 +46,6 @@ router.put('/deleteMovementClientProvider',deleteMovementClientProvider);
 router.get('/getPasswordSuperUser', getPasswordSuperUser);
 router.get('/getGeneralOrder/:typeUser',getGeneralOrder);
 router.get('/getOrderByName/:typeUser/:name',getOrderByName)
+router.get('/getQuantityByTypeMovement/:typeUser/:date',getQuantityByTypeMovement)
 
 module.exports = router;

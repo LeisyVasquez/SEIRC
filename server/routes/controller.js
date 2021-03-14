@@ -18,15 +18,19 @@ function encript(obj) {
 function generatorDate() {
     var d = new Date();
     month = '' + (d.getMonth() + 1),
-        day = '' + d.getDate(),
-        year = d.getFullYear();
-    return day + "/" + month + "/" + year;
+    day = '' + d.getDate(),
+    year = d.getFullYear();
+    if(day<10) day = "0"+day;
+    if(month<10) month = "0"+month;
+    return day+"/"+month+"/"+year;
 }
 
 function generatorHour() {
     var d = new Date();
     hours = '' + d.getHours(),
-        minutes = '' + d.getMinutes();
+    minutes = '' + d.getMinutes();
+    if(hours<10) hours="0"+hours;
+    if(minutes<10) minutes="0"+minutes;
     return hours + ":" + minutes;
 }
 
@@ -81,6 +85,18 @@ function findTotalQuantityBaskets(obj){
         sum+=obj[property];
     }
     return sum;
+}
+
+function findSumQuantityByTypeMovement(historys){
+    let sumLoan = 0;
+    let sumReturn = 0;
+    for(let i = 0;i<historys.length;i++){
+        for(property in historys[i].baskets){
+            if(historys[i].movemenType === "prestamo") sumLoan+= historys[i].baskets[property];
+            if(historys[i].movemenType === "devolucion") sumReturn+= historys[i].baskets[property];
+        }
+    }
+    return [sumLoan,sumReturn];
 }
 
 
@@ -416,7 +432,7 @@ module.exports = {
         try {
             const {password, idHistory} = req.body
             User.findOne({ $and: [{ typeUser: "superUsuario" }, { password: password }] },function(errPassword,resultPassword){
-                if(errPassword) return res.status(254).send('mal');
+                if(errPassword) return res.status(254).send('bad');
                 if(resultPassword){
                     History.findById(idHistory,function(errHistory,resultHistory){
                         if(errHistory) return res.status(254).send('mal');
@@ -431,7 +447,7 @@ module.exports = {
                                 axios.post('http://localhost:8085/api/loanClientProvider',data).then((response)=>{
                                     if(response.status===201){
                                         History.findByIdAndUpdate(idHistory, {$set: { status: 'inactivo' }},function(errUpdate,resultUpdate){
-                                            if(errUpdate)return res.status(254).send('mal');
+                                            if(errUpdate)return res.status(254).send('bad');
                                             return res.status(response.status).send(response.data);
                                         })
                                     } else{
@@ -439,21 +455,21 @@ module.exports = {
                                     }
                                    
                                 }).catch((error)=>{
-                                    return res.status(254).send('mal');
+                                    return res.status(254).send('bad');
                                 })
                             }else {
                                 data["basketsReturn"] = resultHistory.baskets;
                                 axios.post('http://localhost:8085/api/returnClientProvider',data).then((response)=>{
                                     if(response.status===201){
                                         History.findByIdAndUpdate(idHistory, {$set: { status: 'inactivo' }},function(errUpdate,resultUpdate){
-                                            if(errUpdate)return res.status(254).send('mal');
+                                            if(errUpdate)return res.status(254).send('bad');
                                             return res.status(response.status).send(response.data);
                                         })
                                     }else{
                                         return res.status(response.status).send(response.data);
                                     }   
                                 }).catch((error)=>{
-                                    return res.status(254).send('mal');
+                                    return res.status(254).send('bad');
                                 })
                             }
                         }
@@ -475,8 +491,28 @@ module.exports = {
             })
         }catch(e){
             console.log(e);
-            res.status(254)
+            res.status(254).send('bad')
         }
+    },
+
+    getQuantityByTypeMovement: (req,res)=>{
+        try{
+            const{typeUser,date} = req.params;
+            const dateChange = date.split('-')[0]+"/"+date.split('-')[1]+"/"+date.split('-')[2];
+
+            History.find({typeUser:typeUser,date:dateChange},(err,historys)=>{
+                if(err) return res.status(254).send(err);
+                if(historys.length!==0){
+                    const result = findSumQuantityByTypeMovement(historys);
+                    return res.send(result);
+                }else return res.status(254).send('Historys no encontradas');
+            });
+        }catch(e){
+            res.status(254).send(e);
+        }
+    },
+    getQuantityTotalByMovement:(req,res)=>{
+
     }
 }
 
