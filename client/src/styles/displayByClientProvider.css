@@ -1,10 +1,10 @@
-.displayByClient  .container{
+.displayByClientProvider  .container{
     background-color: white;
     border-radius: 5px;
 }
 
 
-.displayByClient .iconAdd{
+.displayByClientProvider .iconAdd{
     width: 5vh;
     height: 5vh;
     border-radius: 10px;
@@ -12,7 +12,7 @@
     background-color:#dddddd;
 }
 
-.displayByClient .card {
+.displayByClientProvider  .card {
     position: relative;
     margin: 0.5rem 0 1rem 0;
     background-color: #fff;
@@ -22,7 +22,7 @@
     border-radius: 2px;
   }
 
-  .displayByClient .card:hover {
+  .displayByClientProvider  .card:hover {
     box-shadow: 0 14px 25px #70db24;
     transform: translateY(-15px);
   }
