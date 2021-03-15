@@ -510,19 +510,31 @@ module.exports = {
             const { typeUser, date } = req.params;
             const dateChange = date.split('-')[0] + "/" + date.split('-')[1] + "/" + date.split('-')[2];
 
-            History.find({ typeUser: typeUser, date: dateChange }, (err, historys) => {
-                if (err) return res.status(254).send(err);
-                if (historys.length !== 0) {
+            History.find({typeUser:typeUser,date:dateChange},(err,historys)=>{
+                if(err) { return res.status(254).send(err);}
+                if(historys.length!==0){
                     const result = findSumQuantityByTypeMovement(historys);
-                    return res.send(result);
-                } else return res.status(254).send('Historys no encontradas');
+                    return res.send([{id:1,date:dateChange,typeMovement:'Préstamo',total:result[0]},{id:2,date:dateChange,typeMovement:'Devolución',total:result[1]}]);
+                }else return res.status(255).send('Historys no encontradas');
             });
-        } catch (e) {
+        }catch(e){
+            console.log("hola"); 
             res.status(254).send(e);
         }
     },
-    getQuantityTotalByMovement: (req, res) => {
-
+    getQuantityTotalByMovement:(req,res)=>{
+        try{
+            const{typeUser} = req.params;
+            History.find({typeUser:typeUser},(err,historys)=>{
+                if(err) return res.status(254).send(err);
+                if(historys.length!==0){
+                    const result = findSumQuantityByTypeMovement(historys);
+                    return res.send([{id:1,date:generatorDate(),typeMovement:'Préstamo',total:result[0]},{id:2,date:generatorDate(),typeMovement:'Devolución',total:result[1]}]);
+                }else return res.status(255).send('Historys no encontradas');
+            });
+        }catch(e){
+            res.status(254).send(e);
+        }
     },
 
     getSumBasketsHistory: (req, res) => {
@@ -565,16 +577,13 @@ module.exports = {
                 const arrayCodesBaskest = Object.keys(sumLoan); 
                 const arrayNamesBasket = await getNameBasketsByCode(arrayCodesBaskest); 
                 console.log(arrayNamesBasket)
-                
-                
+            
                 for(let i = 0; i<arrayCodesBaskest.length; i++){
                     result.push({codeBasket:arrayNamesBasket[i], sumLoan:sumLoan[arrayCodesBaskest[i]], sumReturn: sumReturn[arrayCodesBaskest[i]], debt:sumLoan[arrayCodesBaskest[i]]-sumReturn[arrayCodesBaskest[i]]}) 
                 }
-
                 return res.status(200).json(result);
             })
         } catch (e) {return res.status(254).send(e)}
-        
     }
 }
 

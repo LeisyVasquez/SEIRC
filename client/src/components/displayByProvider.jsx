@@ -58,7 +58,13 @@ const DisplayByProvider = () => {
                     saveProvider(res.data[1]);
                 }   
             })
-            .catch(err => console.log(err))
+            .catch(err => {
+                swal.fire({
+                    icon: 'error',
+                    title: 'Error en el servidor',
+                    text: 'Por favor vuelva más tarde',
+                  })
+            })
     }
 
     const nameProvider = (e) => {
@@ -147,7 +153,7 @@ const DisplayByProvider = () => {
                                     <div className="h-25">
                                         <h5 className="card-title" id="nombre">{item.name}</h5>
                                     </div>
-                                    <p className="card-text">Debe en total {listQuantityBaskets[item.name]} canastillas</p>
+                                    <p className="card-text">Le debes en total {listQuantityBaskets[item.name]} canastillas</p>
                                     <button type="button" className="iconAdd mr-2" value={item._id} onClick={handleShowBaskets}>+</button>
                                 </div>
                             </div>
