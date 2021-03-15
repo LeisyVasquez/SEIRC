@@ -84,7 +84,7 @@ const LoanClient = () => {
             }).then((result) => {
                 if (result.isConfirmed) {
                   saveToLocal("data",JSON.stringify(data));
-                  //Enrutamiento a página del pdf
+                  window.location.href = "/pdfPreview";
                 }
             });
         }

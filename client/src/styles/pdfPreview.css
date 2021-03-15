@@ -3,13 +3,12 @@
     border-radius: 5px;
 }
 
-
 .pdfPreview  .card{
     display: inline-block;
     width: 45%;
 }
 
-.pdfPreview  .card:nth-child(2){
+.pdfPreview  .card:nth-child(1){
     margin-right: 1vw;
 }
 
