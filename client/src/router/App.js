@@ -17,7 +17,9 @@ import NotAuthorized from '../pages/NotAuthorized';
 import DisplayByClient from '../pages/DisplayByClient';
 import DisplayTypeMovementClient from '../pages/DisplayTypeMovementClient';
 import DisplayByProvider from '../pages/DisplayByProvider';
+import DisplayByBaskets from '../pages/DisplayByBaskets';
 import DisplayTypeMovementProvider from '../pages/DisplayTypeMovementProvider';
+import PdfPreview from '../pages/PdfPreview';
 
 
 function App() {
@@ -41,6 +43,8 @@ function App() {
           <Route path="/displayTypeMovementClient" component={DisplayTypeMovementClient} />;
           <Route path="/displayTypeMovementProvider" component={DisplayTypeMovementProvider} />;
           <Route path="/displayByProvider" component={DisplayByProvider} />
+          <Route path="/displayByBaskets" component={DisplayByBaskets} />
+          <Route path="/pdfPreview" component={PdfPreview} />
         </Switch>
       </BrowserRouter>
     </div>
