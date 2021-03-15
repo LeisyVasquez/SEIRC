@@ -69,11 +69,9 @@ const DeleteMovementProvider = () => {
     const nameClient = async (e) => {
         name = e.target.value;
         if (listNamesProvidersSet.has(name)) {
-            api.get(`/getHistoryByName/proveedor/${name}`).then((res, err) => {
-                if (res) console.log(res.data)
-                else console.log(err)
-                setHistoryData(res.data);
-            })
+            api.get(`/getHistoryByName/proveedor/${name}`)
+            .then(res => setHistoryData(res.data))
+            .catch(err => console.log(err))
         } else {
             getGeneralHistory()
         }
@@ -104,7 +102,7 @@ const DeleteMovementProvider = () => {
                 password: e.target.value,
                 idHistory: idCard
             }
-            api.put('/deleteMovementClientProvider',data).then((res)=>{
+            api.put('/deleteMovementClientProvider',data).then(res=>{
                 if(res.status === 254){
                     swal.fire({
                         icon: 'error',
@@ -125,7 +123,7 @@ const DeleteMovementProvider = () => {
                 else{
                     console.log('Buenaas, aqui estoy')
                 }
-            }).catch((err)=>{
+            }).catch(err=>{
                 swal.fire({
                     icon: 'error',
                     title: 'Error en el servidor',
