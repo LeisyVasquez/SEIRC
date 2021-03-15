@@ -2,17 +2,17 @@ import React from 'react';
 
 import HeaderAdmin from "../components/base/headerAdmin";
 import Footer from "../components/base/footer";
-import DisplayByClient from "../components/displayByClient";
+import DisplayByBaskets from "../components/displayByBaskets";
 
 
-const displayByClient = () => {
+const displayByBaskets = () => {
     return (
         <div>
             <HeaderAdmin/>
-            <DisplayByClient />
+            <DisplayByBaskets />
             <Footer/>
         </div>
     )
 }
 
-export default displayByClient; 
+export default displayByBaskets; 

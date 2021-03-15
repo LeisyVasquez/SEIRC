@@ -2,17 +2,17 @@ import React from 'react';
 
 import HeaderAdmin from "../components/base/headerAdmin";
 import Footer from "../components/base/footer";
-import DisplayByClient from "../components/displayByClient";
+import DisplayByProvider from "../components/displayByProvider";
 
 
-const displayByClient = () => {
+const displayByProvider = () => {
     return (
         <div>
             <HeaderAdmin/>
-            <DisplayByClient />
+            <DisplayByProvider />
             <Footer/>
         </div>
     )
 }
 
-export default displayByClient; 
+export default displayByProvider; 
