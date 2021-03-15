@@ -17,6 +17,7 @@ import NotAuthorized from '../pages/NotAuthorized';
 import DisplayByClient from '../pages/DisplayByClient';
 import TypeMovementClient from '../pages/TypeMovementClient';
 import DisplayByProvider from '../pages/DisplayByProvider';
+import DisplayByBaskets from '../pages/DisplayByBaskets';
 
 
 function App() {
@@ -39,6 +40,7 @@ function App() {
           <Route path="/displayByClient" component={DisplayByClient} />
           <Route path="/typeMovementClient" component={TypeMovementClient} />;
           <Route path="/displayByProvider" component={DisplayByProvider} />
+          <Route path="/displayByBaskets" component={DisplayByBaskets} />
         </Switch>
       </BrowserRouter>
     </div>
