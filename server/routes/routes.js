@@ -22,13 +22,9 @@ const{
     getPasswordSuperUser,
     getGeneralOrder,
     getOrderByName,
-<<<<<<< HEAD
     getQuantityByTypeMovement, 
-    getSumBasketsHistory
-=======
-    getQuantityByTypeMovement,
+    getSumBasketsHistory,
     getQuantityTotalByMovement
->>>>>>> main
 } = require('./controller');
 
 

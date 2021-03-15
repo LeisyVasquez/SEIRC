@@ -84,6 +84,7 @@ const LoanClient = () => {
             }).then((result) => {
                 if (result.isConfirmed) {
                   saveToLocal("data",JSON.stringify(data));
+                  document.getElementById("form").reset();
                   window.location.href = "/pdfPreview";
                 }
             });
@@ -174,7 +175,7 @@ const LoanClient = () => {
             api.post('/loanClientProvider',data).then((res,err)=>{
                 if(err || res.status === 254) confirmationMessage('error', 'Error en el servidor', `Por favor intente de nuevo o regrese más tarde`, 1)
                 if(res.status === 201){
-                    data['basketsLoan'] = baskets;
+                    data['basketList'] = baskets;
                     data['movemenType'] = 'Préstamo';
                     confirmationMessage('success', 'Prestamo generado correctamente','',2,data);
                 } 

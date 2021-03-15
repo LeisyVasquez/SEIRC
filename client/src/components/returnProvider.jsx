@@ -79,7 +79,8 @@ const ReturnProvider = () => {
             }).then((result) => {
                 if (result.isConfirmed) {
                   saveToLocal("data",JSON.stringify(data));
-                  //Enrutamiento a página del pdf
+                  document.getElementById("form").reset();
+                  window.location.href = "/pdfPreview";
                 }
             });
         }
@@ -133,7 +134,7 @@ const ReturnProvider = () => {
                 if (res.status === 255 || res.status === 256 || res.status === 257) confirmationMessage('error', 'Error, no se puede generar esta acción', `${res.data.message}`, 1)
                 //Confirmación 
                 if(res.status === 201){
-                    data['basketsReturn'] = baskets;
+                    data['basketList'] = baskets;
                     data['movemenType'] = 'Devolución';
                     confirmationMessage('success', 'Prestamo generado correctamente','',2,data);
                 } 
