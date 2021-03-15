@@ -21,10 +21,11 @@ const{
     deleteMovementClientProvider,
     getPasswordSuperUser,
     getGeneralOrder,
-    getOrderByName,
-    getQuantityByTypeMovement, 
-    getSumBasketsHistory,
-    getQuantityTotalByMovement
+    getOrderByName, 
+    getQuantityTotalByMovement,
+    getQuantityByTypeMovement,
+    getSumTotalBasketsHistory,
+    sumBasketsHistoryByData
 } = require('./controller');
 
 
@@ -49,7 +50,8 @@ router.get('/getPasswordSuperUser', getPasswordSuperUser);
 router.get('/getGeneralOrder/:typeUser',getGeneralOrder);
 router.get('/getOrderByName/:typeUser/:name',getOrderByName)
 router.get('/getQuantityByTypeMovement/:typeUser/:date',getQuantityByTypeMovement)
-router.get('/getSumBasketsHistory',getSumBasketsHistory)
 router.get('/getQuantityTotalByMovement/:typeUser',getQuantityTotalByMovement);
+router.get('/getSumTotalBasketsHistory/:typeUser',getSumTotalBasketsHistory)
+router.post('/sumBasketsHistoryByData',sumBasketsHistoryByData)
 
 module.exports = router;

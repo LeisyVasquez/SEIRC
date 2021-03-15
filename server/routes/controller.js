@@ -99,13 +99,12 @@ function findSumQuantityByTypeMovement(historys) {
     return [sumLoan, sumReturn];
 }
 
-async function getNameBasketsByCode(arrayCodesBaskest){
-    const basketNamesAndCodes = []; 
-    for(let i = 0 ; i<arrayCodesBaskest.length; i++){
-        const result = await Baskets.findOne({code:arrayCodesBaskest[i]}); 
-        basketNamesAndCodes.push(`${result.code} - ${result.name}`);
+async function getNameBasketsByCode(arrayCodeBaskets) {
+    const basketNamesAndCodes = [];
+    for (let i = 0; i < arrayCodeBaskets.length; i++) {
+        const result = await Baskets.findOne({ code: arrayCodeBaskets[i] });
+        basketNamesAndCodes.push(`${result.code}-${result.name}`);
     }
-
     return basketNamesAndCodes
 }
 
@@ -510,56 +509,57 @@ module.exports = {
             const { typeUser, date } = req.params;
             const dateChange = date.split('-')[0] + "/" + date.split('-')[1] + "/" + date.split('-')[2];
 
-            History.find({typeUser:typeUser,date:dateChange},(err,historys)=>{
-                if(err) { return res.status(254).send(err);}
-                if(historys.length!==0){
+            History.find({ typeUser: typeUser, date: dateChange }, (err, historys) => {
+                if (err) { return res.status(254).send(err); }
+                if (historys.length !== 0) {
                     const result = findSumQuantityByTypeMovement(historys);
-                    return res.send([{id:1,date:dateChange,typeMovement:'Préstamo',total:result[0]},{id:2,date:dateChange,typeMovement:'Devolución',total:result[1]}]);
-                }else return res.status(255).send('Historys no encontradas');
+                    return res.send([{ id: 1, date: dateChange, typeMovement: 'Préstamo', total: result[0] }, { id: 2, date: dateChange, typeMovement: 'Devolución', total: result[1] }]);
+                } else return res.status(255).send('Historys no encontradas');
             });
-        }catch(e){
-            console.log("hola"); 
+        } catch (e) {
+            console.log("hola");
             res.status(254).send(e);
         }
     },
-    getQuantityTotalByMovement:(req,res)=>{
-        try{
-            const{typeUser} = req.params;
-            History.find({typeUser:typeUser},(err,historys)=>{
-                if(err) return res.status(254).send(err);
-                if(historys.length!==0){
+    getQuantityTotalByMovement: (req, res) => {
+        try {
+            const { typeUser } = req.params;
+            History.find({ typeUser: typeUser }, (err, historys) => {
+                if (err) return res.status(254).send(err);
+                if (historys.length !== 0) {
                     const result = findSumQuantityByTypeMovement(historys);
-                    return res.send([{id:1,date:generatorDate(),typeMovement:'Préstamo',total:result[0]},{id:2,date:generatorDate(),typeMovement:'Devolución',total:result[1]}]);
-                }else return res.status(255).send('Historys no encontradas');
+                    return res.send([{ id: 1, date: generatorDate(), typeMovement: 'Préstamo', total: result[0] }, { id: 2, date: generatorDate(), typeMovement: 'Devolución', total: result[1] }]);
+                } else return res.status(255).send('Historys no encontradas');
             });
-        }catch(e){
+        } catch (e) {
             res.status(254).send(e);
         }
     },
 
-    getSumBasketsHistory: (req, res) => {
+    getSumTotalBasketsHistory: (req, res) => {
         try {
-            History.find(async(err, history) => {
-                if (err) console.log(err)
-                //const codesBasketsByHistory = [];
+            History.find(async (err, history) => {
+
+                if (err) return res.status(254).send(err)
+
+                const typeUser = req.params.typeUser;
+                const basketsHistory = [];
+                for (let i = 0; i < history.length; i++) {
+                    basketsHistory.push({ typeUser: history[i].typeUser, movementType: history[i].movemenType, baskets: history[i].baskets })
+                }
                 const sumLoan = {}
                 const sumReturn = {}
-                let basketsHistory = [];
-                const result = [];
-                for (let i = 0; i < history.length; i++) {
-                    basketsHistory.push({ movementType: history[i].movemenType, baskets: history[i].baskets })
-                }
-
                 for (let i = 0; i < basketsHistory.length; i++) {
                     const objectBaskets = basketsHistory[i].baskets;
-                    if (basketsHistory[i].movementType === "prestamo") {
+
+                    if (basketsHistory[i].movementType === "prestamo" && basketsHistory[i].typeUser === typeUser) {
                         for (const propertyBasketsHistory in objectBaskets) {
                             if (sumLoan.hasOwnProperty(propertyBasketsHistory))
                                 //Las claves de un objeto "se pueden entender como una variable"
                                 sumLoan[propertyBasketsHistory] += objectBaskets[propertyBasketsHistory]
                             else sumLoan[propertyBasketsHistory] = objectBaskets[propertyBasketsHistory]
                         }
-                    } else {
+                    } else if (basketsHistory[i].typeUser === typeUser) {
                         for (const propertyBasketsHistory in objectBaskets) {
                             if (sumReturn.hasOwnProperty(propertyBasketsHistory))
                                 sumReturn[propertyBasketsHistory] += objectBaskets[propertyBasketsHistory]
@@ -571,19 +571,75 @@ module.exports = {
                 //Agregar ceros a las devoluciones necesarias. 
                 for (const propertyBasketsLoan in sumLoan) {
                     if (!sumReturn.hasOwnProperty(propertyBasketsLoan))
-                    sumReturn[propertyBasketsLoan] = 0;
+                        sumReturn[propertyBasketsLoan] = 0;
                 }
 
-                const arrayCodesBaskest = Object.keys(sumLoan); 
-                const arrayNamesBasket = await getNameBasketsByCode(arrayCodesBaskest); 
-                console.log(arrayNamesBasket)
-            
-                for(let i = 0; i<arrayCodesBaskest.length; i++){
-                    result.push({codeBasket:arrayNamesBasket[i], sumLoan:sumLoan[arrayCodesBaskest[i]], sumReturn: sumReturn[arrayCodesBaskest[i]], debt:sumLoan[arrayCodesBaskest[i]]-sumReturn[arrayCodesBaskest[i]]}) 
+                const arrayCodeBaskets = Object.keys(sumLoan);
+                const arrayNamesBasket = await getNameBasketsByCode(arrayCodeBaskets);
+
+                const arrayOfObjectsBaskets = [];
+                for (let i = 0; i < arrayCodeBaskets.length; i++) {
+                    arrayOfObjectsBaskets.push({ codeBasket: arrayNamesBasket[i], sumLoan: sumLoan[arrayCodeBaskets[i]], sumReturn: sumReturn[arrayCodeBaskets[i]], debt: sumLoan[arrayCodeBaskets[i]] - sumReturn[arrayCodeBaskets[i]] })
                 }
-                return res.status(200).json(result);
+
+                return res.status(200).json({ arrayTable: arrayOfObjectsBaskets, basketNamesAndCodes: arrayNamesBasket });
             })
-        } catch (e) {return res.status(254).send(e)}
+        } catch (e) {
+            return res.status(254).send(e)
+        }
+    },
+
+    sumBasketsHistoryByData: (req, res) => {
+        try {
+            const date = req.body.date;
+            History.find({ date: date }, async (err, history) => {
+                if (err) return res.status(254).send(err)
+                const typeUser = req.body.typeUser;
+                const basketsHistory = [];
+                for (let i = 0; i < history.length; i++) {
+                    basketsHistory.push({ typeUser: history[i].typeUser, movementType: history[i].movemenType, baskets: history[i].baskets })
+                }
+                const sumLoan = {}
+                const sumReturn = {}
+                for (let i = 0; i < basketsHistory.length; i++) {
+                    const objectBaskets = basketsHistory[i].baskets;
+
+                    if (basketsHistory[i].movementType === "prestamo" && basketsHistory[i].typeUser === typeUser) {
+                        for (const propertyBasketsHistory in objectBaskets) {
+                            if (sumLoan.hasOwnProperty(propertyBasketsHistory))
+                                //Las claves de un objeto "se pueden entender como una variable"
+                                sumLoan[propertyBasketsHistory] += objectBaskets[propertyBasketsHistory]
+                            else sumLoan[propertyBasketsHistory] = objectBaskets[propertyBasketsHistory]
+                        }
+                    } else if (basketsHistory[i].typeUser === typeUser) {
+                        for (const propertyBasketsHistory in objectBaskets) {
+                            if (sumReturn.hasOwnProperty(propertyBasketsHistory))
+                                sumReturn[propertyBasketsHistory] += objectBaskets[propertyBasketsHistory]
+                            else sumReturn[propertyBasketsHistory] = objectBaskets[propertyBasketsHistory]
+                        }
+                    }
+                }
+
+                //Agregar ceros a las devoluciones necesarias. 
+                for (const propertyBasketsLoan in sumLoan) {
+                    if (!sumReturn.hasOwnProperty(propertyBasketsLoan))
+                        sumReturn[propertyBasketsLoan] = 0;
+                }
+
+                const arrayCodeBaskets = Object.keys(sumLoan);
+                const arrayNamesBasket = await getNameBasketsByCode(arrayCodeBaskets);
+
+                const arrayOfObjectsBaskets = [];
+                for (let i = 0; i < arrayCodeBaskets.length; i++) {
+                    arrayOfObjectsBaskets.push({ codeBasket: arrayNamesBasket[i], sumLoan: sumLoan[arrayCodeBaskets[i]], sumReturn: sumReturn[arrayCodeBaskets[i]], debt: sumLoan[arrayCodeBaskets[i]] - sumReturn[arrayCodeBaskets[i]] })
+                }
+                return res.status(200).json({arrayTable: arrayOfObjectsBaskets});
+            })
+        } catch (e) {
+            return res.status(254).send('Error en el servidor'); 
+        }
+
+
     }
 }
 

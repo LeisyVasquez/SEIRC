@@ -1,7 +1,7 @@
 import React,{useState,useEffect} from "react";
 import api from '../axios/axios';
 import {Container,Row,Col,Form,Table} from 'react-bootstrap';
-import '../styles/typeMovement.css';
+import '../styles/displayTypeMovementAndTypeBaskets.css';
 import swal from "sweetalert2";
 
 const DisplaypeMovementProvider = () =>{
