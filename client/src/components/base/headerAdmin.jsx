@@ -17,18 +17,18 @@ const HeaderAdmin = () => {
 
                         <NavDropdown title="Cliente" id="basic-nav-dropdown" className="navItem">
                             <NavDropdown.Item href="/loanReturnClient">Añadir mov.</NavDropdown.Item>
-                            <NavDropdown.Item href="#">Eliminar mov.</NavDropdown.Item>
-                            <NavDropdown.Item href="#">V. Tipo mov.</NavDropdown.Item>
-                            <NavDropdown.Item href="#">V. Cliente</NavDropdown.Item>
-                            <NavDropdown.Item href="#">V. Tipo canastilla</NavDropdown.Item>
+                            <NavDropdown.Item href="/deleteMovementClient">Eliminar mov.</NavDropdown.Item>
+                            <NavDropdown.Item href="/displayTypeMovementClient">V. Tipo mov.</NavDropdown.Item>
+                            <NavDropdown.Item href="/displayByClient">V. Cliente</NavDropdown.Item>
+                            <NavDropdown.Item href="/displayByBasketsClient">V. Tipo canastilla</NavDropdown.Item>
                         </NavDropdown>
 
                         <NavDropdown title="Proveedor" id="basic-nav-dropdown" className="navItem">
-                            <NavDropdown.Item href="#">Añadir mov.</NavDropdown.Item>
-                            <NavDropdown.Item href="#">Eliminar mov.</NavDropdown.Item>
-                            <NavDropdown.Item href="#">V. Tipo mov.</NavDropdown.Item>
-                            <NavDropdown.Item href="#">V. Proveedor</NavDropdown.Item>
-                            <NavDropdown.Item href="#">V. Tipo canastilla</NavDropdown.Item>
+                            <NavDropdown.Item href="/loanReturnProvider">Añadir mov.</NavDropdown.Item>
+                            <NavDropdown.Item href="/deleteMovementProvider">Eliminar mov.</NavDropdown.Item>
+                            <NavDropdown.Item href="/displayTypeMovementProvider">V. Tipo mov.</NavDropdown.Item>
+                            <NavDropdown.Item href="/displayByProvider">V. Proveedor</NavDropdown.Item>
+                            <NavDropdown.Item href="/displayByBasketsProvider">V. Tipo canastilla</NavDropdown.Item>
                         </NavDropdown>
 
                         <NavDropdown title="Registro" id="basic-nav-dropdown" className="navItem">

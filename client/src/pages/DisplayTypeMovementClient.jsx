@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Header from '../components/base/header';
+import HeaderAdmin from "../components/base/headerAdmin";
 import Footer from '../components/base/footer';
 import DisplayTypeMovementClient from '../components/displayTypeMovementClient';
 
@@ -8,7 +8,7 @@ import DisplayTypeMovementClient from '../components/displayTypeMovementClient';
 const displayTypeMovementClient = () => {
     return (
         <div>
-            <Header />
+            <HeaderAdmin />
             <DisplayTypeMovementClient/>
             <Footer />
         </div>
