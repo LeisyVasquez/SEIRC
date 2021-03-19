@@ -227,7 +227,8 @@ module.exports = {
             return res.status(200).json({
                 message: 'Te has logueado correctamente',
                 token: service.createToken(user),
-                role: user[0].typeUser
+                role: user[0].typeUser,
+                name: user[0].name
             })
         })
     },

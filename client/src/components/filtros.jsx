@@ -181,9 +181,8 @@ const Filtros = () => {
         setListNamesClientsSet(clientSetAux);
     }
 
-
     const getGeneralHistory = () => {
-        api.get(`/getHistoryByName/administrador/`).then((res, err) => {
+        api.get(`/getHistoryByName/cliente/`).then((res, err) => {
             setHistoryData(res.data[0]);
             setListNamesClients(res.data[1]);
             if (err || res.status === 254) console.log(err);
