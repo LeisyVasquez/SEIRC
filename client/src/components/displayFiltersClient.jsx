@@ -12,15 +12,16 @@ const DisplayFiltersClient = () => {
     let dd = String(today.getDate()).padStart(2, '0');
     let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
     let yyyy = today.getFullYear();
+    let todayStr = dd + '/' + mm + '/' + yyyy;
     today = mm + '/' + dd + '/' + yyyy;
-    var dateObject = new Date(today);
+    let dateObject = new Date(today);
     today = dateObject;
 
     const [completeHistory, setCompleteHistory] = useState([]);
     const [filteredHistory, setfilteredHistory] = useState([]);
-    const [filters, setfilters] = useState({ hasta: today, desde: new Date("2021-01-02T00:00:00") });
-    let filterArray = [];
-    
+    const [filters, setfilters] = useState({ hasta: today, desde: new Date("2021-01-02T00:00:00") });//El error tiene que estar en esta línea
+    let filterArray = [];                 //Dice que la fecha de "hasta" es inválida, probablemente tenga que ver con el formateo...
+
     useEffect(() => {
         getGeneralHistory();
     }, []);
@@ -79,11 +80,7 @@ const DisplayFiltersClient = () => {
 
                 if (date.getTime() >= filters.desde.getTime() && date.getTime() <= filters.hasta.getTime() && filteredHistory.includes(completeHistory[i]._id) === false) {
                     filterArray.push(completeHistory[i]);
-                } /*else {
-                    const index = filterArray.indexOf(completeHistory[i])
-                    filterArray.splice(index, 1);
-                    console.log("Entrando")
-                }*/
+                }
             }
             setfilteredHistory(filterArray)
         } else {
@@ -94,10 +91,13 @@ const DisplayFiltersClient = () => {
                 confirmButtonText: "Entendido",
                 confirmButtonColor: "red",
             });
+
+            console.log("Desde: " + filters.desde);
+            console.log("Hasta: " + filters.hasta);
         } //Fecha
 
         //Tipo
-        if (filters.movemenType != undefined && filters.movemenType != "") {
+        if (!filters.movemenType) {
             filterArray = [];
             for (let i = 0; i < completeHistory.length; i++) {
                 if (completeHistory[i].movemenType === filters.movemenType && filteredHistory.includes(completeHistory[i]._id) === false) {
@@ -109,7 +109,7 @@ const DisplayFiltersClient = () => {
         //Tipo
 
         //Fecha y tipo
-        if (filters.desde.getTime() <= filters.hasta.getTime() && filters.movemenType != undefined && filters.movemenType != "") {
+        if (filters.desde.getTime() <= filters.hasta.getTime() && !filters.movemenType) {
             setfilteredHistory([]);
             filterArray = [];
             for (let i = 0; i < completeHistory.length; i++) {
@@ -132,46 +132,103 @@ const DisplayFiltersClient = () => {
         } //Fecha y tipo
     }
 
-    //Mostrar Modal
-    const handleShowBaskets = (e) => {
-        showBaskets(e.target.value);
-    }
-
     //Modal
-    function showBaskets(idCard) {
-        let html = '<table class="table table-bordered table-striped table-sm table-hover .table-responsive">';
-        html += `   
-                <thead>
-                    <tr>
-                        <th scope="col">Tipo</th>
-                        <th scope="col">Cantidad</th>
-                    </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>Abatible</td>
-                    <td>10</td>
-                </tr>
-                <tr>
-                    <td>Planas</td>
-                    <td>15</td>
-                </tr>
-                <tr>
-                    <td>Lopera</td>
-                    <td>20</td>
-                </tr>
-                </tbody>
-            </table>
-            <div>
-                <p className="total text-left">Debo: 10</p>
-            </div> `
-        html += '</table>'
+    const showBaskets = (item) => {
+        let baskets = item.baskets
+        let basketsKeys = [];
+        let basketsValues = [];
+        let i = 0;
+        let movemenType = item.movemenType
+        
+        if (movemenType == 'prestamo'){
+            movemenType = 'Préstamo';
+        } else {
+            movemenType = 'Devolución'
+        }
+        let tablebody = `<table class="table table-bordered table-striped table-sm table-hover .table-responsive">`;
+
+        for (const [key, value] of Object.entries(baskets)) {
+            basketsKeys[i] = key.toString();
+            basketsValues[i] = value;
+
+            i++
+        }
+
+        console.log("Keys: " + basketsKeys);
+        console.log("Values: " + basketsValues);
+
+        for (i = 0; i < basketsKeys.length; i++) {
+            tablebody = tablebody + `
+            <tr>
+                <td>${basketsKeys[i]}</td>
+                <td>${basketsValues[i]}</td>
+            </tr>
+            `
+        }
+
+        tablebody = tablebody + '</table>'
 
         swal.fire({
             icon: 'info',
-            title: 'Canastillas',
-            html: html,
+            title: 'Detalles ' + movemenType,
+            html: tablebody,
             confirmButtonText: "Entendido"
+        })
+    }
+
+    const showTotalDebt = () => {
+        let baskets = completeHistory
+        let basketsKeys = [];
+        let basketsValues = [];
+        let i = 0
+        let totalDebt = 0;
+        let tablebody = '<table class="table table-bordered table-striped table-sm table-hover .table-responsive">';
+        for (let index = 0; index < baskets.length; index++) {
+            for (const [key, value] of Object.entries(baskets[index].baskets)) {
+                let actualKey = key.toString()
+                if (baskets[index].movemenType == 'prestamo') {
+                    if (basketsKeys.includes(actualKey)) {
+                        let indice = basketsKeys.indexOf(actualKey)
+                        let n = basketsValues[indice];
+                        basketsValues[indice] = n + value;
+                    } else {
+                        basketsKeys[i] = key.toString();
+                        basketsValues[i] = value;
+                    }
+                } else {
+                    if (basketsKeys.includes(actualKey)) {
+                        let indice = basketsKeys.indexOf(actualKey)
+                        let n = basketsValues[indice];
+                        basketsValues[indice] = n - value;
+                    } else {
+                        basketsKeys[i] = key.toString();
+                        basketsValues[i] = value;
+                    }
+                }
+                i++
+            }
+        }
+
+        for (i = 0; i < basketsKeys.length; i++) {
+            tablebody = tablebody + `
+            <tr>
+                <td>${basketsKeys[i]}</td>
+                <td>${basketsValues[i]}</td>
+            </tr>
+            `
+        }
+        for (let i = 0; i < basketsValues.length; i++) {
+            totalDebt += basketsValues[i];
+        }
+        tablebody = tablebody + '</table>'
+
+        swal.fire({
+            icon: 'info',
+            title: 'Detalles deuda',
+            html: tablebody,
+            footer: `<tr>Deuda total: ${totalDebt}</tr>`,
+            confirmButtonText: "Entendido"
+            
         })
     }
 
@@ -241,7 +298,7 @@ const DisplayFiltersClient = () => {
                         </Form.Group>
                     </Col>
                 </Row>
-                <button onClick={aplyFilters}>Aplicar</button>
+                <button onClick={aplyFilters} className="boton2 mb-5 w-40 h-50">Aplicar</button>
                 <div className="row">
                     <div className="cards w-50 y-100 mr-5 col-sm-7">
                         <img className="float-right" src="https://icons-for-free.com/iconfiles/png/512/Free+Set+copy+Printer-1320568200680206615.png" alt="Impresora" />
@@ -252,7 +309,7 @@ const DisplayFiltersClient = () => {
                                         <div className="card-body">
                                             <p className="card-title sm-title">{item.movemenType === "prestamo" ? "Préstamo" : "Devolución"}</p>
                                             <p className="card-title">{item.date}</p>
-                                            <button type="button" className="iconAdd mr-2" onClick={handleShowBaskets}>+</button>
+                                            <button type="button" className="iconAdd mr-2" onClick={() => showBaskets(item)}>+</button>
                                         </div>
                                     </div>
                                 </div>
@@ -262,17 +319,15 @@ const DisplayFiltersClient = () => {
                     <div className="debt w-40 y-100 align-baseline col-sm">
                         <img className="float-right" src="https://icons-for-free.com/iconfiles/png/512/Free+Set+copy+Printer-1320568200680206615.png" alt="Impresora" />
                         <div className="row row-cols-1 row-cols-md-1 g-4">
-                            {/*orderData.map((item) =>*/
-                                <div className="col">
-                                    <div className="card h-100 w-100 y-100">
-                                        <div className="card-body">
-                                            <p className="card-title">Deuda</p>
-                                            <p className="card-title">26/02/2021</p>
-                                            <button type="button" className="iconAdd mr-2" onClick={handleShowBaskets}>+</button>
-                                        </div>
+                            <div className="col">
+                                <div className="card h-100 w-100 y-100">
+                                    <div className="card-body">
+                                        <p className="card-title">Deuda</p>
+                                        <p className="card-title">{todayStr}</p>
+                                        <button type="button" className="iconAdd mr-2" onClick={showTotalDebt}>+</button>
                                     </div>
                                 </div>
-                            /*)*/}
+                            </div>
                         </div>
                     </div>
                 </div>
