@@ -10,17 +10,17 @@ const DisplayFiltersClient = () => {
     //Formatear fecha actual
     let today = new Date();
     let dd = String(today.getDate()).padStart(2, '0');
-    let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    let mm = String(today.getMonth() + 1).padStart(2, '0');
     let yyyy = today.getFullYear();
     let todayStr = dd + '/' + mm + '/' + yyyy;
-    today = mm + '/' + dd + '/' + yyyy;
+    today = mm + '/' + dd + '/' + yyyy; //Tal vez el orden de mes, dia y año no puede ser así?
     let dateObject = new Date(today);
     today = dateObject;
 
     const [completeHistory, setCompleteHistory] = useState([]);
     const [filteredHistory, setfilteredHistory] = useState([]);
     const [filters, setfilters] = useState({ hasta: today, desde: new Date("2021-01-02T00:00:00") });//El error tiene que estar en esta línea
-    let filterArray = [];                 //Dice que la fecha de "hasta" es inválida, probablemente tenga que ver con el formateo...
+    let filterArray = [];         //Dice que la fecha de "hasta" es inválida, probablemente tenga que ver con el formateo...
 
     useEffect(() => {
         getGeneralHistory();
