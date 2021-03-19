@@ -1,24 +1,24 @@
-.filtros  .container{
+.displayFiltersClient  .container{
     background-color: white;
     border-radius: 5px;
 }
 
-.filtros .cards{
+.displayFiltersClient .cards{
     padding: 1vw;
     border: 1px solid black;
     display: inline-block;
 }
 
-.filtros  img{
+.displayFiltersClient  img{
     float: right;
     height: 3vw;
 }
 
-.filtros  .sm-title{
+.displayFiltersClient  .sm-title{
     font-size: 0.9vw;
 }
 
-.filtros  .debt{
+.displayFiltersClient  .debt{
     padding: 1vw;
     border: 1px solid black;
     display: inline-block;

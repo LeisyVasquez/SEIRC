@@ -407,6 +407,23 @@ module.exports = {
         }
     },
 
+    getCompleteHistoryByName: (req, res) => {
+        try {
+            History.find({ name: req.params.name, typeUser: req.params.typeUser, status: 'activo' }, function (err, historys) {
+                if (err) {
+                    return res.status(254).json(e)
+                }
+                if (!historys.length !== 0) {
+                    return res.send(historys);
+                } else {
+                    return res.status(255).json('No existe el historial');
+                }
+            })
+        } catch (e) {
+            res.status(254).json(e) // 254 es provicional (500)
+        }
+    },
+
     getGeneralOrder: (req, res) => {
         try {
             Order.find({ typeUser: req.params.typeUser }, function (err, orders) {

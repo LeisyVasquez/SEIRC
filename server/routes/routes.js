@@ -25,7 +25,8 @@ const{
     getQuantityTotalByMovement,
     getQuantityByTypeMovement,
     getSumTotalBasketsHistory,
-    sumBasketsHistoryByData
+    sumBasketsHistoryByData,
+    getCompleteHistoryByName
 } = require('./controller');
 
 
@@ -53,5 +54,6 @@ router.get('/getQuantityByTypeMovement/:typeUser/:date',getQuantityByTypeMovemen
 router.get('/getQuantityTotalByMovement/:typeUser',getQuantityTotalByMovement);
 router.get('/getSumTotalBasketsHistory/:typeUser',getSumTotalBasketsHistory)
 router.post('/sumBasketsHistoryByData',sumBasketsHistoryByData)
+router.get('/getCompleteHistoryByName/:typeUser/:name',getCompleteHistoryByName);
 
 module.exports = router;

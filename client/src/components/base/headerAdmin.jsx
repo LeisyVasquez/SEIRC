@@ -37,7 +37,7 @@ const HeaderAdmin = () => {
                         </NavDropdown>
 
                         <div /*className="circulo"*/>
-                            <NavDropdown drop="left" menuAlign="right" id="basic-nav-dropdown" className="navItem flecha">
+                            <NavDropdown drop="left" menualign="right" id="basic-nav-dropdown" className="navItem flecha">
                                 <NavDropdown.Item href="/">Cerrar sesión</NavDropdown.Item>
                             </NavDropdown>
                         </div>

@@ -15,10 +15,10 @@ const HeaderThirdParty = () => {
 
                         <Nav.Link href="/homeThirdParty" className="navItem">Inicio</Nav.Link>
 
-                        <Nav.Link href="#" className="navItem">Visualización</Nav.Link>
+                        <Nav.Link href="/displayFiltersClient" className="navItem">Visualización</Nav.Link>
 
                         <div /*className="circulo"*/>
-                            <NavDropdown drop="left" menuAlign="right" id="basic-nav-dropdown" className="navItem flecha">
+                            <NavDropdown drop="left" menualign="right" id="basic-nav-dropdown" className="navItem flecha">
                                 <NavDropdown.Item href="/">Cerrar sesión</NavDropdown.Item>
                             </NavDropdown>
                         </div>
