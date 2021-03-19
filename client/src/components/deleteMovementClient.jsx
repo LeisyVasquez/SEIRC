@@ -101,7 +101,7 @@ const DeleteMovementClient = () => {
                 password: e.target.value,
                 idHistory: idCard
             }
-            api.put('/deleteMovementClient',data).then((res)=>{
+            api.put('/deleteMovementClientProvider',data).then((res)=>{
                 console.log("Holaaaa");
                 if(res.status === 254){
                     swal.fire({
