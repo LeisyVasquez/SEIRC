@@ -1,0 +1,25 @@
+.filtros  .container{
+    background-color: white;
+    border-radius: 5px;
+}
+
+.filtros .cards{
+    padding: 1vw;
+    border: 1px solid black;
+    display: inline-block;
+}
+
+.filtros  img{
+    float: right;
+    height: 3vw;
+}
+
+.filtros  .sm-title{
+    font-size: 0.9vw;
+}
+
+.filtros  .debt{
+    padding: 1vw;
+    border: 1px solid black;
+    display: inline-block;
+}

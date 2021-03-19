@@ -21,6 +21,7 @@ import DisplayTypeMovementProvider from '../pages/DisplayTypeMovementProvider';
 import DisplayByBasketsClient from '../pages/DisplayByBasketsClient';
 import DisplayByBasketsProvider from '../pages/DisplayByBasketsProvider';
 import PdfPreview from '../pages/PdfPreview';
+import Filtros from '../pages/Filtros'
 
 
 function App() {
@@ -47,6 +48,7 @@ function App() {
           <Route path="/displayByBasketsClient" component={DisplayByBasketsClient} />
           <Route path="/displayByBasketsProvider" component={DisplayByBasketsProvider} />
           <Route path="/pdfPreview" component={PdfPreview} />
+          <Route path="/filtros" component={Filtros} />
         </Switch>
       </BrowserRouter>
     </div>
