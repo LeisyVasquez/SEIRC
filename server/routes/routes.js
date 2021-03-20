@@ -26,7 +26,8 @@ const{
     getQuantityByTypeMovement,
     getSumTotalBasketsHistory,
     sumBasketsHistoryByData,
-    getHistoryByTypeUser
+    getHistoryByTypeUser,
+    getCompleteHistoryByName
 } = require('./controller');
 
 
@@ -36,24 +37,35 @@ router.post('/registerBaskets',registerBaskets);
 router.post('/registerThirdParties', registerUser);
 router.post('/signIn',signIn);
 router.get('/getClient',getClient);
+router.get('/getProvider',getProvider);
+router.get('/getClientProviderByOrder/:typeUser',getClientProviderByOrder);
 router.get('/getBasketsCompany', getBasketsCompany);
 router.get('/getBasketsProvider', getBasketsProvider);
 router.get('/getBasketsReturn/:name/:typeUser', getBasketsReturn);
-router.post('/routeComprobation',isAuth,isRolePage);
 router.post('/loanClientProvider',loanClientProvider);
 router.post('/returnClientProvider',returnClientProvider);
-router.get('/getClientProviderByOrder/:typeUser',getClientProviderByOrder);
-router.get('/getProvider',getProvider);
+
+
+
+
+
+router.post('/routeComprobation',isAuth,isRolePage);
+
+
 router.get('/getGeneralHistory/:typeUser',getGeneralHistory);
 router.get('/getHistoryByName/:typeUser/:name',getHistoryByName);
 router.put('/deleteMovementClientProvider',deleteMovementClientProvider);
 router.get('/getPasswordSuperUser', getPasswordSuperUser);
 router.get('/getGeneralOrder/:typeUser',getGeneralOrder);
+
+
+
 router.get('/getOrderByName/:typeUser/:name',getOrderByName)
 router.get('/getQuantityByTypeMovement/:typeUser/:date',getQuantityByTypeMovement)
 router.get('/getQuantityTotalByMovement/:typeUser',getQuantityTotalByMovement);
 router.get('/getSumTotalBasketsHistory/:typeUser',getSumTotalBasketsHistory)
 router.post('/sumBasketsHistoryByData',sumBasketsHistoryByData)
 router.get('/getHistoryByTypeUser/:typeUser',getHistoryByTypeUser);
+router.get('/getCompleteHistoryByName/:typeUser/:name',getCompleteHistoryByName);
 
 module.exports = router;

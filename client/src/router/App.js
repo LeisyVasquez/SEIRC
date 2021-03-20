@@ -21,10 +21,8 @@ import DisplayTypeMovementProvider from '../pages/DisplayTypeMovementProvider';
 import DisplayByBasketsClient from '../pages/DisplayByBasketsClient';
 import DisplayByBasketsProvider from '../pages/DisplayByBasketsProvider';
 import PdfPreview from '../pages/PdfPreview';
-import OrderHistoryClient from '../pages/OrderHistoryClient'; 
+import DisplayFiltersClient from '../pages/displayFiltersClient'
 
-
-function App() {
   return (
     <div className="app">
       <BrowserRouter>
@@ -49,10 +47,11 @@ function App() {
           <Route path="/displayByBasketsProvider" component={DisplayByBasketsProvider} />
           <Route path="/pdfPreview" component={PdfPreview} />
           <Route path="/orderHistoryClient" component={OrderHistoryClient}/>
+          <Route path="/displayFiltersClient" component={DisplayFiltersClient} />
         </Switch>
       </BrowserRouter>
     </div>
   );
-}
+
 
 export default App;
