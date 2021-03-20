@@ -1,0 +1,28 @@
+.orderHistory  .container{
+    background-color: white;
+    border-radius: 5px;
+}
+
+
+.orderHistory .iconAdd{
+    width: 5vh;
+    height: 5vh;
+    border-radius: 10px;
+    border: 2px solid #c8c6a7;
+    background-color:#dddddd;
+}
+
+.orderHistory .card {
+    position: relative;
+    margin: 0.5rem 0 1rem 0;
+    background-color: #fff;
+    transition: -webkit-box-shadow 0.25s;
+    transition: box-shadow 0.25s;
+    transition: box-shadow 0.25s, -webkit-box-shadow 0.25s;
+    border-radius: 2px;
+  }
+
+  .orderHistory .card:hover {
+    box-shadow: 0 14px 25px #70db24;
+    transform: translateY(-15px);
+  }

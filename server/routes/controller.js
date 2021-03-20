@@ -455,8 +455,9 @@ module.exports = {
                                 data["basketsLoan"] = resultHistory.baskets;
                                 axios.post('http://localhost:8085/api/loanClientProvider', data).then((response) => {
                                     if (response.status === 201) {
-                                        History.findByIdAndUpdate(idHistory, { $set: { status: 'inactivo' } }, function (errUpdate, resultUpdate) {
-                                            if (errUpdate) return res.status(254).send('bad');
+                                        const hour = generatorHour();
+                                        History.findByIdAndUpdate(idHistory, { $set: { status: 'inactivo', hour: hour } }, function (errUpdate, resultUpdate) {
+                                            if (errUpdate) return res.status(254).send(errUpdate);
                                             return res.status(response.status).send(response.data);
                                         })
                                     } else {
@@ -464,21 +465,21 @@ module.exports = {
                                     }
 
                                 }).catch((error) => {
-                                    return res.status(254).send('bad');
+                                    return res.status(254).send(error);
                                 })
                             } else {
                                 data["basketsReturn"] = resultHistory.baskets;
                                 axios.post('http://localhost:8085/api/returnClientProvider', data).then((response) => {
                                     if (response.status === 201) {
-                                        History.findByIdAndUpdate(idHistory, { $set: { status: 'inactivo' } }, function (errUpdate, resultUpdate) {
-                                            if (errUpdate) return res.status(254).send('bad');
+                                        History.findByIdAndUpdate(idHistory, { $set: { status: 'inactivo', hour: hour } }, function (errUpdate, resultUpdate) {
+                                            if (errUpdate) return res.status(254).send(errUpdate);
                                             return res.status(response.status).send(response.data);
                                         })
                                     } else {
                                         return res.status(response.status).send(response.data);
                                     }
                                 }).catch((error) => {
-                                    return res.status(254).send('bad');
+                                    return res.status(254).send(error);
                                 })
                             }
                         }
@@ -633,13 +634,33 @@ module.exports = {
                 for (let i = 0; i < arrayCodeBaskets.length; i++) {
                     arrayOfObjectsBaskets.push({ codeBasket: arrayNamesBasket[i], sumLoan: sumLoan[arrayCodeBaskets[i]], sumReturn: sumReturn[arrayCodeBaskets[i]], debt: sumLoan[arrayCodeBaskets[i]] - sumReturn[arrayCodeBaskets[i]] })
                 }
-                return res.status(200).json({arrayTable: arrayOfObjectsBaskets});
+                return res.status(200).json({ arrayTable: arrayOfObjectsBaskets });
             })
         } catch (e) {
-            return res.status(254).send('Error en el servidor'); 
+            return res.status(254).send('Error en el servidor');
+        }
+    },
+    getHistoryByTypeUser: (req, res) => {
+        try {
+            const typeUser = req.params.typeUser;
+            History.find({ $and: [{ $or: [{ typeUser: typeUser }, { typeUser: 'clienteProveedor' }] }, { status: 'activo' }] }, (request, response) => {
+                if (response) {
+                    const namesByHistory = [];
+                    console.log(response)
+                    for (let i = 0; i < response.length; i++) {
+                        if (!namesByHistory.includes(response[i].name)) {
+                            namesByHistory.push(response[i].name)
+                        }
+                    }
+                    return res.status(200).json({ historyGeneral: response, namesByHistory: namesByHistory })
+                }
+                else return res.status(254).send('Error en el servidor')
+            })
+        } catch (e) {
+            return res.status(254).send('Error en el servidor')
         }
 
-
     }
+
 }
 
