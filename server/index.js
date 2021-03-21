@@ -20,10 +20,8 @@ app.use('/api', routes);
 console.log(process.env.PORT);
 app.set('port', process.env.PORT || 8083)
 
-
-//Levantamiento del servidor 
-app.listen(app.get('port'), ()=>{
-    console.log(`Server running on port ${app.get('port')}!!`)
-});
+// Configurar socket.io
+const ioServer = require('./routes/socket')(app);
+ioServer.listen(8085, () => console.log(`App running on port ${8085}`));
 
 module.exports = app;
