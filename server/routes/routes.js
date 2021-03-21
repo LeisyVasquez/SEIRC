@@ -28,7 +28,8 @@ const{
     sumBasketsHistoryByData,
     getHistoryByTypeUser,
     getCompleteHistoryByName, 
-    getDeletionHistory
+    getDeletionHistory,
+    getNamesAndCodesBaskets
 } = require('./controller');
 
 
@@ -69,5 +70,5 @@ router.post('/sumBasketsHistoryByData',sumBasketsHistoryByData)
 router.get('/getHistoryByTypeUser/:typeUser',getHistoryByTypeUser);
 router.get('/getCompleteHistoryByName/:typeUser/:name',getCompleteHistoryByName);
 router.get('/getDeletionHistory',getDeletionHistory);
-
+router.get('/getNamesAndCodesBaskets', getNamesAndCodesBaskets)
 module.exports = router;

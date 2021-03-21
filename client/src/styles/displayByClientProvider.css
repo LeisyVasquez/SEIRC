@@ -29,6 +29,7 @@
 
   .displayByClientProvider .labelTotal{
     height: 8vh;
-    margin-left: 78%;
+    margin-right: 78%;
+    border-radius: 5%;
     background-color:#acff00;
 }

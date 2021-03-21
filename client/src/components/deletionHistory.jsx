@@ -3,6 +3,7 @@ import '../styles/orderHistory.css'
 import { Container } from "react-bootstrap";
 import swal from "sweetalert2";
 import api from '../axios/axios';
+import BasketsTable from './base/basketsTable';
 
 
 const DeletionHistory = () => {
@@ -79,6 +80,7 @@ const DeletionHistory = () => {
   return (
     <div className="orderHistory">
       <Container className="text-center mt-2 mx-auto my-5 p-5 bosy w-70">
+      <BasketsTable/>       
         <h1 className="m-auto py-5">Historial de eliminaciones</h1>
         <div className="px-3">
 
