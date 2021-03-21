@@ -7,6 +7,7 @@ import ButtonCancel from './base/buttonCancel';
 
 import LoanClient from './loanClient';
 import ReturnClient from './returnClient';
+import BasketsTable from './base/basketsTable'; 
 
 
 const LoanReturnClient = () => {
@@ -17,9 +18,10 @@ const LoanReturnClient = () => {
     }
     return (
         <div className="basketsRegistration" >
-            <Container className="text-center mt-2 mx-auto my-5 p-5 bosy w-50" >
+            <Container className="text-center mx-auto my-5 px-5 py-3 bosy w-50" >
+            <BasketsTable/>
                 <h2 className="m-auto">Clientes</h2>
-                <form className="form-signin mt-5 py-4" id="form">
+                <form className="form-signin mt-4 py-4" id="form">
                     <div class="form-check form-check-inline mx-0 mb-3" style={{ float: "left" }}>
                         <input class="form-check-input " type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1" onChange={setOptionClick}/>
                         <label class="form-check-label fs-5" for="inlineRadio1" >Préstamo</label>

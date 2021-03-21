@@ -8,18 +8,18 @@ const fs = require('fs');
 const path = require('path');
 const { resolveSoa } = require('dns');
 const axios = require('axios');
-const{
+const {
     encript,
     generatorDate,
-    generatorHour, 
-    findNamesBaskets, 
+    generatorHour,
+    findNamesBaskets,
     findNamesClientsProviders,
     findNamesClientsProvidersHistoryOrder,
     findTotalOneQuantityBaskets,
     findTotalQuantityBaskets,
     findSumQuantityByTypeMovement,
     getNameBasketsByCode
-} = require ('../functions/functions')
+} = require('../functions/functions')
 
 module.exports = {
 
@@ -99,7 +99,7 @@ module.exports = {
         let namesBasketsProvider = [];
         for (let i = 0; i < basketsProvider.length; i++) {
             namesBasketsProvider.push(basketsProvider[i].code + "-" + basketsProvider[i].name);
-        }clientes
+        } clientes
         res.json(namesBasketsProvider);
     },
     getBasketsReturn: async (req, res) => {
@@ -594,7 +594,8 @@ module.exports = {
 
     getDeletionHistory: (req, res) => {
         try {
-            History.find({status:'inactivo'} , (request, response) => {
+            History.find({ status: 'inactivo' }, (err, response) => {
+                if (err) return res.status(254).send('Error en el servidor')
                 if (response) {
                     const namesByDeletionHistory = [];
                     console.log(response)
@@ -606,6 +607,27 @@ module.exports = {
                     return res.status(200).json({ deletionHistoryGeneral: response, namesByDeletionHistory: namesByDeletionHistory })
                 }
                 else return res.status(254).send('Error en el servidor')
+            })
+        } catch (e) {
+            return res.status(254).send('Error en el servidor')
+        }
+
+
+    },
+    getNamesAndCodesBaskets: (req, res) => {
+        try {
+            Baskets.find((err, response) => {
+
+                if (response) {
+                    const arrayData = [];
+                    for (let i = 0; i < response.length; i++) {
+                        const array = []
+                        array.push(response[i].code);
+                        array.push(response[i].name);
+                        arrayData.push(array);
+                    }
+                    return res.status(200).send(arrayData)
+                } else return res.status(254).send('Error en el servidor')
             })
         } catch (e) {
             return res.status(254).send('Error en el servidor')

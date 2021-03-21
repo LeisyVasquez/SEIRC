@@ -3,6 +3,8 @@ import api from '../axios/axios';
 import { Container, Button, Modal } from "react-bootstrap";
 import '../styles/deleteClient.css';
 import swal from "sweetalert2";
+import BasketsTable from './base/basketsTable'; 
+
 
 const DeleteMovementClient = () => {
     useEffect(
@@ -139,7 +141,9 @@ const DeleteMovementClient = () => {
     return (
         <div className="deleteClient" >
             <Container className="text-center mt-2 mx-auto my-5 p-5 bosy w-70">
-                <h1 className="m-auto py-5">Eliminar movimientos de clientes</h1>
+            <BasketsTable/>
+
+                <h1 className="mx-auto mt-0 mb-5">Eliminar movimientos de clientes</h1>
 
                 {/* Sección de búsqueda*/}
                 <div className="mb-5">

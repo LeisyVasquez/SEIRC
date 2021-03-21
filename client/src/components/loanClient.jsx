@@ -209,7 +209,7 @@ const LoanClient = () => {
                 <button type="button" class="iconAddBaskets ml-2" onClick={deleteBasket}>-</button>
             </div>
 
-            <section className="mt-4">
+            <section className="mt-4 mb-4">
                 <br />
                 <p class="text-start mt-4 mb-3">Otras canastillas</p>
 

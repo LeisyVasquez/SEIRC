@@ -3,6 +3,7 @@ import swal from "sweetalert2";
 import api from '../axios/axios';
 import { Container } from "react-bootstrap";
 import '../styles/displayByClientProvider.css';
+import BasketsTable from './base/basketsTable';
 
 const DisplayByClient = () => {
 
@@ -39,14 +40,14 @@ const DisplayByClient = () => {
                         icon: 'error',
                         title: 'Error en el servidor',
                         text: 'Por favor vuelva más tarde',
-                      })
-                      
-                }else if(res.status === 255) {
+                    })
+
+                } else if (res.status === 255) {
                     swal.fire({
                         icon: 'error',
                         title: 'No hay registros',
                         text: 'Ingrese prestamos o devoluciones',
-                      })
+                    })
                 }
                 else {
                     setOrderData(res.data[0]);
@@ -54,14 +55,14 @@ const DisplayByClient = () => {
                     setListQuantityBaskets(res.data[2]);
                     setTotalQuantityBaskets(res.data[3]);
                     saveClient(res.data[1]);
-                }   
+                }
             })
             .catch(err => {
                 swal.fire({
                     icon: 'error',
                     title: 'Error en el servidor',
                     text: 'Por favor vuelva más tarde',
-                  })
+                })
             })
     }
 
@@ -70,19 +71,19 @@ const DisplayByClient = () => {
         if (listNamesClientsSet.has(name)) {
             api.get(`/getOrderByName/cliente/${name}`)
                 .then(res => {
-                    if(res.status === 254){
+                    if (res.status === 254) {
                         swal.fire({
                             icon: 'error',
                             title: 'Error en el servidor',
                             text: 'Por favor vuelva más tarde',
-                          })
+                        })
                     }
-                    else if(res.status === 255){
+                    else if (res.status === 255) {
                         swal.fire({
                             icon: 'error',
                             title: 'No hay registros para ese cliente',
                             text: 'Ingrese prestamos o devoluciones',
-                          })
+                        })
                     }
                     else {
                         setOrderData(res.data)
@@ -93,7 +94,7 @@ const DisplayByClient = () => {
                         icon: 'error',
                         title: 'Error en el servidor',
                         text: 'Por favor vuelva más tarde',
-                      })
+                    })
                 })
         } else getGeneralOrder()
     }
@@ -119,12 +120,9 @@ const DisplayByClient = () => {
     return (
         <div className="displayByClientProvider">
             <Container className="text-center mt-2 my-5 mx-auto p-5 bosy w-70">
-
-                <Container className="labelTotal w-25 p-3">
-                    Cantidad total: {totalQuantityBaskets}
-                </Container>
-
-                <h1 className="mx-auto py-3 mb-3">Visualización por clientes</h1>
+                <BasketsTable className="float-end" />
+                <label className="float-start labelTotal w-25 p-3 col">Cantidad total: {totalQuantityBaskets}</label>
+                <h1 className="mx-auto py-3 mb-3">Visualización por cliente</h1>
 
                 {/* Sección de búsqueda*/}
                 <div className="mb-5">
