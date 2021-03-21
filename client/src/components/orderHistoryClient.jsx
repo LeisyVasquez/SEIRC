@@ -29,7 +29,6 @@ const OrderHistoryClient = () => {
                     confirmButtonText: "Entendido"
                 })
             })
-        console.log(namesClientsByHistory)
     }
 
     const handleShowBaskets = (e) => {
@@ -95,7 +94,7 @@ const OrderHistoryClient = () => {
                     </div>
                 </div>
 
-                {/* Tarjetas con las orders*/}
+                {/* Tarjetas con los historiales*/}
                 <div className="row row-cols-1 row-cols-md-4 g-4">
                     {
                         historyGeneral.map((data) =>

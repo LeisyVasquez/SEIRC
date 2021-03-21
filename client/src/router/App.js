@@ -21,8 +21,12 @@ import DisplayTypeMovementProvider from '../pages/DisplayTypeMovementProvider';
 import DisplayByBasketsClient from '../pages/DisplayByBasketsClient';
 import DisplayByBasketsProvider from '../pages/DisplayByBasketsProvider';
 import PdfPreview from '../pages/PdfPreview';
-import DisplayFiltersClient from '../pages/displayFiltersClient'
+import DisplayFiltersClient from '../pages/DisplayFiltersClient';
+import OrderHistoryClient from '../pages/OrderHistoryClient';
+import DeletionHistory from '../pages/DeletionHistory';
+import BasketsTable from '../components/base/basketsTable';
 
+function App() {
   return (
     <div className="app">
       <BrowserRouter>
@@ -46,12 +50,15 @@ import DisplayFiltersClient from '../pages/displayFiltersClient'
           <Route path="/displayByBasketsClient" component={DisplayByBasketsClient} />
           <Route path="/displayByBasketsProvider" component={DisplayByBasketsProvider} />
           <Route path="/pdfPreview" component={PdfPreview} />
-          <Route path="/orderHistoryClient" component={OrderHistoryClient}/>
+          <Route path="/orderHistoryClient" component={OrderHistoryClient} />
           <Route path="/displayFiltersClient" component={DisplayFiltersClient} />
+          <Route path="/deletionHistory" component={DeletionHistory} />
+          <Route path="/basketsTable" component={BasketsTable} />
         </Switch>
       </BrowserRouter>
     </div>
   );
+}
 
 
 export default App;

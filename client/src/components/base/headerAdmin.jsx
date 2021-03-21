@@ -8,7 +8,7 @@ const HeaderAdmin = () => {
     return (
         <div className="header">
             <Navbar expand="lg">
-                <Navbar.Brand href="/homeAdmin"><img src="https://github.com/LeisyVasquez/SEIRC/blob/main/client/public/images/logo.png?raw=true" alt="logo" /></Navbar.Brand>
+                <Navbar.Brand href="/homeAdmin"><img src="https://github.com/LeisyVasquez/SEIRC/blob/main/client/public/images/logo.png?raw=true" alt="logo" className="img-fluid" /></Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="nav mr-auto">

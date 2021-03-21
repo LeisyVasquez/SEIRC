@@ -27,7 +27,8 @@ const{
     getSumTotalBasketsHistory,
     sumBasketsHistoryByData,
     getHistoryByTypeUser,
-    getCompleteHistoryByName
+    getCompleteHistoryByName, 
+    getDeletionHistory
 } = require('./controller');
 
 
@@ -67,5 +68,6 @@ router.get('/getSumTotalBasketsHistory/:typeUser',getSumTotalBasketsHistory)
 router.post('/sumBasketsHistoryByData',sumBasketsHistoryByData)
 router.get('/getHistoryByTypeUser/:typeUser',getHistoryByTypeUser);
 router.get('/getCompleteHistoryByName/:typeUser/:name',getCompleteHistoryByName);
+router.get('/getDeletionHistory',getDeletionHistory);
 
 module.exports = router;

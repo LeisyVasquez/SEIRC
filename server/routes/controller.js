@@ -590,8 +590,26 @@ module.exports = {
         } catch (e) {
             return res.status(254).send('Error en el servidor')
         }
+    },
 
+    getDeletionHistory: (req, res) => {
+        try {
+            History.find({status:'inactivo'} , (request, response) => {
+                if (response) {
+                    const namesByDeletionHistory = [];
+                    console.log(response)
+                    for (let i = 0; i < response.length; i++) {
+                        if (!namesByDeletionHistory.includes(response[i].name)) {
+                            namesByDeletionHistory.push(response[i].name)
+                        }
+                    }
+                    return res.status(200).json({ deletionHistoryGeneral: response, namesByDeletionHistory: namesByDeletionHistory })
+                }
+                else return res.status(254).send('Error en el servidor')
+            })
+        } catch (e) {
+            return res.status(254).send('Error en el servidor')
+        }
     }
-
 }
 
