@@ -577,13 +577,17 @@ module.exports = {
             History.find({ $and: [{ $or: [{ typeUser: typeUser }, { typeUser: 'clienteProveedor' }] }, { status: 'activo' }] }, (request, response) => {
                 if (response) {
                     const namesByHistory = [];
+                    const hoursByHistory = []; 
                     console.log(response)
                     for (let i = 0; i < response.length; i++) {
+                        if (!hoursByHistory.includes(response[i].hour)) {
+                            hoursByHistory.push(response[i].hour)
+                        }
                         if (!namesByHistory.includes(response[i].name)) {
                             namesByHistory.push(response[i].name)
                         }
                     }
-                    return res.status(200).json({ historyGeneral: response, namesByHistory: namesByHistory })
+                    return res.status(200).json({ historyGeneral: response, namesByHistory: namesByHistory.sort(), hoursByHistory: hoursByHistory.sort() })
                 }
                 else return res.status(254).send('Error en el servidor')
             })
@@ -611,9 +615,8 @@ module.exports = {
         } catch (e) {
             return res.status(254).send('Error en el servidor')
         }
-
-
     },
+
     getNamesAndCodesBaskets: (req, res) => {
         try {
             Baskets.find((err, response) => {

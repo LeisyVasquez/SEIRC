@@ -84,7 +84,7 @@ const ThirdPartyRegistrationBody = () => {
                     <input type="text" id="direction" className="form-control mb-3" placeholder="Dirección" maxlength="100" onChange={data} />
                     <div class="input-group">
                         <input type="text" id="userName" className="form-control mb-3 mr-3" placeholder="Nombre de usuario" maxlength="50" onChange={data} />
-                        <input type="text" id="password" className="form-control " placeholder="Contraseña" onChange={data} />
+                        <input type="password" id="password" className="form-control " placeholder="Contraseña" onChange={data} />
                     </div>
                     <ButtonCancel />
                     <button type="button" className="boton2 mt-4 ml-3 w-40 h-50" onClick={sendData}>Finalizar</button>

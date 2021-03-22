@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Modal } from 'react-bootstrap';
+import { Modal } from 'react-bootstrap';
 import swal from "sweetalert2";
 import api from '../../axios/axios';
 import '../../styles/basketsTable.css'
@@ -34,7 +34,7 @@ const BasketsTable = () => {
 
     return (
         <div className="basketsTable">
-            <input type="image" src="https://raw.githubusercontent.com/JuanManuel-GAA/equipo7_gaa_ppi2020/master/Recursos%20gu%C3%ADa/icon%20info.png" className="iconInfo" onClick={handleShow} />
+            <input type="image" alt="iconInfo" src="https://raw.githubusercontent.com/JuanManuel-GAA/equipo7_gaa_ppi2020/master/Recursos%20gu%C3%ADa/icon%20info.png" className="iconInfo" onClick={handleShow} />
             <Modal
                 show={show}
                 onHide={handleClose}

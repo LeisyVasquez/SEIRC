@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import api from '../axios/axios';
 import { Container, Button, Modal } from "react-bootstrap";
 import '../styles/deleteClient.css';
-import { getFromLocal } from '../functions/localStorage';
 import swal from "sweetalert2";
 import BasketsTable from './base/basketsTable'; 
 

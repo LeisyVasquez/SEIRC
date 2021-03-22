@@ -2,24 +2,29 @@ import React, { useEffect, useState } from "react";
 import { Container, Form } from "react-bootstrap";
 import swal from "sweetalert2";
 import api from '../axios/axios';
+import BasketsTable from './base/basketsTable';
 
 import '../styles/orderHistory.css'
 
 
 const OrderHistoryClient = () => {
+
     let [historyGeneral, setHistoryGeneral] = useState([]);
     const [namesClientsByHistory, setNamesClientsByHistory] = useState([]);
+    const [hoursByHistory, setHoursByHistory] = useState([]);
 
     useEffect(() => {
         getHistory();
     }, [])
 
 
+    //Petiión al servidor
     const getHistory = () => {
         api.get('/getHistoryByTypeUser/cliente')
             .then(res => {
                 setHistoryGeneral(res.data.historyGeneral);
                 setNamesClientsByHistory(res.data.namesByHistory);
+                setHoursByHistory(res.data.hoursByHistory);
             })
             .catch(err => {
                 swal.fire({
@@ -31,11 +36,11 @@ const OrderHistoryClient = () => {
             })
     }
 
+    //Llamada y función para mostrar la alerta con las canastillas
     const handleShowBaskets = (e) => {
         showBaskets(e.target.value);
     }
-
-    function showBaskets(idCard) {
+    const showBaskets = (idCard) => {
         const basketsDataCard = historyGeneral.filter(cards => cards._id === idCard);
         const objectDataBasketsById = basketsDataCard[0].baskets;
         let html = '<table style="width:100%"><th>Código</th><th>Cantidad</th>';
@@ -51,47 +56,117 @@ const OrderHistoryClient = () => {
         })
     }
 
+    //Filtrar por nombre
     const filterName = (e) => {
         if (namesClientsByHistory.includes(e.target.value))
             setHistoryGeneral(historyGeneral.filter(cards => cards.name === e.target.value));
         else getHistory()
+        if (!e.target.value) document.getElementById("form").reset();
     }
+
+    //Filtrar por tipo de movimiento
+    const filterMovemenType = (e) => {
+        let valueInput = e.target.value;
+        if (valueInput === 'Préstamo') valueInput = 'prestamo'
+        if (valueInput === 'Devolución') valueInput = 'devolucion'
+        if (valueInput === 'prestamo' || valueInput === 'devolucion')
+            setHistoryGeneral(historyGeneral.filter(cards => cards.movemenType === valueInput));
+        else {
+            getHistory();
+            document.getElementById("form").reset();
+        }
+    }
+
+    //Filtrar por fecha 
+    const filterDate = (e) => {
+        const valueInput = e.target.value;
+        const split = valueInput.split("-")
+        const date = `${split[2]}/${split[1]}/${split[0]}`;
+        const filterD = historyGeneral.filter(cards => cards.date === date);
+        setHistoryGeneral(filterD);
+        if (filterD.length === 0) {
+            swal.fire({
+                icon: 'warning',
+                title: 'No hay historiales de eliminación en la fecha seleccionada',
+                confirmButtonText: "Entendido"
+            })
+            getHistory()
+            document.getElementById("form").reset();
+        }
+    }
+
+    //Filtrar por hora
+    const filterHour = (e) => {
+        const valueInput = e.target.value;
+        const filterH = historyGeneral.filter(cards => cards.hour === valueInput)
+        const inputLength = valueInput.length;
+
+        if (hoursByHistory.includes(valueInput))
+            setHistoryGeneral(filterH);
+        else if (inputLength === 5) {
+            swal.fire({
+                icon: 'warning',
+                title: 'No hay historiales de eliminación en la hora seleccionada',
+                confirmButtonText: "Entendido"
+            })
+            getHistory()
+            document.getElementById("form").reset();
+        }
+        if (!valueInput) {
+            document.getElementById("form").reset()
+            getHistory()
+        };
+    }
+
 
     return (
         <div className="orderHistory">
             <Container className="text-center mt-2 mx-auto my-5 p-5 bosy w-70">
-                <h1 className="mx-auto mb-4">Historiales</h1>
+                <BasketsTable />
+                <h1 className="mx-auto mb-4">Historiales clientes</h1>
 
                 {/* Sección de filtros*/}
                 <div className="w-75 mx-auto mb-4">
-                    <input
-                        type="search"
-                        id="name"
-                        className="form-control mb-4 mr-3"
-                        placeholder="Nombre de cliente"
-                        list="namesClients"
-                        onChange={filterName}
-                    />
-                    <datalist id="namesClients">
-                        {
-                            namesClientsByHistory.map((name) =>
-                                <option>{name}</option>
-                            )
-                        }
-                    </datalist>
-
-
-                    <div class="input-group">
-                        <Form.Group >
-                            <Form.Control as="select" id="typeMovement" >
-                                <option>Tipo de movimiento</option>
-                                <option>Préstamo</option>
-                                <option>Devolución</option>
-                            </Form.Control>
-                        </Form.Group>
-                        <input type="date" id="date" className="form-control ml-4" placeholder="Contraseña" />
-                        <input type="time" id="hour" className="form-control ml-4" />
-                    </div>
+                    <form id="form">
+                        <input
+                            type="search"
+                            className="form-control mb-4 mr-3"
+                            placeholder="Nombre de cliente"
+                            list="namesClients"
+                            onChange={filterName}
+                        />
+                        <datalist id="namesClients">
+                            {
+                                namesClientsByHistory.map((name) =>
+                                    <option>{name}</option>
+                                )
+                            }
+                        </datalist>
+                        <div class="input-group">
+                            <Form.Group >
+                                <Form.Control as="select" onChange={filterMovemenType}>
+                                    <option>Tipo de movimiento</option>
+                                    <option>Préstamo</option>
+                                    <option>Devolución</option>
+                                </Form.Control>
+                            </Form.Group>
+                            <input type="date" className="form-control ml-4" placeholder="Contraseña" onChange={filterDate} />
+                            <input
+                                type="search"
+                                className="form-control ml-4"
+                                placeholder="Hora"
+                                list="hoursHistorys"
+                                onChange={filterHour}
+                            />
+                            <datalist id="hoursHistorys">
+                                {
+                                    hoursByHistory.map((hour) =>
+                                        <option>{hour}</option>
+                                    )
+                                }
+                            </datalist>
+                        </div>
+                    </form>
                 </div>
 
                 {/* Tarjetas con los historiales*/}
@@ -105,14 +180,13 @@ const OrderHistoryClient = () => {
                                         <div className="h-25">
                                             <h5 className="card-title" id="nombre">{data.name}</h5>
                                         </div>
-                                        <p className="card-text">{data.movemenType}</p>
+                                        <p className="card-text">{data.movemenType === "prestamo" ? "Préstamo" : "Devolución"}</p>
                                         <p className="card-text">{data.date}</p>
                                         <p className="card-text">{data.hour}</p>
                                         <button type="button" className="iconAdd mr-2" value={data._id} onClick={handleShowBaskets}>+</button>
                                     </div>
                                 </div>
                             </div>
-
                         )}
                 </div>
             </Container>

@@ -54,7 +54,7 @@ const DeletionHistory = () => {
     if (namesByDeletionHistory.includes(e.target.value))
       setDeletionHistoryGeneral(deletionHistoryGeneral.filter(cards => cards.name === e.target.value));
     else getDeletionHistory()
-    if(!e.target.value){
+    if (!e.target.value) {
       document.getElementById("form").reset();
     }
   }
@@ -80,7 +80,7 @@ const DeletionHistory = () => {
   return (
     <div className="orderHistory">
       <Container className="text-center mt-2 mx-auto my-5 p-5 bosy w-70">
-      <BasketsTable/>       
+        <BasketsTable />
         <h1 className="m-auto py-5">Historial de eliminaciones</h1>
         <div className="px-3">
 
@@ -117,8 +117,8 @@ const DeletionHistory = () => {
                       <div className="h-25">
                         <h5 className="card-title" id="nombre">{data.name}</h5>
                       </div>
-                      <p className="card-text">{data.typeUser==="cliente"?"Cliente":"Proveedor"}</p>
-                      <p className="card-text">{data.movemenType==="prestamo"?"Préstamo":"Devolución"}</p>
+                      <p className="card-text">{data.typeUser === "cliente" ? "Cliente" : "Proveedor"}</p>
+                      <p className="card-text">{data.movemenType === "prestamo" ? "Préstamo" : "Devolución"}</p>
                       <p className="card-text">{data.date}</p>
                       <p className="card-text">{data.hour}</p>
                       <button type="button" className="iconAdd mr-2" value={data._id} onClick={handleShowBaskets}>+</button>

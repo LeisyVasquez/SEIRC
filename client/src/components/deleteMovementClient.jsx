@@ -9,8 +9,8 @@ import BasketsTable from './base/basketsTable';
 const DeleteMovementClient = () => {
     useEffect(
         () => {
-            getPasswordSuperUser()
-            getGeneralHistory()
+            getPasswordSuperUser();
+            getGeneralHistory();
         }, []
     );
 
@@ -168,7 +168,7 @@ const DeleteMovementClient = () => {
                             <div className="col">
                                 <div className=" card h-100 w-100" key={item._id}>
                                     <div className="card-body">
-                                        <input type="image" src="https://raw.githubusercontent.com/JuanManuel-GAA/equipo7_gaa_ppi2020/master/Recursos%20gu%C3%ADa/iconDelete.png" className="boton4" value={item._id} onClick={handleDeleteBasket} />
+                                        <input type="image" alt="IconDelete" src="https://raw.githubusercontent.com/JuanManuel-GAA/equipo7_gaa_ppi2020/master/Recursos%20gu%C3%ADa/iconDelete.png" className="boton4" value={item._id} onClick={handleDeleteBasket} />
                                         <div className="h-25">
                                             <h5 className="card-title" id="nombre">{item.name}</h5>
                                         </div>

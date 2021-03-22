@@ -8,7 +8,6 @@ import '../styles/basketsRegistration.css';
 
 const BasketsRegistration = () => {
     const [basketsData, setBasketsData] = useState({});
-    let cont = 0; 
     useEffect(() => { });
 
     const data = (e) => {
