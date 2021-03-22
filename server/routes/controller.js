@@ -99,7 +99,7 @@ module.exports = {
         let namesBasketsProvider = [];
         for (let i = 0; i < basketsProvider.length; i++) {
             namesBasketsProvider.push(basketsProvider[i].code + "-" + basketsProvider[i].name);
-        } clientes
+        } 
         res.json(namesBasketsProvider);
     },
     getBasketsReturn: async (req, res) => {
@@ -164,6 +164,7 @@ module.exports = {
         try {
             User.findOne({ name: req.body.name }, async function (err, user) {
                 if (err) {
+                    console.log(err)
                     res.status(500).json({ message: "Error al buscar usuarios existentes " + err });
                 } else {
                     if (!user) {
@@ -177,6 +178,7 @@ module.exports = {
                                 const newUser = new User(req.body);
                                 await newUser.save((err, resulset) => {
                                     if (err) {
+                                        console.log(err)
                                         res.status(500).json({ message: "Error al guardar usuario: " + err.message })
                                     } else {
                                         res.status(201).json({ message: newUser });
@@ -192,6 +194,7 @@ module.exports = {
                 }
             })
         } catch (e) {
+            console.log(e)
             res.status(500).json({ message: e })
         }
     },

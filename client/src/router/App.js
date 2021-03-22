@@ -21,7 +21,7 @@ import DisplayTypeMovementProvider from '../pages/DisplayTypeMovementProvider';
 import DisplayByBasketsClient from '../pages/DisplayByBasketsClient';
 import DisplayByBasketsProvider from '../pages/DisplayByBasketsProvider';
 import PdfPreview from '../pages/PdfPreview';
-import DisplayFiltersClient from '../pages/DisplayFiltersClient';
+import DisplayClientProviderProfile from '../pages/DisplayClientProviderProfile';
 import OrderHistory from '../pages/OrderHistory';
 import DeletionHistory from '../pages/DeletionHistory';
 import BasketsTable from '../components/base/basketsTable';
@@ -51,7 +51,7 @@ function App() {
           <Route path="/displayByBasketsProvider" component={DisplayByBasketsProvider} />
           <Route path="/pdfPreview" component={PdfPreview} />
           <Route path="/orderHistory" component={OrderHistory} />
-          <Route path="/displayFiltersClient" component={DisplayFiltersClient} />
+          <Route path="/displayClientProviderProfile" component={DisplayClientProviderProfile} />
           <Route path="/deletionHistory" component={DeletionHistory} />
           <Route path="/basketsTable" component={BasketsTable} />
         </Switch>

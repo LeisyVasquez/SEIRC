@@ -15,7 +15,7 @@ const HeaderThirdParty = () => {
 
                         <Nav.Link href="/homeThirdParty" className="navItem">Inicio</Nav.Link>
 
-                        <Nav.Link href="/displayFiltersClient" className="navItem">Visualización</Nav.Link>
+                        <Nav.Link href="/displayClientProviderProfile" className="navItem">Visualización</Nav.Link>
 
                         <div /*className="circulo"*/>
                             <NavDropdown drop="left" menualign="right" id="basic-nav-dropdown" className="navItem flecha">

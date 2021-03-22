@@ -3,10 +3,14 @@ import swal from "sweetalert2";
 import api from '../axios/axios';
 import { Container, Row, Col, Form } from "react-bootstrap";
 import { getFromLocal } from '../functions/localStorage'
-import '../styles/displayFiltersClient.css';
+import '../styles/displayClientProviderProfile.css';
+import BasketsTable from './base/basketsTable';
 
 
-const DisplayFiltersClient = () => {
+
+
+
+const DisplayClientProviderProfile = () => {
     //Formatear fecha actual
     let today = new Date();
     let dd = String(today.getDate()).padStart(2, '0');
@@ -139,8 +143,8 @@ const DisplayFiltersClient = () => {
         let basketsValues = [];
         let i = 0;
         let movemenType = item.movemenType
-        
-        if (movemenType == 'prestamo'){
+
+        if (movemenType == 'prestamo') {
             movemenType = 'Préstamo';
         } else {
             movemenType = 'Devolución'
@@ -228,7 +232,7 @@ const DisplayFiltersClient = () => {
             html: tablebody,
             footer: `<tr>Deuda total: ${totalDebt}</tr>`,
             confirmButtonText: "Entendido"
-            
+
         })
     }
 
@@ -253,55 +257,47 @@ const DisplayFiltersClient = () => {
     }
 
     return (
-        <div className="displayFiltersClient" >
+        <div className="displayClientProviderProfile" >
             <Container className="text-center mt-2 mx-auto my-5 p-5 bosy w-70" >
-                <Row className="p-4">
-                    <Col className="mx-auto my-auto">
-                        <p>Filtrar por fecha</p>
-                    </Col>
+                <BasketsTable />
+                <h1 className="mx-auto mb-5">Visualización cliente {getFromLocal('name')}</h1>
+                <h5 className="mx-auto mb-4 mt-4">Filtrar por: </h5>
+
+                <Row className="p-0">
                     <Col className=" mx-auto">
                         <div>
-                            <Col className="mx-auto">
-                                <p>Desde: </p>
-                            </Col>
-                            <Col className="mx-auto">
+                            <Col className="mx-auto mb-4">
+                                <p className="d-inline mr-5">Fecha desde: </p>
                                 <input
                                     type="date"
                                     id="desde"
-                                    className="form-control w-60 m-auto"
+                                    className="form-control w-25 m-auto d-inline"
                                     onChange={onChangeFields} />
                             </Col>
-                            <Col className="mx-auto mt-2">
-                                <p>Hasta: </p>
-                            </Col>
                             <Col className=" mx-auto">
+                                <p className="d-inline mr-5">Fecha hasta: </p>
                                 <input
                                     type="date"
                                     id="hasta"
-                                    className="form-control w-60 m-auto"
+                                    className="form-control w-25 m-auto d-inline"
                                     onChange={onChangeFields} />
                             </Col>
                         </div>
                     </Col>
                 </Row>
-                <Row className="p-4">
-                    <Col className="mx-auto">
-                        <p>Filtrar por tipo de movimiento</p>
-                    </Col>
                     <Col className="mx-auto">
                         <Form.Group >
-                            <Form.Control as="select" id="movemenType" onChange={onChangeFields}>
-                                <option value="">Todos</option>
+                            <Form.Control as="select" id="movemenType" className="w-25 mx-auto my-4" onChange={onChangeFields}>
+                                <option value="">Tipo de movimiento</option>
                                 <option value="prestamo">Préstamo</option>
-                                <option value="devolucion">devolucion</option>
+                                <option value="devolucion">Devolución</option>
                             </Form.Control>
                         </Form.Group>
                     </Col>
-                </Row>
+               
                 <button onClick={aplyFilters} className="boton2 mb-5 w-40 h-50">Aplicar</button>
                 <div className="row">
-                    <div className="cards w-50 y-100 mr-5 col-sm-7">
-                        <img className="float-right" src="https://icons-for-free.com/iconfiles/png/512/Free+Set+copy+Printer-1320568200680206615.png" alt="Impresora" />
+                    <div className=" w-50 y-100 mr-5 col-sm-7">
                         <div className="row row-cols-1 row-cols-md-3 g-4">
                             {filteredHistory.map((item) =>
                                 <div className="col" key={item._id}>
@@ -316,7 +312,7 @@ const DisplayFiltersClient = () => {
                             )}
                         </div>
                     </div>
-                    <div className="debt w-40 y-100 align-baseline col-sm">
+                    <div className="debt w-25 y-100 align-baseline col-sm">
                         <img className="float-right" src="https://icons-for-free.com/iconfiles/png/512/Free+Set+copy+Printer-1320568200680206615.png" alt="Impresora" />
                         <div className="row row-cols-1 row-cols-md-1 g-4">
                             <div className="col">
@@ -336,4 +332,4 @@ const DisplayFiltersClient = () => {
     );
 }
 
-export default DisplayFiltersClient;
+export default DisplayClientProviderProfile;

@@ -2,18 +2,18 @@ import React from 'react';
 
 import HeaderThirdParty from '../components/base/headerThirdParty';
 import Footer from '../components/base/footer';
-import DisplayFiltersClient from '../components/displayFiltersClient';
+import DisplayClientProviderProfile from '../components/displayClientProviderProfile';
 
 
 
-const displayFiltersClient = () => {
+const displayClientProviderProfile = () => {
     return (
         <div>
             <HeaderThirdParty />
-            <DisplayFiltersClient />
+            <DisplayClientProviderProfile />
             <Footer />
         </div>
     )
 }
 
-export default displayFiltersClient;
+export default displayClientProviderProfile;
