@@ -3,6 +3,7 @@ import React from 'react';
 import '../../styles/header.css';
 
 import { Navbar, Nav, NavDropdown } from 'react-bootstrap';
+import { saveToLocal } from "../../functions/localStorage"
 
 const HeaderSuperUser = () => {
     return (
@@ -18,15 +19,21 @@ const HeaderSuperUser = () => {
                         <Nav.Link href="/adminRegistration" className="navItem">Reg. Admin</Nav.Link>
 
                         <NavDropdown title="Cliente" id="basic-nav-dropdown" className="navItem">
-                            <NavDropdown.Item href="#">V. Tipo mov.</NavDropdown.Item>
-                            <NavDropdown.Item href="#">V. Cliente</NavDropdown.Item>
-                            <NavDropdown.Item href="#">V. Tipo canastilla</NavDropdown.Item>
-                        </NavDropdown>
+                            <NavDropdown.Item href="/displayTypeMovementClient">V. Tipo mov.</NavDropdown.Item>
+                            <NavDropdown.Item href="/displayByClient">V. Cliente</NavDropdown.Item>
+                            <NavDropdown.Item href="/displayByBasketsClient">V. Tipo canastilla</NavDropdown.Item>
+                           </NavDropdown>
 
                         <NavDropdown title="Proveedor" id="basic-nav-dropdown" className="navItem">
-                            <NavDropdown.Item href="#">V. Tipo mov.</NavDropdown.Item>
-                            <NavDropdown.Item href="#">V. Proveedor</NavDropdown.Item>
-                            <NavDropdown.Item href="#">V. Tipo canastilla</NavDropdown.Item>
+                            <NavDropdown.Item href="/displayTypeMovementProvider">V. Tipo mov.</NavDropdown.Item>
+                            <NavDropdown.Item href="/displayByProvider">V. Proveedor</NavDropdown.Item>
+                            <NavDropdown.Item href="/displayByBasketsProvider">V. Tipo canastilla</NavDropdown.Item>
+                        </NavDropdown>
+
+                        <NavDropdown title="Historiales" id="basic-nav-dropdown" className="navItem">
+                            <NavDropdown.Item href="/orderHistory" onClick={() => { { saveToLocal('typeUser', 'proveedor') } }}>Historial proveedor</NavDropdown.Item>
+                            <NavDropdown.Item href="/orderHistory" onClick={() => { saveToLocal('typeUser', 'cliente') }}>Historial cliente</NavDropdown.Item>
+                            <NavDropdown.Item href="/deletionHistory">Historial eliminaciones</NavDropdown.Item>
                         </NavDropdown>
 
                         <div /*className="circulo"*/>

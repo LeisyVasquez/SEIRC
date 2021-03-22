@@ -3,6 +3,7 @@ import React from 'react';
 import '../../styles/header.css';
 
 import { Navbar, Nav, NavDropdown } from 'react-bootstrap';
+import { saveToLocal } from "../../functions/localStorage" ;
 
 const HeaderAdmin = () => {
     return (
@@ -18,6 +19,7 @@ const HeaderAdmin = () => {
                         <NavDropdown title="Cliente" id="basic-nav-dropdown" className="navItem">
                             <NavDropdown.Item href="/loanReturnClient">Añadir mov.</NavDropdown.Item>
                             <NavDropdown.Item href="/deleteMovementClient">Eliminar mov.</NavDropdown.Item>
+                            <NavDropdown.Item href="/orderHistory" onClick={()=>{saveToLocal('typeUser', 'cliente')}}>Historial</NavDropdown.Item>
                             <NavDropdown.Item href="/displayTypeMovementClient">V. Tipo mov.</NavDropdown.Item>
                             <NavDropdown.Item href="/displayByClient">V. Cliente</NavDropdown.Item>
                             <NavDropdown.Item href="/displayByBasketsClient">V. Tipo canastilla</NavDropdown.Item>
@@ -26,6 +28,7 @@ const HeaderAdmin = () => {
                         <NavDropdown title="Proveedor" id="basic-nav-dropdown" className="navItem">
                             <NavDropdown.Item href="/loanReturnProvider">Añadir mov.</NavDropdown.Item>
                             <NavDropdown.Item href="/deleteMovementProvider">Eliminar mov.</NavDropdown.Item>
+                            <NavDropdown.Item href="/orderHistory" onClick={()=>{{saveToLocal('typeUser', 'proveedor')}}}>Historial</NavDropdown.Item>
                             <NavDropdown.Item href="/displayTypeMovementProvider">V. Tipo mov.</NavDropdown.Item>
                             <NavDropdown.Item href="/displayByProvider">V. Proveedor</NavDropdown.Item>
                             <NavDropdown.Item href="/displayByBasketsProvider">V. Tipo canastilla</NavDropdown.Item>

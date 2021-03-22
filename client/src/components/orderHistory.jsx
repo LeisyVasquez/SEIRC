@@ -3,27 +3,31 @@ import { Container, Form } from "react-bootstrap";
 import swal from "sweetalert2";
 import api from '../axios/axios';
 import BasketsTable from './base/basketsTable';
+import {getFromLocal} from '../functions/localStorage'
 
 import '../styles/orderHistory.css'
 
 
-const OrderHistoryClient = () => {
+const OrderHistory = () => {
 
     let [historyGeneral, setHistoryGeneral] = useState([]);
-    const [namesClientsByHistory, setNamesClientsByHistory] = useState([]);
+    const [namesByHistory, setNamesByHistory] = useState([]);
     const [hoursByHistory, setHoursByHistory] = useState([]);
+    const [typeUser,setTypeUser] = useState("");
 
     useEffect(() => {
+        setTypeUser(getFromLocal('typeUser'));
         getHistory();
     }, [])
 
 
     //Petiión al servidor
     const getHistory = () => {
-        api.get('/getHistoryByTypeUser/cliente')
+        console.log(typeUser)
+        api.get(`/getHistoryByTypeUser/${getFromLocal('typeUser')}`)
             .then(res => {
                 setHistoryGeneral(res.data.historyGeneral);
-                setNamesClientsByHistory(res.data.namesByHistory);
+                setNamesByHistory(res.data.namesByHistory);
                 setHoursByHistory(res.data.hoursByHistory);
             })
             .catch(err => {
@@ -58,7 +62,7 @@ const OrderHistoryClient = () => {
 
     //Filtrar por nombre
     const filterName = (e) => {
-        if (namesClientsByHistory.includes(e.target.value))
+        if (namesByHistory.includes(e.target.value))
             setHistoryGeneral(historyGeneral.filter(cards => cards.name === e.target.value));
         else getHistory()
         if (!e.target.value) document.getElementById("form").reset();
@@ -87,7 +91,7 @@ const OrderHistoryClient = () => {
         if (filterD.length === 0) {
             swal.fire({
                 icon: 'warning',
-                title: 'No hay historiales de eliminación en la fecha seleccionada',
+                title: 'No hay historiales en la fecha seleccionada',
                 confirmButtonText: "Entendido"
             })
             getHistory()
@@ -106,7 +110,7 @@ const OrderHistoryClient = () => {
         else if (inputLength === 5) {
             swal.fire({
                 icon: 'warning',
-                title: 'No hay historiales de eliminación en la hora seleccionada',
+                title: 'No hay historiales en la hora seleccionada',
                 confirmButtonText: "Entendido"
             })
             getHistory()
@@ -123,7 +127,7 @@ const OrderHistoryClient = () => {
         <div className="orderHistory">
             <Container className="text-center mt-2 mx-auto my-5 p-5 bosy w-70">
                 <BasketsTable />
-                <h1 className="mx-auto mb-4">Historiales clientes</h1>
+                <h1 className="mx-auto mb-4">Historiales {typeUser === 'cliente'?'clientes':'proveedores'}</h1>
 
                 {/* Sección de filtros*/}
                 <div className="w-75 mx-auto mb-4">
@@ -131,13 +135,13 @@ const OrderHistoryClient = () => {
                         <input
                             type="search"
                             className="form-control mb-4 mr-3"
-                            placeholder="Nombre de cliente"
-                            list="namesClients"
+                            placeholder={`Nombre del ${typeUser}`}
+                            list="names"
                             onChange={filterName}
                         />
-                        <datalist id="namesClients">
+                        <datalist id="names">
                             {
-                                namesClientsByHistory.map((name) =>
+                                namesByHistory.map((name) =>
                                     <option>{name}</option>
                                 )
                             }
@@ -195,4 +199,4 @@ const OrderHistoryClient = () => {
     );
 }
 
-export default OrderHistoryClient;
+export default OrderHistory;

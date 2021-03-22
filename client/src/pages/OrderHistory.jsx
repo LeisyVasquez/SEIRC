@@ -2,16 +2,16 @@ import React from 'react';
 
 import Header from '../components/base/headerAdmin'; 
 import Footer from '../components/base/footer'; 
-import OrderHistoryClient from '../components/orderHistoryClient';
+import OrderHistory from '../components/orderHistory';
 
-const orderHistoryClient = () =>{
+const orderHistory = () =>{
     return(
         <div>
             <Header />
-            <OrderHistoryClient />
+            <OrderHistory />
             <Footer />
         </div>
     );
 }
 
-export default orderHistoryClient; 
+export default orderHistory; 
