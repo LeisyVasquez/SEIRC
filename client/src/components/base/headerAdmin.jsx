@@ -3,7 +3,7 @@ import React from 'react';
 import '../../styles/header.css';
 
 import { Navbar, Nav, NavDropdown } from 'react-bootstrap';
-import { saveToLocal } from "../../functions/localStorage" ;
+import { saveToLocal,remove } from "../../functions/localStorage" ;
 
 const HeaderAdmin = () => {
     return (
@@ -41,7 +41,7 @@ const HeaderAdmin = () => {
 
                         <div /*className="circulo"*/>
                             <NavDropdown drop="left" menualign="right" id="basic-nav-dropdown" className="navItem flecha">
-                                <NavDropdown.Item href="/">Cerrar sesión</NavDropdown.Item>
+                                <NavDropdown.Item onClick={()=>{remove()}}href="/">Cerrar sesión</NavDropdown.Item>
                             </NavDropdown>
                         </div>
 

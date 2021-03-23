@@ -151,9 +151,11 @@ module.exports = {
     el enviado desde el cliente son iguales o no, si son iguales procedemos a enviar al cliente que el 
     acceso fue correcto de lo contrario enviamos el acceso denegado*/
     isRolePage: (req, res) => {
+        console.log(req.body.typeUser)
         User.find({ _id: req.user.id }, (err, user) => {
             if (err) return res.status(500).send({ message: err })
             if (!user) return res.status(404).send({ message: 'No existe el id' })
+            
             for (let i = 0; i < req.body.typeUser.length; i++) {
                 if (req.body.typeUser[i] === user[0].typeUser) return res.status(200).send({ message: "Acceso permitido" });
             }
@@ -385,13 +387,14 @@ module.exports = {
                                 typeUser: resultHistory.typeUser,
                                 type: 2
                             }
+                            const hour = generatorHour();
                             if (resultHistory.movemenType === "devolucion") {
                                 data["basketsLoan"] = resultHistory.baskets;
+                                
                                 axios.post('http://localhost:8085/api/loanClientProvider', data).then((response) => {
                                     if (response.status === 201) {
-                                        const hour = generatorHour();
                                         History.findByIdAndUpdate(idHistory, { $set: { status: 'inactivo', hour: hour } }, function (errUpdate, resultUpdate) {
-                                            if (errUpdate) return res.status(254).send(errUpdate);
+                                            if (errUpdate) {return res.status(254).send(errUpdate);}
                                             return res.status(response.status).send(response.data);
                                         })
                                     } else {
@@ -413,6 +416,7 @@ module.exports = {
                                         return res.status(response.status).send(response.data);
                                     }
                                 }).catch((error) => {
+                                    console.log(error)
                                     return res.status(254).send(error);
                                 })
                             }

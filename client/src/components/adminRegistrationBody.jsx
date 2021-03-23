@@ -2,14 +2,24 @@ import React, { useEffect, useState } from 'react';
 import { Container } from 'react-bootstrap';
 import swal from "sweetalert2";
 import api from '../axios/axios';
-
 import ButtonCancel from './base/buttonCancel';
-
 import '../styles/thirdPartyRegistration.css';
+import {getFromLocal} from '../functions/localStorage'
 
 const AdminRegistrationBody = () => {
     const [userData, setUserData] = useState({});
-    useEffect(() => { });
+    useEffect(() => {
+        comprobation();
+    }, []);
+
+    function comprobation(){
+        api.post('/routeComprobation',{typeUser:['superUsuario']},{headers:{'authorization':`Bearer ${getFromLocal('tokenUser')}`}})
+        .then((res)=>{
+            if(res.status===201) window.location.href = '/notAuthorized'
+        }).catch((err)=>{
+            window.location.href = '/notAuthorized'
+        });
+    }
 
     const data = (e) => {
         let name = e.target.id;
@@ -20,6 +30,7 @@ const AdminRegistrationBody = () => {
         }
         ));
     }
+
 
     const sendData = () => {
         const data = {

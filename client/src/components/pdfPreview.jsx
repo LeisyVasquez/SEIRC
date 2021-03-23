@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import ReactToPrint from 'react-to-print'
 import swal from "sweetalert2";
-import { getFromLocal, remove} from "../functions/localStorage";
+import { getFromLocal, removeFromLocal} from "../functions/localStorage";
 import { Container, Button } from "react-bootstrap";
 import '../styles/pdfPreview.css';
 
@@ -58,7 +58,7 @@ const PdfPreview = () => {
             cancelButtonColor: "#51C2D5",
         }).then((result) => {
             if (!result.value) {
-                remove();
+                removeFromLocal('data')
                 window.history.back();
             }
         })

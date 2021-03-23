@@ -9,7 +9,7 @@ import LoanProvider from './loanProvider';
 import ReturnProvider from './returnProvider';
 import BasketsTable from './base/basketsTable'; 
 
-
+import {getFromLocal} from '../functions/localStorage'
 
 const LoanReturnProvider = () => {
     const [option,setOption] = useState(0); 
@@ -17,6 +17,20 @@ const LoanReturnProvider = () => {
         if(e.target.value==="option1")setOption(0);
         if(e.target.value==="option2")setOption(1);
     }
+
+    useEffect(() => {
+        comprobation();
+    }, []);
+
+    function comprobation(){
+        api.post('/routeComprobation',{typeUser:['administrador']},{headers:{'authorization':`Bearer ${getFromLocal('tokenUser')}`}})
+        .then((res)=>{
+            if(res.status===201) window.location.href = '/notAuthorized'
+        }).catch((err)=>{
+            window.location.href = '/notAuthorized'
+        });
+    }
+
     return (
         <div className="basketsRegistration" >
             <Container className="text-center mx-auto my-5 px-5 py-3 bosy w-50" >

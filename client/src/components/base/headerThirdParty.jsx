@@ -4,6 +4,8 @@ import '../../styles/header.css';
 
 import { Navbar, Nav, NavDropdown } from 'react-bootstrap';
 
+import {remove} from '../../functions/localStorage'
+
 const HeaderThirdParty = () => {
     return (
         <div className="header">
@@ -19,7 +21,7 @@ const HeaderThirdParty = () => {
 
                         <div /*className="circulo"*/>
                             <NavDropdown drop="left" menualign="right" id="basic-nav-dropdown" className="navItem flecha">
-                                <NavDropdown.Item href="/">Cerrar sesión</NavDropdown.Item>
+                                <NavDropdown.Item href="/" onClick={()=>{remove()}}>Cerrar sesión</NavDropdown.Item>
                             </NavDropdown>
                         </div>
 

@@ -4,7 +4,6 @@ import swal from "sweetalert2";
 import api from '../axios/axios';
 import BasketsTable from './base/basketsTable';
 import {getFromLocal} from '../functions/localStorage'
-
 import '../styles/orderHistory.css'
 
 
@@ -16,9 +15,20 @@ const OrderHistory = () => {
     const [typeUser,setTypeUser] = useState("");
 
     useEffect(() => {
+        comprobation();
         setTypeUser(getFromLocal('typeUser'));
         getHistory();
     }, [])
+
+    function comprobation(){
+        api.post('/routeComprobation',{typeUser:['administrador','superUsuario']},{headers:{'authorization':`Bearer ${getFromLocal('tokenUser')}`}
+    })
+        .then((res)=>{
+            if(res.status===201) window.location.href = '/notAuthorized'
+        }).catch((err)=>{
+            window.location.href = '/notAuthorized'
+        });
+    }
 
 
     //Petiión al servidor

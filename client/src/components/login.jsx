@@ -53,8 +53,10 @@ const Login = () => {
                 });  
                 
             } else if(res.status === 200){
+                console.log(res.data)
                 saveToLocal('tokenUser',res.data.token);
                 saveToLocal('name',res.data.name);
+                saveToLocal('role',res.data.role);
                 switch(res.data.role){
                     case "cliente" || "proveedor" || "clienteProveedor":
                         window.location.href = 'http://localhost:3000/homeThirdParty'

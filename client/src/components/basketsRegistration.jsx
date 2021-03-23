@@ -4,12 +4,23 @@ import api from '../axios/axios';
 import ButtonCancel from './base/buttonCancel';
 import { Container, Form } from "react-bootstrap";
 import '../styles/basketsRegistration.css';
+import {getFromLocal} from '../functions/localStorage'
 
 
 const BasketsRegistration = () => {
     const [basketsData, setBasketsData] = useState({});
-    useEffect(() => { });
+    useEffect(() => {
+        comprobation();
+    }, []);
 
+    function comprobation(){
+        api.post('/routeComprobation',{typeUser:['administrador']},{headers:{'authorization':`Bearer ${getFromLocal('tokenUser')}`}})
+        .then((res)=>{
+            if(res.status===201) window.location.href = '/notAuthorized'
+        }).catch((err)=>{
+            window.location.href = '/notAuthorized'
+        });
+    }
     const data = (e) => {
         let name = e.target.id;
         let value = e.target.value;
@@ -18,8 +29,6 @@ const BasketsRegistration = () => {
             [name]: value,
         }));
     }
-    
-
     const sendData = () => {
         const data = {
             name: basketsData.name,

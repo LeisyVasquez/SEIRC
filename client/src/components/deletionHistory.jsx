@@ -4,7 +4,7 @@ import { Container } from "react-bootstrap";
 import swal from "sweetalert2";
 import api from '../axios/axios';
 import BasketsTable from './base/basketsTable';
-
+import {getFromLocal} from '../functions/localStorage'
 
 const DeletionHistory = () => {
   let [deletionHistoryGeneral, setDeletionHistoryGeneral] = useState([]);
@@ -12,8 +12,18 @@ const DeletionHistory = () => {
 
 
   useEffect(() => {
+    comprobation()
     getDeletionHistory();
   }, [])
+
+  function comprobation(){
+    api.post('/routeComprobation',{typeUser:['superUsuario']},{headers:{'authorization':`Bearer ${getFromLocal('tokenUser')}`}})
+    .then((res)=>{
+        if(res.status===201) window.location.href = '/notAuthorized'
+    }).catch((err)=>{
+        window.location.href = '/notAuthorized'
+    });
+}
 
   const getDeletionHistory = () => {
     api.get('/getDeletionHistory')

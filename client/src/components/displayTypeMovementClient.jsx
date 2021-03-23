@@ -3,16 +3,25 @@ import api from '../axios/axios';
 import {Container,Row,Col,Form,Table} from 'react-bootstrap';
 import '../styles/displayTypeMovementAndTypeBaskets.css';
 import swal from "sweetalert2";
-
+import {getFromLocal} from '../functions/localStorage'
 const DisplaypeMovementClient = () =>{
     const [generalList,setGeneralList] = useState([]);
     const [auxList,setAuxList] = useState([]);
 
     useEffect(
         () => {
+            comprobation()
             getQuantityTotalByMovement()
         }, []
     );
+    function comprobation(){
+        api.post('/routeComprobation',{typeUser:['administrador','superUsuario']},{headers:{'authorization':`Bearer ${getFromLocal('tokenUser')}`}})
+        .then((res)=>{
+            if(res.status===201) window.location.href = '/notAuthorized'
+        }).catch((err)=>{
+            window.location.href = '/notAuthorized'
+        });
+    }
 
 
     function getQuantityTotalByMovement(){

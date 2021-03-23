@@ -4,15 +4,28 @@ import { Container, Button, Modal } from "react-bootstrap";
 import '../styles/deleteClient.css';
 import swal from "sweetalert2";
 import BasketsTable from './base/basketsTable'; 
+import {getFromLocal} from '../functions/localStorage'
 
 
 const DeleteMovementClient = () => {
     useEffect(
         () => {
+            comprobation();
             getPasswordSuperUser();
             getGeneralHistory();
         }, []
     );
+
+    function comprobation(){
+        api.post('/routeComprobation',{typeUser:['administrador']},{headers:{'authorization':`Bearer ${getFromLocal('tokenUser')}`}
+    })
+        .then((res)=>{
+            if(res.status===201) window.location.href = '/notAuthorized'
+        }).catch((err)=>{
+            window.location.href = '/notAuthorized'
+        });
+    }
+    
 
     const [historyData, setHistoryData] = useState([]);
     const [listNamesClients, setListNamesClient] = useState([]);
@@ -98,13 +111,12 @@ const DeleteMovementClient = () => {
 
     function deleteHistory(e) {
         if (passwordSuperUser === e.target.value) {
-            console.log('contraseña correcta')
             const data = {
                 password: e.target.value,
                 idHistory: idCard
             }
+            console.log(data);
             api.put('/deleteMovementClientProvider',data).then((res)=>{
-                console.log("Holaaaa");
                 if(res.status === 254){
                     swal.fire({
                         icon: 'error',

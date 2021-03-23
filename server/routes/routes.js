@@ -46,14 +46,7 @@ router.get('/getBasketsProvider', getBasketsProvider);
 router.get('/getBasketsReturn/:name/:typeUser', getBasketsReturn);
 router.post('/loanClientProvider',loanClientProvider);
 router.post('/returnClientProvider',returnClientProvider);
-
-
-
-
-
 router.post('/routeComprobation',isAuth,isRolePage);
-
-
 router.get('/getGeneralHistory/:typeUser',getGeneralHistory);
 router.get('/getHistoryByName/:typeUser/:name',getHistoryByName);
 router.put('/deleteMovementClientProvider',deleteMovementClientProvider);

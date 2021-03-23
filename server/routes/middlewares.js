@@ -7,6 +7,7 @@ module.exports = {
     /*Nos permite comprobar la validez del token si este es válido se guarda el 
     payload de este en el req */
     isAuth: (req,res, next)=>{
+        
         //console.log(req.headers.authorization);
         if(!req.headers.authorization) return res.status(403).send({ message: 'No tienes autorización' });
         const token = req.headers.authorization.split(' ')[1];

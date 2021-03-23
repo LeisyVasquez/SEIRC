@@ -4,14 +4,25 @@ import { Container, Button, Modal } from "react-bootstrap";
 import '../styles/deleteClient.css';
 import swal from "sweetalert2";
 import BasketsTable from './base/basketsTable'; 
-
+import {getFromLocal} from '../functions/localStorage'
 const DeleteMovementProvider = () => {
     useEffect(
         () => {
+            comprobation()
             getPasswordSuperUser()
             getGeneralHistory()
         }, []
     );
+
+    function comprobation(){
+        api.post('/routeComprobation',{typeUser:['administrador']},{headers:{'authorization':`Bearer ${getFromLocal('tokenUser')}`}
+    })
+        .then((res)=>{
+            if(res.status===201) window.location.href = '/notAuthorized'
+        }).catch((err)=>{
+            window.location.href = '/notAuthorized'
+        });
+    }
 
     const [historyData, setHistoryData] = useState([]);
     const [listNamesProviders, setListNamesProviders] = useState([]);

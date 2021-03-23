@@ -6,11 +6,22 @@ import { getFromLocal } from '../functions/localStorage'
 import '../styles/displayClientProviderProfile.css';
 import BasketsTable from './base/basketsTable';
 
-
-
-
-
 const DisplayClientProviderProfile = () => {
+    useEffect(() => {
+        comprobation();
+        getGeneralHistory();
+    }, []);
+
+    function comprobation(){
+        api.post('/routeComprobation',{typeUser:['cliente','proveedor','clienteProveedor']},{headers:{'authorization':`Bearer ${getFromLocal('tokenUser')}`}
+    })
+        .then((res)=>{
+            if(res.status===201) window.location.href = '/notAuthorized'
+        }).catch((err)=>{
+            window.location.href = '/notAuthorized'
+        });
+    }
+
     //Formatear fecha actual
     let today = new Date();
     let dd = String(today.getDate()).padStart(2, '0');
@@ -26,19 +37,6 @@ const DisplayClientProviderProfile = () => {
     const [filters, setfilters] = useState({ hasta: today, desde: new Date("2021-01-02T00:00:00") });//El error tiene que estar en esta línea
     let filterArray = [];         //Dice que la fecha de "hasta" es inválida, probablemente tenga que ver con el formateo...
 
-    useEffect(() => {
-        getGeneralHistory();
-    }, []);
-
-    //Comprobar permiso para acceder a la ruta
-    function comprobation() {
-        api.post('/routeComprobation', { typeUser: ['administrador'] }, { headers: { 'authorization': `Bearer ${getFromLocal('tokenUser')}` } })
-            .then((res) => {
-                if (res.status === 201) window.location.href = '/notAuthorized'
-            }).catch((err) => {
-                window.location.href = '/notAuthorized'
-            });
-    }
 
     //Guardar cambios en los input
     const onChangeFields = (e) => {
