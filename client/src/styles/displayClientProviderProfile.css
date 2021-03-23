@@ -13,10 +13,10 @@
     height: 3vw;
 }
 
-
-
 .displayClientProviderProfile  .debt{
     border: 1px solid rgb(129, 116, 116,0.5);
+    width: 60%;
+    
     
 }
 
@@ -32,7 +32,7 @@
 
 
 .displayClientProviderProfile  .sm-title{
-    font-size: 0.9vw;
+    font-size: 20px;
 }
 
 

@@ -260,63 +260,49 @@ const DisplayClientProviderProfile = () => {
         <div className="displayClientProviderProfile" >
             <Container className="text-center mt-2 mx-auto my-5 p-5 bosy w-70" >
                 <BasketsTable />
-                <h1 className="mx-auto mb-5">Visualización cliente {getFromLocal('name')}</h1>
-                <h5 className="mx-auto mb-4 mt-4">Filtrar por: </h5>
+                <h1 className="mx-auto mb-5 mt-3">Visualización cliente {getFromLocal('name')}</h1>
+                {/*Filtrar por historiales*/}
+                <div class="container">
+                    <div class="row">
+                        <div class="col w-100">
+                            <h5 className="mx-auto mb-4 mt-2">Filtrar hitoriales por: </h5>
+                            <div>
+                                <Col className="mx-auto mb-4">
+                                    <p className="d-inline mr-5">Fecha desde: </p>
+                                    <input
+                                        type="date"
+                                        id="desde"
+                                        className="form-control w-50 m-auto d-inline"
+                                        onChange={onChangeFields} />
+                                </Col>
+                                <Col className=" mx-auto">
+                                    <p className="d-inline mr-5">Fecha hasta: </p>
+                                    <input
+                                        type="date"
+                                        id="hasta"
+                                        className="form-control w-50 m-auto d-inline"
+                                        onChange={onChangeFields} />
+                                </Col>
+                            </div>
+                            <Col className="mx-auto">
+                                <Form.Group >
+                                    <Form.Control as="select" id="movemenType" className="w-50 mx-auto my-4" onChange={onChangeFields}>
+                                        <option value="">Tipo de movimiento</option>
+                                        <option value="prestamo">Préstamo</option>
+                                        <option value="devolucion">Devolución</option>
+                                    </Form.Control>
+                                </Form.Group>
+                            </Col>
+                            <button onClick={aplyFilters} className="boton2 mb-5  ">Aplicar</button>
+                        </div>
 
-                <Row className="p-0">
-                    <Col className=" mx-auto">
-                        <div>
-                            <Col className="mx-auto mb-4">
-                                <p className="d-inline mr-5">Fecha desde: </p>
-                                <input
-                                    type="date"
-                                    id="desde"
-                                    className="form-control w-25 m-auto d-inline"
-                                    onChange={onChangeFields} />
-                            </Col>
-                            <Col className=" mx-auto">
-                                <p className="d-inline mr-5">Fecha hasta: </p>
-                                <input
-                                    type="date"
-                                    id="hasta"
-                                    className="form-control w-25 m-auto d-inline"
-                                    onChange={onChangeFields} />
-                            </Col>
-                        </div>
-                    </Col>
-                </Row>
-                    <Col className="mx-auto">
-                        <Form.Group >
-                            <Form.Control as="select" id="movemenType" className="w-25 mx-auto my-4" onChange={onChangeFields}>
-                                <option value="">Tipo de movimiento</option>
-                                <option value="prestamo">Préstamo</option>
-                                <option value="devolucion">Devolución</option>
-                            </Form.Control>
-                        </Form.Group>
-                    </Col>
-               
-                <button onClick={aplyFilters} className="boton2 mb-5 w-40 h-50">Aplicar</button>
-                <div className="row">
-                    <div className=" w-50 y-100 mr-5 col-sm-7">
-                        <div className="row row-cols-1 row-cols-md-3 g-4">
-                            {filteredHistory.map((item) =>
-                                <div className="col" key={item._id}>
-                                    <div className=" card h-100 w-100 y-100">
-                                        <div className="card-body">
-                                            <p className="card-title sm-title">{item.movemenType === "prestamo" ? "Préstamo" : "Devolución"}</p>
-                                            <p className="card-title">{item.date}</p>
-                                            <button type="button" className="iconAdd mr-2" onClick={() => showBaskets(item)}>+</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            )}
-                        </div>
-                    </div>
-                    <div className="debt w-25 y-100 align-baseline col-sm">
-                        <img className="float-right" src="https://icons-for-free.com/iconfiles/png/512/Free+Set+copy+Printer-1320568200680206615.png" alt="Impresora" />
-                        <div className="row row-cols-1 row-cols-md-1 g-4">
-                            <div className="col">
-                                <div className="card h-100 w-100 y-100">
+                        {/*Consolidado*/}
+                        <div class="col w-25">
+                            <div className="debt mx-auto align-baseline px-3 py-2">
+                                <img src="https://icons-for-free.com/iconfiles/png/512/Free+Set+copy+Printer-1320568200680206615.png" alt="Impresora" />
+                                <h5 className="mx-auto mb-4 mt-2">Consolidado hasta la fecha</h5>
+
+                                <div className="card mr-4">
                                     <div className="card-body">
                                         <p className="card-title">Deuda</p>
                                         <p className="card-title">{todayStr}</p>
@@ -325,6 +311,24 @@ const DisplayClientProviderProfile = () => {
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+
+                {/*Historial*/}
+                <div className=" w-100 y-100 mr-5 ">
+                    <h5 className="mx-auto mb-4 mt-2">Historiales </h5>
+                    <div className="row row-cols-1 row-cols-md-4 g-4">
+                        {filteredHistory.map((item) =>
+                            <div className="col" key={item._id}>
+                                <div className=" card h-100 w-100 y-100">
+                                    <div className="card-body">
+                                        <p className="card-title sm-title">{item.movemenType === "prestamo" ? "Préstamo" : "Devolución"}</p>
+                                        <p className="card-title">{item.date}</p>
+                                        <button type="button" className="iconAdd mr-2" onClick={() => showBaskets(item)}>+</button>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
                     </div>
                 </div>
             </Container>
