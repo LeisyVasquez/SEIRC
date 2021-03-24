@@ -170,7 +170,7 @@ const DeleteMovementProvider = () => {
                 </div>
 
                 {/*Tarjetas con el historial*/}
-                <div className="row row-cols-1 row-cols-md-3 g-4">
+                <div className="row row-cols-1 row-cols-md-4 g-4">
                     {historyData.map((item) =>
                         <>
                             <div className="col">

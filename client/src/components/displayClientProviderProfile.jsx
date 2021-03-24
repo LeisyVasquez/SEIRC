@@ -322,6 +322,7 @@ const DisplayClientProviderProfile = () => {
                                     <div className="card-body">
                                         <p className="card-title sm-title">{item.movemenType === "prestamo" ? "Préstamo" : "Devolución"}</p>
                                         <p className="card-title">{item.date}</p>
+                                        <p className="card-title">{item.hour}</p>
                                         <button type="button" className="iconAdd mr-2" onClick={() => showBaskets(item)}>+</button>
                                     </div>
                                 </div>

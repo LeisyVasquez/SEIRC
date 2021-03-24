@@ -28,7 +28,7 @@ module.exports = {
     },
     registerBaskets: (req, res) => {
         try {
-            const { name, type, description, baseQuantily } = req.body;
+            const { name, type, description } = req.body;
             Baskets.findOne({ name: name }, async function (err, baskets) {
                 if (err) {
                     res.status(500).json({ state: 0, message: err });
@@ -36,9 +36,8 @@ module.exports = {
                     if (!baskets) {
                         let code = parseInt(fs.readFileSync(path.join(__dirname, '../config/createCode.txt')), 10) + 1;
                         fs.writeFileSync(path.join(__dirname, '../config/createCode.txt'), code + "");
-                        let temporalBaseQuantily = baseQuantily;
                         let newBaskets;
-                        if (type === "Empresa") newBaskets = new Baskets({ name, code, type, description, baseQuantily, temporalBaseQuantily });
+                        if (type === "Empresa") newBaskets = new Baskets({ name, code, type, description });
                         else newBaskets = new Baskets({ name, code, type, description });
 
                         await newBaskets.save((err, resulset) => {
@@ -99,7 +98,7 @@ module.exports = {
         let namesBasketsProvider = [];
         for (let i = 0; i < basketsProvider.length; i++) {
             namesBasketsProvider.push(basketsProvider[i].code + "-" + basketsProvider[i].name);
-        } 
+        }
         res.json(namesBasketsProvider);
     },
     getBasketsReturn: async (req, res) => {
@@ -155,7 +154,7 @@ module.exports = {
         User.find({ _id: req.user.id }, (err, user) => {
             if (err) return res.status(500).send({ message: err })
             if (!user) return res.status(404).send({ message: 'No existe el id' })
-            
+
             for (let i = 0; i < req.body.typeUser.length; i++) {
                 if (req.body.typeUser[i] === user[0].typeUser) return res.status(200).send({ message: "Acceso permitido" });
             }
@@ -302,7 +301,7 @@ module.exports = {
                 } else {
                     return res.status(254).json('No existe el historial');
                 }
-            })
+            }).sort({ hour: -1 })
         } catch (e) {
             res.status(254).json(e) // 254 es provicional (500)
         }
@@ -336,7 +335,7 @@ module.exports = {
                 } else {
                     return res.status(255).json('No existe el historial');
                 }
-            })
+            }).sort({ date: -1, hour: -1 })
         } catch (e) {
             res.status(254).json(e) // 254 es provicional (500)
         }
@@ -390,11 +389,11 @@ module.exports = {
                             const hour = generatorHour();
                             if (resultHistory.movemenType === "devolucion") {
                                 data["basketsLoan"] = resultHistory.baskets;
-                                
+
                                 axios.post('http://localhost:8085/api/loanClientProvider', data).then((response) => {
                                     if (response.status === 201) {
                                         History.findByIdAndUpdate(idHistory, { $set: { status: 'inactivo', hour: hour } }, function (errUpdate, resultUpdate) {
-                                            if (errUpdate) {return res.status(254).send(errUpdate);}
+                                            if (errUpdate) { return res.status(254).send(errUpdate); }
                                             return res.status(response.status).send(response.data);
                                         })
                                     } else {
@@ -584,7 +583,7 @@ module.exports = {
             History.find({ $and: [{ $or: [{ typeUser: typeUser }, { typeUser: 'clienteProveedor' }] }, { status: 'activo' }] }, (request, response) => {
                 if (response) {
                     const namesByHistory = [];
-                    const hoursByHistory = []; 
+                    const hoursByHistory = [];
                     console.log(response)
                     for (let i = 0; i < response.length; i++) {
                         if (!hoursByHistory.includes(response[i].hour)) {
@@ -597,7 +596,7 @@ module.exports = {
                     return res.status(200).json({ historyGeneral: response, namesByHistory: namesByHistory.sort(), hoursByHistory: hoursByHistory.sort() })
                 }
                 else return res.status(254).send('Error en el servidor')
-            })
+            }).sort({ date: -1, hour: -1 })
         } catch (e) {
             return res.status(254).send('Error en el servidor')
         }
@@ -618,7 +617,7 @@ module.exports = {
                     return res.status(200).json({ deletionHistoryGeneral: response, namesByDeletionHistory: namesByDeletionHistory })
                 }
                 else return res.status(254).send('Error en el servidor')
-            })
+            }).sort({ date: -1, hour: -1 })
         } catch (e) {
             return res.status(254).send('Error en el servidor')
         }

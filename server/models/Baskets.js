@@ -10,9 +10,11 @@ const BasketsSchema = new Schema({
     },
     code:{
         type: String,
+        unique: [true, 'El código de la canastilla ya existe'],
         required: [true,'El código es necesario'],
         maxlength: [4,'El código puede tener hasta 4 caracteres'],
         minlength: [3, 'El código debe tener más de 3 caracteres']
+        
     },
     type: {
         type: String,
@@ -22,12 +24,6 @@ const BasketsSchema = new Schema({
     description:{
         type: String, 
         maxlength: [200, 'La descrición no puede exceder los 200 caracteres'],
-    }, 
-    baseQuantily: {
-        type: Number
-    },
-    temporalBaseQuantily: {
-        type: Number
     }
 });
 module.exports = model('Baskets', BasketsSchema);

@@ -4,7 +4,7 @@ import api from '../axios/axios';
 import ButtonCancel from './base/buttonCancel';
 import { Container, Form } from "react-bootstrap";
 import '../styles/basketsRegistration.css';
-import {getFromLocal} from '../functions/localStorage'
+import { getFromLocal } from '../functions/localStorage'
 
 
 const BasketsRegistration = () => {
@@ -13,13 +13,13 @@ const BasketsRegistration = () => {
         comprobation();
     }, []);
 
-    function comprobation(){
-        api.post('/routeComprobation',{typeUser:['administrador']},{headers:{'authorization':`Bearer ${getFromLocal('tokenUser')}`}})
-        .then((res)=>{
-            if(res.status===201) window.location.href = '/notAuthorized'
-        }).catch((err)=>{
-            window.location.href = '/notAuthorized'
-        });
+    function comprobation() {
+        api.post('/routeComprobation', { typeUser: ['administrador'] }, { headers: { 'authorization': `Bearer ${getFromLocal('tokenUser')}` } })
+            .then((res) => {
+                if (res.status === 201) window.location.href = '/notAuthorized'
+            }).catch((err) => {
+                window.location.href = '/notAuthorized'
+            });
     }
     const data = (e) => {
         let name = e.target.id;
@@ -33,8 +33,7 @@ const BasketsRegistration = () => {
         const data = {
             name: basketsData.name,
             type: basketsData.type,
-            description: basketsData.description,
-            baseQuantily: basketsData.baseQuantily
+            description: basketsData.description
         }
         api.post("/registerBaskets", data).then((res, err) => {
             if (res.status === 500) {
@@ -52,11 +51,11 @@ const BasketsRegistration = () => {
                     confirmButtonText: "Entendido",
                     confirmButtonColor: "red",
                 });
-            }  else if (res.status === 201) {
+            } else if (res.status === 201) {
                 swal.fire({
                     icon: "success",
                     title: "Canasta creada con éxito",
-                    confirmButtonText: "Entendido", 
+                    confirmButtonText: "Entendido",
                     confirmButtonColor: "#70db24",
                 });
             } else if (res.status === 225) {
@@ -68,16 +67,6 @@ const BasketsRegistration = () => {
                     confirmButtonColor: "red",
                 });
             }
-            /*
-            else{
-                swal.fire({
-                    icon: "error",
-                    title: "Digite todos los campos necesarios",
-                    confirmButtonText: "Entendido",
-                    confirmButtonColor: "#f96332",
-                  });
-            }
-            */
         })
     }
 
@@ -101,13 +90,6 @@ const BasketsRegistration = () => {
                         placeholder="Nombre de la canasta"
                         onChange={data}
                     />
-                    <input
-                        type="email"
-                        id="baseQuantily"
-                        className="form-control mb-3"
-                        placeholder="Cantidad base"
-                        onChange={data}
-                    />
                     <textarea
                         class="form-control"
                         id="description"
@@ -115,7 +97,7 @@ const BasketsRegistration = () => {
                         placeholder="Descripción"
                         onChange={data}
                     />
-                    <ButtonCancel/>
+                    <ButtonCancel />
                     <button type="button" className="boton2 ml-3 w-40 h-50" onClick={sendData}>Finalizar</button>
                 </form>
             </Container>
