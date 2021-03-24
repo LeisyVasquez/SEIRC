@@ -99,7 +99,7 @@ const DisplayClientProviderProfile = () => {
         } //Fecha
 
         //Tipo
-        if (!filters.movemenType) {
+        if (filters.movemenType !== undefined && filters.movemenType !== "") {
             filterArray = [];
             for (let i = 0; i < completeHistory.length; i++) {
                 if (completeHistory[i].movemenType === filters.movemenType && filteredHistory.includes(completeHistory[i]._id) === false) {
@@ -111,7 +111,7 @@ const DisplayClientProviderProfile = () => {
         //Tipo
 
         //Fecha y tipo
-        if (filters.desde.getTime() <= filters.hasta.getTime() && !filters.movemenType) {
+        if (filters.desde.getTime() <= filters.hasta.getTime() && filters.movemenType !== undefined && filters.movemenType !== "") {
             setfilteredHistory([]);
             filterArray = [];
             for (let i = 0; i < completeHistory.length; i++) {
