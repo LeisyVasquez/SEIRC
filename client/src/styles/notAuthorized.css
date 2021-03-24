@@ -2,3 +2,8 @@
     background-color: white;
     border-radius: 5px;
 }
+
+.notAuthorized  img{
+    height: 10vw;
+    margin: 0;
+}

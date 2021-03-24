@@ -136,7 +136,7 @@ const ReturnClient = () => {
                 if(res.status === 201){
                     data['basketList'] = baskets;
                     data['movemenType'] = 'Devolución';
-                    confirmationMessage('success', 'Prestamo generado correctamente','',2,data);
+                    confirmationMessage('success', 'Devolución generada correctamente','',2,data);
                 } 
             })
         }

@@ -7,19 +7,45 @@ import '../styles/displayClientProviderProfile.css';
 import BasketsTable from './base/basketsTable';
 
 const DisplayClientProviderProfile = () => {
+    const setOptionClick = (e) => {
+        if (e.target.value === "option1") getGeneralHistory('cliente');
+        if (e.target.value === "option2") getGeneralHistory('proveedor');
+    }
+
     useEffect(() => {
         comprobation();
-        getGeneralHistory();
+        if (getFromLocal('role') == 'clienteProveedor') getGeneralHistory('cliente')
+        else getGeneralHistory('');
     }, []);
 
-    function comprobation(){
-        api.post('/routeComprobation',{typeUser:['cliente','proveedor','clienteProveedor']},{headers:{'authorization':`Bearer ${getFromLocal('tokenUser')}`}
-    })
-        .then((res)=>{
-            if(res.status===201) window.location.href = '/notAuthorized'
-        }).catch((err)=>{
-            window.location.href = '/notAuthorized'
-        });
+    function comprobation() {
+        api.post('/routeComprobation', { typeUser: ['cliente', 'proveedor', 'clienteProveedor'] }, {
+            headers: { 'authorization': `Bearer ${getFromLocal('tokenUser')}` }
+        })
+            .then((res) => {
+                if (res.status === 201) window.location.href = '/notAuthorized'
+            }).catch((err) => {
+                window.location.href = '/notAuthorized'
+            });
+    }
+
+    function checkRole() {
+        if (getFromLocal("role") == "clienteProveedor") {
+            return (
+                <form className="form-signin mt-4 py-4" id="form">
+                    <div class="form-check form-check-inline mx-0 mb-3" style={{ float: "left" }}>
+                        <input class="form-check-input " type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1" onChange={setOptionClick} />
+                        <label class="form-check-label fs-5" for="inlineRadio1" >Cliente</label>
+                    </div>
+                    <div class="form-check form-check-inline mb-3" >
+                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2" onChange={setOptionClick} />
+                        <label class="form-check-label fs-5" for="inlineRadio2">Proveedor</label>
+                    </div>
+                </form>
+            )
+        } else {
+            return;
+        }
     }
 
     //Formatear fecha actual
@@ -196,6 +222,7 @@ const DisplayClientProviderProfile = () => {
                     } else {
                         basketsKeys[i] = key.toString();
                         basketsValues[i] = value;
+                        i++
                     }
                 } else {
                     if (basketsKeys.includes(actualKey)) {
@@ -205,9 +232,9 @@ const DisplayClientProviderProfile = () => {
                     } else {
                         basketsKeys[i] = key.toString();
                         basketsValues[i] = value;
+                        i++
                     }
                 }
-                i++
             }
         }
 
@@ -235,8 +262,8 @@ const DisplayClientProviderProfile = () => {
     }
 
     //Petición para obtener todo el historial
-    const getGeneralHistory = () => {
-        api.get(`/getCompleteHistoryByName/cliente/${getFromLocal('name')}`).then((res, err) => {
+    const getGeneralHistory = (param) => {
+        api.get(`/getCompleteHistoryByName/${param != "" ? param : getFromLocal('role')}/${getFromLocal('name')}`).then((res, err) => {
             if (!err) {
                 setCompleteHistory(res.data);
                 setfilteredHistory(res.data);
@@ -258,9 +285,10 @@ const DisplayClientProviderProfile = () => {
         <div className="displayClientProviderProfile" >
             <Container className="text-center mt-2 mx-auto my-5 p-5 bosy w-70" >
                 <BasketsTable />
-                <h1 className="mx-auto mb-5 mt-3">Visualización cliente {getFromLocal('name')}</h1>
+                <h1 className="mx-auto mb-5 mt-3">Visualización {getFromLocal('role')} {getFromLocal('name')}</h1>
                 {/*Filtrar por historiales*/}
                 <div class="container">
+                    <div id="checkboxes">{checkRole()}</div>
                     <div class="row">
                         <div class="col w-100">
                             <h5 className="mx-auto mb-4 mt-2">Filtrar hitoriales por: </h5>
@@ -297,7 +325,6 @@ const DisplayClientProviderProfile = () => {
                         {/*Consolidado*/}
                         <div class="col w-25">
                             <div className="debt mx-auto align-baseline px-3 py-2">
-                                <img src="https://icons-for-free.com/iconfiles/png/512/Free+Set+copy+Printer-1320568200680206615.png" alt="Impresora" />
                                 <h5 className="mx-auto mb-4 mt-2">Consolidado hasta la fecha</h5>
 
                                 <div className="card mr-4">

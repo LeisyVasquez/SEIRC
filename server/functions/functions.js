@@ -18,10 +18,13 @@ function generatorDate() {
 
 function generatorHour() {
     var d = new Date();
-    hours = '' + d.getHours(),
-        minutes = '' + d.getMinutes();
+    hours = '' + (d.getHours() - 5),
+    console.log(hours);
+    minutes = '' + d.getMinutes();
     if (hours < 10) hours = "0" + hours;
     if (minutes < 10) minutes = "0" + minutes;
+    console.log("Horas: " + hours)
+    console.log("Final: " + hours + ":" + minutes)
     return hours + ":" + minutes;
 }
 

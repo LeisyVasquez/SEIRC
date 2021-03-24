@@ -58,7 +58,7 @@ const Login = () => {
                 saveToLocal('name',res.data.name);
                 saveToLocal('role',res.data.role);
                 switch(res.data.role){
-                    case "cliente" || "proveedor" || "clienteProveedor":
+                    case "cliente": case "proveedor": case "clienteProveedor":
                         window.location.href = 'http://localhost:3000/homeThirdParty'
                     break;
                     case "administrador":

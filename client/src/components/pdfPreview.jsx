@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import api from '../axios/axios';
 import ReactToPrint from 'react-to-print'
 import swal from "sweetalert2";
 import { getFromLocal, removeFromLocal} from "../functions/localStorage";
@@ -13,9 +14,20 @@ const PdfPreview = () => {
 
     useEffect(
         () => {
+            comprobation()
             getData()
         }, []
     );
+
+    function comprobation(){
+        api.post('/routeComprobation',{typeUser:['administrador']},{headers:{'authorization':`Bearer ${getFromLocal('tokenUser')}`}
+    })
+        .then((res)=>{
+            if(res.status===201) window.location.href = '/notAuthorized'
+        }).catch((err)=>{
+            window.location.href = '/notAuthorized'
+        });
+    }
 
     const getData = () => {
         //Obtener los datos del usuario y del movimiento por separado
